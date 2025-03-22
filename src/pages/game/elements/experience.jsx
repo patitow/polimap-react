@@ -8,7 +8,7 @@ import { Map } from './map'
 const maps = {
   castle_on_hills: {
     scale: 3,
-    position: [-6, -17, 0],
+    position: [-6, -8, 0],
   },
 }
 
@@ -36,7 +36,7 @@ export const Experience = () => {
         <OrthographicCamera
           left={-22}
           right={15}
-          top={10}
+          top={15}
           bottom={-20}
           ref={shadowCameraRef}
           attach={'shadow-camera'}
