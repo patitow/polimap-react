@@ -1,17 +1,20 @@
+import { Route, Routes } from 'react-router-dom'
 import './App.css'
-import { Canvas } from '@react-three/fiber'
+import PolimapGame from '@/pages/game/game'
+import Home from '@/pages/home/home'
+import { ThemeProvider } from './components/providers/themeProvider'
+import Navbar from './components/nav/navbar'
 
 function App() {
   return (
     <>
-      <Canvas>
-        <mesh>
-          <boxGeometry args={[2, 2, 2]} />
-          <meshPhongMaterial />
-        </mesh>
-        <ambientLight intensity={0.1} />
-        <directionalLight position={[0, 0, 5]} color="white" />
-      </Canvas>
+      <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
+        <Navbar />
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/play" element={<PolimapGame />} />
+        </Routes>
+      </ThemeProvider>
     </>
   )
 }
