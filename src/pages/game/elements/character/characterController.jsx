@@ -80,7 +80,8 @@ export const CharacterController = () => {
       const playerPos = rb.current.translation()
       // Exemplo de offset: 10 unidades atrás e 10 unidades acima do jogador,
       // considerando o sistema de coordenadas: ajuste conforme necessário.
-      const offset = new Vector3(10, 10, 10)
+      const cameraZoom = 5
+      const offset = new Vector3(cameraZoom, cameraZoom, cameraZoom)
       const desiredCamPos = new Vector3().addVectors(playerPos, offset)
       camera.position.lerp(desiredCamPos, 0.1)
       // Não chamamos camera.lookAt, para não alterar a rotação fixa.
@@ -92,7 +93,7 @@ export const CharacterController = () => {
       <group ref={characterRef}>
         <Character scale={0.5} position-y={-0.25} animation={animation} />
       </group>
-      <CapsuleCollider args={[0.08, 0.15]} />
+      <CapsuleCollider args={[0.08, 0.42]} />
     </RigidBody>
   )
 }

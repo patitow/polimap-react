@@ -1,6 +1,6 @@
 import React from 'react'
 import { CustomSpriteAnimator } from './CustomSpriteAnimator'
-import { useCustomSpriteLoader } from './useCustomSpriteLoader'
+import useCustomSpriteLoader from './useCustomSpriteLoader'
 
 export function Character({ animation, ...props }) {
   const spriteDataset = useCustomSpriteLoader(
