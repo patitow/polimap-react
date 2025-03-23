@@ -16,12 +16,12 @@ export default function useCustomSpriteLoader(textureURL, jsonURL) {
 
   useEffect(() => {
     fetch(jsonURL)
-      .then((res) => res.json())
-      .then((data) => {
+      .then(res => res.json())
+      .then(data => {
         console.log('Sprite JSON data loaded:', data)
         setSpriteData(data)
       })
-      .catch((err) => console.error('Erro ao carregar JSON:', err))
+      .catch(err => console.error('Erro ao carregar JSON:', err))
   }, [jsonURL])
 
   return { spriteTexture: texture, spriteData }

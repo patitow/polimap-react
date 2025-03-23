@@ -7,7 +7,7 @@ const Navbar: React.FC = () => {
   const [isLogged, setIsLogged] = useState(true)
 
   return (
-    <nav className="absolute top-0 left-0 w-full border-b shadow-sm z-[1] bg-primary-foreground">
+    <nav className="bg-primary-foreground absolute top-0 left-0 z-[1] w-full border-b shadow-sm">
       <div className="container mx-auto flex items-center justify-between">
         <div>
           <Link to={isLogged ? '/play' : '/'}>
@@ -24,7 +24,7 @@ const Navbar: React.FC = () => {
               </Link>
               <Link to="/quit">
                 <Button variant="destructive">Sair</Button>
-            </Link>
+              </Link>
             </>
           ) : (
             <>

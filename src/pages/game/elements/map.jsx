@@ -7,7 +7,7 @@ export const Map = ({ model, ...props }) => {
   const group = useRef()
   const { actions } = useAnimations(animations, group)
   useEffect(() => {
-    scene.traverse((child) => {
+    scene.traverse(child => {
       if (child.isMesh) {
         child.castShadow = true
         child.receiveShadow = true

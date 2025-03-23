@@ -5,7 +5,7 @@ import reactRefresh from 'eslint-plugin-react-refresh'
 import tseslint from 'typescript-eslint'
 import reactX from 'eslint-plugin-react-x'
 import reactDom from 'eslint-plugin-react-dom'
-import reactRefresh from "eslint-plugin-react-refresh"
+import reactRefresh from 'eslint-plugin-react-refresh'
 
 export default tseslint.config(
   { ignores: ['dist'] },

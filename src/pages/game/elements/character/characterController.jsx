@@ -117,7 +117,6 @@ export const CharacterController = () => {
     )
     camera.position.lerp(desiredCamPos, 1)
     camera.lookAt(playerPos.x, playerPos.y, playerPos.z)
-
   })
 
   // Variável para armazenar a última direção para o idle
@@ -126,7 +125,7 @@ export const CharacterController = () => {
   return (
     <RigidBody colliders={false} lockRotations ref={rb}>
       <group ref={characterRef}>
-        <Character scale={0.3} animation={animation} />
+        <Character scale={0.4} animation={animation} />
         <CapsuleCollider args={[0.08, 0.08, 3]} />
         {showCollider && (
           <mesh position={[0, 0, 0]}>
