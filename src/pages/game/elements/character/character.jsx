@@ -10,16 +10,15 @@ export function Character({ animation, ...props }) {
 
   if (!spriteDataset.spriteData || !spriteDataset.spriteTexture) return null
 
-  // Se a animação for do tipo "left_walk", por exemplo, pode ser interessante flipar.
-  // Mas como agora usamos nomes diferenciados, você pode definir a lógica:
-  const flipX = animation === 'right_idle' ? false : animation.startsWith('left')
+  // Se necessário, ajuste flipX – por exemplo, se a animação para "left" já está desenhada corretamente, flipX pode ser false.
+  const flipX = false // ajuste conforme a necessidade
 
   return (
     <CustomSpriteAnimator
       {...props}
       autoPlay={true}
       loop={true}
-      fps={12}
+      fps={4}
       spriteDataset={spriteDataset}
       frameName={animation}
       flipX={flipX}
