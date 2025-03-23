@@ -2,13 +2,11 @@ import React, { useEffect, useState, useRef } from 'react'
 import { useFrame } from '@react-three/fiber'
 
 export function CustomSpriteAnimator({
-  startFrame = 0,
-  numberOfFrames = 1,
-  fps = 12,
-  loop = true,
   autoPlay = true,
-  // frameName pode ser utilizado se seu JSON agrupar animações (aqui não implementado)
-  spriteDataset, // objeto com { spriteTexture, spriteData }
+  loop = true,
+  fps = 12,
+  spriteDataset, // { spriteTexture, spriteData }
+  frameName = 'down_idle', // valor padrão
   flipX = false,
   alphaTest = 0.001,
   scale = 1,
@@ -18,43 +16,50 @@ export function CustomSpriteAnimator({
   const materialRef = useRef()
   const meshRef = useRef()
 
-  // Estado para o frame atual
-  const [currentFrame, setCurrentFrame] = useState(startFrame)
+  // Define os frames a partir do frameName.
+  // Se o frameName termina com "_idle", usamos apenas esse frame.
+  // Se termina com "_walk", assumimos que queremos os frames walk1 e walk2.
+  const [framesForAnim, setFramesForAnim] = useState([])
+  useEffect(() => {
+    let animFrames = []
+    const parts = frameName.split('_')
+    const dir = parts[0] // "up", "down", etc.
+    const type = parts[1] // "idle" ou "walk"
+    if (type === 'idle') {
+      animFrames = [`${dir}_idle`]
+    } else if (type === 'walk') {
+      animFrames = [`${dir}_walk1`, `${dir}_walk2`]
+    }
+    setFramesForAnim(animFrames)
+  }, [frameName])
+
+  // Controle do frame atual da animação
+  const [currentFrameIdx, setCurrentFrameIdx] = useState(0)
   const elapsedRef = useRef(0)
 
-  // Prepara um array ordenado com as chaves dos frames (ex.: ["frame_0", "frame_1", ...])
-  const framesKeys =
-    spriteData && spriteData.frames
-      ? Object.keys(spriteData.frames).sort((a, b) => {
-          const numA = parseInt(a.split('_')[1])
-          const numB = parseInt(b.split('_')[1])
-          return numA - numB
-        })
-      : []
-
   useFrame((state, delta) => {
-    if (!autoPlay || framesKeys.length === 0) return
+    if (!autoPlay || framesForAnim.length === 0) return
 
     elapsedRef.current += delta
     if (elapsedRef.current >= 1 / fps) {
       elapsedRef.current = 0
-      let nextFrame = currentFrame + 1
-      if (nextFrame >= startFrame + numberOfFrames) {
-        nextFrame = loop ? startFrame : currentFrame
+      let nextIdx = currentFrameIdx + 1
+      if (nextIdx >= framesForAnim.length) {
+        nextIdx = loop ? 0 : currentFrameIdx
       }
-      setCurrentFrame(nextFrame)
+      setCurrentFrameIdx(nextIdx)
     }
 
-    // Atualiza os UVs do material com base no frame atual
-    const frameKey = framesKeys[currentFrame]
+    // Obtem os dados do frame atual a partir do JSON
+    const frameKey = framesForAnim[currentFrameIdx]
     const frameData = spriteData.frames[frameKey]
     if (frameData && materialRef.current) {
-      // frameData.frame contém x, y, w, h
       const { x, y, w, h } = frameData.frame
       const texWidth = spriteData.meta.size.w
       const texHeight = spriteData.meta.size.h
 
-      // Ajuste: como ThreeJS usa (0,0) no canto inferior esquerdo, convertemos
+      // Como o Three.js usa (0,0) no canto inferior esquerdo,
+      // convertemos as coordenadas: offsetX e offsetY.
       const offsetX = x / texWidth
       const offsetY = 1 - (y + h) / texHeight
       const repeatX = w / texWidth
@@ -69,7 +74,12 @@ export function CustomSpriteAnimator({
   return (
     <mesh ref={meshRef} {...props} scale={flipX ? [-scale, scale, 1] : [scale, scale, 1]}>
       <planeGeometry args={[1, 1]} />
-      <meshBasicMaterial ref={materialRef} map={spriteTexture} transparent={true} alphaTest={alphaTest} />
+      <meshBasicMaterial
+        ref={materialRef}
+        map={spriteTexture}
+        transparent={true}
+        alphaTest={alphaTest}
+      />
     </mesh>
   )
 }
