@@ -23,6 +23,8 @@
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "colyseus.js": "^0.16.11",
+    "embla-carousel-autoplay": "^8.5.2",
+    "embla-carousel-react": "^8.5.2",
     "leva": "^0.10.0",
     "lucide-react": "^0.483.0",
     "react": "^19.0.0",

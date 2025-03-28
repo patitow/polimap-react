@@ -7,7 +7,7 @@ const Navbar: React.FC = () => {
   const [isLogged, setIsLogged] = useState(true)
 
   return (
-    <nav className="bg-primary-foreground absolute top-0 left-0 z-[1] w-full border-b shadow-sm">
+    <nav className="bg-primary-foreground absolute top-0 left-0 z-[1] w-full border-b shadow-sm min-h-16 max-h-16">
       <div className="container mx-auto flex items-center justify-between">
         <div>
           <Link to={isLogged ? '/play' : '/'}>
