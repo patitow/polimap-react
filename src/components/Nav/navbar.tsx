@@ -1,39 +1,46 @@
-import React, { useState } from 'react'
-import { Button } from '../ui/button'
+'use client'
+
+import type React from 'react'
 import { Link } from 'react-router-dom'
+import { SignInButton, SignUpButton, UserButton, useAuth } from '@clerk/clerk-react'
 import { ModeToggle } from '../theme-toggler/mode-toggle'
+import { Button } from '../ui/button'
 
 const Navbar: React.FC = () => {
-  const [isLogged, setIsLogged] = useState(true)
+  const { isSignedIn } = useAuth()
 
   return (
-    <nav className="bg-primary-foreground absolute top-0 left-0 z-[1] w-full border-b shadow-sm min-h-16 max-h-16">
-      <div className="container mx-auto flex items-center justify-between">
+    <nav className="bg-primary-foreground fixed top-0 left-0 z-50 max-h-16 min-h-16 w-full border-b shadow-sm">
+      <div className="mx-16 flex h-16 items-center justify-between">
         <div>
-          <Link to={isLogged ? '/play' : '/'}>
+          <Link to={isSignedIn ? '/play' : '/'}>
             <img src="/polimap.svg" alt="PoliMap" className="h-16" />
           </Link>
         </div>
 
-        {/* Botões de navegação */}
+        {/* Navigation buttons */}
         <div className="flex items-center space-x-4">
-          {isLogged ? (
+          {isSignedIn ? (
             <>
               <Link to="/play">
                 <Button variant="default">Jogar</Button>
               </Link>
-              <Link to="/quit">
-                <Button variant="destructive">Sair</Button>
-              </Link>
+              <UserButton
+                appearance={{
+                  elements: {
+                    userButtonAvatarBox: 'w-10 h-10',
+                  },
+                }}
+              />
             </>
           ) : (
             <>
-              <Link to="/auth">
+              <SignInButton mode="modal">
                 <Button variant="secondary">Login</Button>
-              </Link>
-              <Link to="/auth">
+              </SignInButton>
+              <SignUpButton mode="modal">
                 <Button variant="default">Cadastro</Button>
-              </Link>
+              </SignUpButton>
             </>
           )}
           <ModeToggle />

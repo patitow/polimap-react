@@ -2,7 +2,7 @@ import { Route, Routes } from 'react-router-dom'
 import './App.css'
 import PolimapGame from '@/pages/game/game'
 import Home from '@/pages/home/home'
-import { ThemeProvider } from './components/providers/themeProvider'
+import { ThemeProvider } from './providers/themeProvider'
 import Navbar from './components/nav/navbar'
 
 function App() {

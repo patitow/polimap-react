@@ -4,7 +4,7 @@ import { Canvas } from '@react-three/fiber'
 import Experience from './elements/experience'
 import { KeyboardControls } from '@react-three/drei'
 import { Client, Room } from 'colyseus.js'
-import { Chat, IChatMessage} from './elements/chat/chat'
+import { Chat, IChatMessage } from './elements/chat/chat'
 
 const keyboardMap = [
   { name: 'forward', keys: ['ArrowUp', 'KeyW'] },
@@ -14,7 +14,6 @@ const keyboardMap = [
   { name: 'run', keys: ['Shift'] },
   { name: 'jump', keys: ['Space'] },
 ]
-
 
 // Se o componente Experience precisar receber a sala, defina uma interface para as props
 interface ExperienceProps {

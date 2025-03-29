@@ -79,11 +79,7 @@ export const Experience: React.FC<ExperienceProps> = ({ room }) => {
         />
       </directionalLight>
       <Physics key={map}>
-        <Map
-          scale={maps[map].scale}
-          position={maps[map].position}
-          model={`models/${map}.glb`}
-        />
+        <Map scale={maps[map].scale} position={maps[map].position} model={`models/${map}.glb`} />
         <CharacterController />
       </Physics>
     </>
