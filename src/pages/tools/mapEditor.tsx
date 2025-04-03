@@ -1,4 +1,6 @@
-import React, { useState, useEffect } from 'react'
+'use client'
+
+import React, { Suspense, useState, useEffect } from 'react'
 import { Canvas } from '@react-three/fiber'
 import { OrbitControls, Environment, OrthographicCamera } from '@react-three/drei'
 import { Physics } from '@react-three/rapier'
@@ -6,6 +8,9 @@ import { Block } from '@/types/block'
 import { Floor } from '@/types/floor'
 import { Room } from '@/types/room'
 import { Map } from '@/components/map/map'
+import { ModelErrorBoundary } from '@/components/map/modelErrorBoundary' // ou importe de onde você definiu
+import { GateComponent } from '@/components/map/gate'
+import { GatesEditor } from '@/components/map/gatesEditor'
 
 // Função para carregar a configuração do mapa (JSON) da pasta public
 const fetchMapConfig = async (): Promise<Block[]> => {
@@ -24,7 +29,6 @@ const MapEditor: React.FC = () => {
     fetchMapConfig()
       .then(data => {
         setBlocks(data)
-        // Auto-seleciona o primeiro bloco, andar e sala (se existirem)
         if (data.length > 0) {
           setSelectedBlock(data[0])
           if (data[0].floors.length > 0) {
@@ -67,9 +71,27 @@ const MapEditor: React.FC = () => {
     setSelectedRoom(room)
   }
 
+  // Atualiza a sala (por exemplo, quando um gate é editado)
+  const updateRoom = (updatedRoom: Room) => {
+    setSelectedRoom(updatedRoom)
+    if (selectedBlock && selectedFloor) {
+      const updatedFloors = selectedBlock.floors.map(floor => {
+        if (floor.id === selectedFloor.id) {
+          return {
+            ...floor,
+            rooms: floor.rooms.map(r => (r.id === updatedRoom.id ? updatedRoom : r)),
+          }
+        }
+        return floor
+      })
+      const updatedBlock = { ...selectedBlock, floors: updatedFloors }
+      setSelectedBlock(updatedBlock)
+    }
+  }
+
   return (
-    <div className="map-editor flex h-dvh pt-16">
-      {/* Sidebar para seleção */}
+    <div className="map-editor flex h-screen pt-16">
+      {/* Sidebar */}
       <div className="sidebar w-1/4 overflow-y-auto border-r border-gray-200 p-4">
         <h1 className="mb-4 text-2xl font-bold">Map Editor</h1>
         <div className="mb-6">
@@ -133,9 +155,9 @@ const MapEditor: React.FC = () => {
             </ul>
           </div>
         )}
+        {selectedRoom && <GatesEditor room={selectedRoom} onUpdateRoom={updateRoom} />}
       </div>
-
-      {/* Área de visualização 3D */}
+      {/* Área 3D */}
       <div className="editor-canvas flex-1">
         <Canvas camera={{ position: [0, 5, 10] }} shadows>
           <Environment preset="sunset" />
@@ -157,14 +179,29 @@ const MapEditor: React.FC = () => {
           </directionalLight>
           <OrbitControls />
           <Physics>
-            {selectedRoom && (
-              <Map
-                model={`/models/${selectedRoom.model_path}.glb`}
-                scale={1}
-                position={[0, 0, 0]}
-              />
-            )}
-            {/* Aqui você pode incluir componentes para edição de gates, etc. */}
+            <Suspense fallback={null}>
+              {selectedRoom && (
+                <ModelErrorBoundary>
+                  <Map
+                    model={`/models/${selectedRoom.model_path}.glb`}
+                    scale={1}
+                    position={[0, 0, 0]}
+                  />
+                </ModelErrorBoundary>
+              )}
+            </Suspense>
+            {selectedRoom &&
+              selectedRoom.gates.map((gate, index) => (
+                <GateComponent
+                  key={gate.id}
+                  gate={gate}
+                  onUpdate={newGate => {
+                    const updatedGates = [...selectedRoom.gates]
+                    updatedGates[index] = newGate
+                    updateRoom({ ...selectedRoom, gates: updatedGates })
+                  }}
+                />
+              ))}
           </Physics>
         </Canvas>
       </div>

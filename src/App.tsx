@@ -5,7 +5,7 @@ import Home from '@/pages/home/home'
 import { ThemeProvider } from './providers/themeProvider'
 import Navbar from './components/nav/navbar'
 import Tutorial from './pages/tutorial/tutorial'
-import MapEditor from './pages/mapEditor/mapEditor'
+import MapEditor from './pages/tools/mapEditor'
 
 function App() {
   return (
