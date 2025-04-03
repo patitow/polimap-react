@@ -4,7 +4,6 @@ import { Physics } from '@react-three/rapier'
 import { useControls } from 'leva'
 import { CharacterController } from './character/characterController'
 import { Map } from './map'
-import { Room } from 'colyseus.js'
 
 // Define an interface for each map's configuration.
 interface MapConfig {
@@ -20,12 +19,7 @@ const defaultMaps: Record<string, MapConfig> = {
   },
 }
 
-interface ExperienceProps {
-  room: Room<any> | null
-}
-
-export const Experience: React.FC<ExperienceProps> = ({ room }) => {
-  console.log(room)
+export const Experience: React.FC = () => {
   const shadowCameraRef = useRef<any>(null)
   const [maps, setMaps] = useState<Record<string, MapConfig>>(defaultMaps)
 

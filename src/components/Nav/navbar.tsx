@@ -13,7 +13,7 @@ const Navbar: React.FC = () => {
     <nav className="bg-primary-foreground fixed top-0 left-0 z-50 max-h-16 min-h-16 w-full border-b shadow-sm">
       <div className="mx-16 flex h-16 items-center justify-between">
         <div>
-          <Link to={isSignedIn ? '/play' : '/'}>
+          <Link to="/">
             <img src="/polimap.svg" alt="PoliMap" className="h-16" />
           </Link>
         </div>

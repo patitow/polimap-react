@@ -1,10 +1,13 @@
-import React, { useState, useEffect } from 'react'
+'use client'
+
+import type React from 'react'
+import { useState } from 'react'
 import './game.css'
 import { Canvas } from '@react-three/fiber'
 import Experience from './elements/experience'
 import { KeyboardControls } from '@react-three/drei'
-import { Client, Room } from 'colyseus.js'
-import { Chat, IChatMessage } from './elements/chat/chat'
+import { Map, Search } from 'lucide-react'
+import NavigationModal from './elements/navigation/modal'
 
 const keyboardMap = [
   { name: 'forward', keys: ['ArrowUp', 'KeyW'] },
@@ -15,41 +18,17 @@ const keyboardMap = [
   { name: 'jump', keys: ['Space'] },
 ]
 
-// Se o componente Experience precisar receber a sala, defina uma interface para as props
-interface ExperienceProps {
-  room: Room<any> | null
-}
-
-// Caso o componente Experience ainda não esteja tipado, podemos encapsulá-lo para passar a prop "room"
-const ExperienceWithRoom: React.FC<ExperienceProps> = ({ room }) => {
-  return <Experience room={room} />
-}
-
 const PolimapGame: React.FC = () => {
-  // Tipagem para room e chatMessages
-  const [room, setRoom] = useState<Room<any> | null>(null)
-  const [chatMessages, setChatMessages] = useState<IChatMessage[]>([])
+  const [isModalOpen, setIsModalOpen] = useState(false)
 
-  useEffect(() => {
-    const client = new Client('ws://localhost:2567')
-    client
-      .joinOrCreate('game_room', { mapId: 'map1' })
-      .then((joinedRoom: Room<any>) => {
-        setRoom(joinedRoom)
+  const openModal = () => setIsModalOpen(true)
+  const closeModal = () => setIsModalOpen(false)
 
-        joinedRoom.onMessage('chat', (msg: IChatMessage) => {
-          setChatMessages((prevMessages: IChatMessage[]) => [...prevMessages, msg])
-        })
-
-        // Retorna a função de limpeza ao desmontar
-        return () => {
-          joinedRoom.leave()
-        }
-      })
-      .catch((err: any) => {
-        console.error('Erro ao conectar à sala:', err)
-      })
-  }, [])
+  const handleNavigateTo = (block: string, room: string) => {
+    console.log(`Navegando para o Bloco ${block}, Sala ${room}`)
+    // Aqui você pode adicionar a lógica para navegar até o local selecionado
+    closeModal()
+  }
 
   return (
     <div className="game-wrapper">
@@ -64,10 +43,25 @@ const PolimapGame: React.FC = () => {
           camera={{ position: [3, 3, 3], near: 0.1, fov: 40 }}
         >
           <color attach="background" args={['#ececec']} />
-          <ExperienceWithRoom room={room} />
+          <Experience />
         </Canvas>
       </KeyboardControls>
-      <Chat room={room} chatMessages={chatMessages} />
+      <div className="from-slate-900/50 absolute top-[4rem] left-0 z-40 flex h-20 w-full flex-row items-center justify-start gap-2 bg-gradient-to-b to-transparent px-4">
+        {/* Botão de Mapa */}
+        <button
+          onClick={openModal}
+          className="relative z-50 flex h-12 w-12 items-center justify-center rounded-full bg-primary-foreground text-primary shadow-lg transition-transform hover:scale-105 hover:bg-primary-foreground/90"
+          aria-label="Abrir mapa"
+        >
+          <div className="relative">
+            <Map className="h-6 w-6" />
+            <Search className="absolute -top-1 -right-1 h-5 w-5" />
+          </div>
+        </button>
+      </div>
+
+      {/* Modal de Navegação */}
+      <NavigationModal isOpen={isModalOpen} onClose={closeModal} onNavigate={handleNavigateTo} />
     </div>
   )
 }
