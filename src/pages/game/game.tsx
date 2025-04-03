@@ -1,5 +1,3 @@
-'use client'
-
 import type React from 'react'
 import { useState } from 'react'
 import './game.css'
@@ -7,7 +5,7 @@ import { Canvas } from '@react-three/fiber'
 import Experience from './elements/experience'
 import { KeyboardControls } from '@react-three/drei'
 import { Map, Search } from 'lucide-react'
-import NavigationModal from './elements/navigation/modal'
+import NavigationModal from './elements/navigation/navigationModal'
 
 const keyboardMap = [
   { name: 'forward', keys: ['ArrowUp', 'KeyW'] },

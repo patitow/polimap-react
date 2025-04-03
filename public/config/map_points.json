@@ -1,0 +1,344 @@
+[
+  {
+    "id": "externo",
+    "name": "Áreas Externas",
+    "floors": [
+      {
+        "id": "ext",
+        "name": "Externo",
+        "rooms": [
+          {
+            "id": "entrada",
+            "name": "Entrada",
+            "model_path": "model_poli_overworld",
+            "interest_point": { "x": 0, "y": 0, "z": 0 },
+            "gates": []
+          },
+          {
+            "id": "guarita",
+            "name": "Guarita",
+            "model_path": "model_guarita",
+            "interest_point": { "x": 0, "y": 0, "z": 0 },
+            "gates": []
+          },
+          {
+            "id": "bicicletario",
+            "name": "Bicicletário",
+            "model_path": "model_bicicletario",
+            "interest_point": { "x": 0, "y": 0, "z": 0 },
+            "gates": []
+          },
+          {
+            "id": "estacionamento",
+            "name": "Estacionamento",
+            "model_path": "model_estacionamento",
+            "interest_point": { "x": 0, "y": 0, "z": 0 },
+            "gates": []
+          },
+          {
+            "id": "quadra",
+            "name": "Quadra",
+            "model_path": "model_quadra",
+            "interest_point": { "x": 0, "y": 0, "z": 0 },
+            "gates": []
+          },
+          {
+            "id": "praca",
+            "name": "Praça",
+            "model_path": "model_praca",
+            "interest_point": { "x": 0, "y": 0, "z": 0 },
+            "gates": []
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "bloco_a",
+    "name": "Bloco A",
+    "floors": [
+      {
+        "id": "1",
+        "name": "Andar Único",
+        "rooms": [
+          {
+            "id": "auditorio_a",
+            "name": "Auditório",
+            "model_path": "model_auditorio_a",
+            "interest_point": { "x": 0, "y": 0, "z": 0 },
+            "gates": []
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "bloco_b",
+    "name": "Bloco B",
+    "floors": [
+      {
+        "id": "T",
+        "name": "Térreo",
+        "rooms": [
+          {
+            "id": "reitoria",
+            "name": "Reitoria",
+            "model_path": "model_reitoria",
+            "interest_point": { "x": 0, "y": 0, "z": 0 },
+            "gates": []
+          },
+          {
+            "id": "protocolo",
+            "name": "Protocolo",
+            "model_path": "model_protocolo",
+            "interest_point": { "x": 0, "y": 0, "z": 0 },
+            "gates": []
+          },
+          {
+            "id": "xerox",
+            "name": "Xerox",
+            "model_path": "model_xerox",
+            "interest_point": { "x": 0, "y": 0, "z": 0 },
+            "gates": []
+          },
+          {
+            "id": "cantina",
+            "name": "Cantina",
+            "model_path": "model_cantina",
+            "interest_point": { "x": 0, "y": 0, "z": 0 },
+            "gates": []
+          },
+          {
+            "id": "recepcao",
+            "name": "Recepção",
+            "model_path": "model_recepcao",
+            "interest_point": { "x": 0, "y": 0, "z": 0 },
+            "gates": []
+          },
+          {
+            "id": "coord_enfermaria",
+            "name": "Coord. Enfermaria",
+            "model_path": "model_coord_enfermaria",
+            "interest_point": { "x": 0, "y": 0, "z": 0 },
+            "gates": []
+          },
+          {
+            "id": "secretaria",
+            "name": "Secretaria",
+            "model_path": "model_secretaria",
+            "interest_point": { "x": 0, "y": 0, "z": 0 },
+            "gates": []
+          },
+          {
+            "id": "teq4",
+            "name": "TEQ4",
+            "model_path": "model_teq4",
+            "interest_point": { "x": 0, "y": 0, "z": 0 },
+            "gates": []
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "bloco_c",
+    "name": "Bloco C",
+    "floors": [
+      {
+        "id": "T",
+        "name": "Térreo",
+        "rooms": []
+      }
+    ]
+  },
+  {
+    "id": "bloco_d",
+    "name": "Bloco D",
+    "floors": [
+      {
+        "id": "T",
+        "name": "Térreo",
+        "rooms": []
+      }
+    ]
+  },
+  {
+    "id": "bloco_e",
+    "name": "Bloco E",
+    "floors": [
+      {
+        "id": "T",
+        "name": "Térreo",
+        "rooms": [
+          {
+            "id": "lab_e",
+            "name": "LAB E",
+            "model_path": "model_lab_e",
+            "interest_point": { "x": 0, "y": 0, "z": 0 },
+            "gates": []
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "bloco_f",
+    "name": "Bloco F",
+    "floors": [
+      {
+        "id": "T",
+        "name": "Térreo",
+        "rooms": [
+          {
+            "id": "lab_f",
+            "name": "LAB F",
+            "model_path": "model_lab_f",
+            "interest_point": { "x": 0, "y": 0, "z": 0 },
+            "gates": []
+          },
+          {
+            "id": "lp1",
+            "name": "LP1",
+            "model_path": "model_lp1",
+            "interest_point": { "x": 0, "y": 0, "z": 0 },
+            "gates": []
+          },
+          {
+            "id": "lp2",
+            "name": "LP2",
+            "model_path": "model_lp2",
+            "interest_point": { "x": 0, "y": 0, "z": 0 },
+            "gates": []
+          },
+          {
+            "id": "lp3",
+            "name": "LP3",
+            "model_path": "model_lp3",
+            "interest_point": { "x": 0, "y": 0, "z": 0 },
+            "gates": []
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "bloco_g",
+    "name": "Bloco G",
+    "floors": [
+      {
+        "id": "T",
+        "name": "Térreo",
+        "rooms": [
+          {
+            "id": "lab_g",
+            "name": "LAB G",
+            "model_path": "model_lab_g",
+            "interest_point": { "x": 0, "y": 0, "z": 0 },
+            "gates": []
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "bloco_h",
+    "name": "Bloco H",
+    "floors": [
+      {
+        "id": "T",
+        "name": "Térreo",
+        "rooms": [
+          {
+            "id": "biblioteca",
+            "name": "Biblioteca",
+            "model_path": "model_biblioteca",
+            "interest_point": { "x": 0, "y": 0, "z": 0 },
+            "gates": []
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "bloco_i",
+    "name": "Bloco I",
+    "floors": [
+      {
+        "id": "T",
+        "name": "Térreo",
+        "rooms": [
+          {
+            "id": "datp_mc",
+            "name": "DATP/MC",
+            "model_path": "model_datp_mc",
+            "interest_point": { "x": 0, "y": 0, "z": 0 },
+            "gates": []
+          },
+          {
+            "id": "csec",
+            "name": "CSEC",
+            "model_path": "model_csec",
+            "interest_point": { "x": 0, "y": 0, "z": 0 },
+            "gates": []
+          },
+          {
+            "id": "napp",
+            "name": "NAPP",
+            "model_path": "model_napp",
+            "interest_point": { "x": 0, "y": 0, "z": 0 },
+            "gates": []
+          },
+          {
+            "id": "coord_pos_grad",
+            "name": "Coord. Pós-Graduação",
+            "model_path": "model_coord_pos_grad",
+            "interest_point": { "x": 0, "y": 0, "z": 0 },
+            "gates": []
+          },
+          {
+            "id": "lab_i",
+            "name": "LAB I",
+            "model_path": "model_lab_i",
+            "interest_point": { "x": 0, "y": 0, "z": 0 },
+            "gates": []
+          }
+        ]
+      },
+      {
+        "id": "1",
+        "name": "1º Andar",
+        "rooms": [
+          {
+            "id": "auditorio_i2",
+            "name": "Auditório I-2",
+            "model_path": "model_auditorio_i2",
+            "interest_point": { "x": 0, "y": 0, "z": 0 },
+            "gates": []
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "bloco_j",
+    "name": "Bloco J",
+    "floors": [
+      {
+        "id": "T",
+        "name": "Térreo",
+        "rooms": []
+      }
+    ]
+  },
+  {
+    "id": "bloco_k",
+    "name": "Bloco K",
+    "floors": [
+      {
+        "id": "T",
+        "name": "Térreo",
+        "rooms": []
+      }
+    ]
+  }
+]

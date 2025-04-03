@@ -28,7 +28,7 @@ export const Experience: React.FC = () => {
     async function loadMaps() {
       try {
         // Adjust the path as needed; here we assume the JSON is in "public/config/maps.json"
-        const response = await fetch('/config/rooms.json')
+        const response = await fetch('/config/rooms_models.json')
         if (!response.ok) {
           throw new Error(`HTTP error! Status: ${response.status}`)
         }

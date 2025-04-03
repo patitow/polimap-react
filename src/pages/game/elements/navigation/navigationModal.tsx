@@ -1,5 +1,3 @@
-'use client'
-
 import type React from 'react'
 import { useState, useEffect } from 'react'
 import { X, Search } from 'lucide-react'
@@ -7,13 +5,7 @@ import { X, Search } from 'lucide-react'
 interface NavigationModalProps {
   isOpen: boolean
   onClose: () => void
-  onNavigate: (block: string, room: string) => void
-}
-
-interface Block {
-  id: string
-  name: string
-  rooms: Room[]
+  onNavigate: (block: string, floor: string, room: string) => void
 }
 
 interface Room {
@@ -21,69 +13,93 @@ interface Room {
   name: string
 }
 
+interface Floor {
+  id: string
+  name: string
+  rooms: Room[]
+}
+
+interface Block {
+  id: string
+  name: string
+  floors: Floor[]
+}
+
+// Cache para armazenar os dados lidos do arquivo
+let mapConfigCache: Block[] | null = null
+
 const NavigationModal: React.FC<NavigationModalProps> = ({ isOpen, onClose, onNavigate }) => {
+  const [blocks, setBlocks] = useState<Block[]>([])
   const [searchQuery, setSearchQuery] = useState('')
   const [selectedBlock, setSelectedBlock] = useState<string>('')
+  const [selectedFloor, setSelectedFloor] = useState<string>('')
   const [selectedRoom, setSelectedRoom] = useState<string>('')
 
-  // Dados de exemplo - substitua por seus dados reais
-  const blocks: Block[] = [
-    {
-      id: 'A',
-      name: 'Bloco A',
-      rooms: [
-        { id: 'A101', name: 'Sala A101' },
-        { id: 'A102', name: 'Sala A102' },
-        { id: 'A103', name: 'Laboratório de Informática' },
-      ],
-    },
-    {
-      id: 'B',
-      name: 'Bloco B',
-      rooms: [
-        { id: 'B201', name: 'Sala B201' },
-        { id: 'B202', name: 'Sala B202' },
-        { id: 'B203', name: 'Auditório' },
-      ],
-    },
-    {
-      id: 'C',
-      name: 'Bloco C',
-      rooms: [
-        { id: 'C301', name: 'Sala C301' },
-        { id: 'C302', name: 'Sala C302' },
-        { id: 'C303', name: 'Laboratório de Química' },
-      ],
-    },
-  ]
+  // Carrega os dados do arquivo de configuração e utiliza cache
+  useEffect(() => {
+    if (mapConfigCache) {
+      setBlocks(mapConfigCache)
+    } else {
+      fetch('/config/map_points.json')
+        .then(response => response.json())
+        .then(data => {
+          mapConfigCache = data
+          setBlocks(data)
+        })
+        .catch(error => console.error('Erro ao carregar map_config.json:', error))
+    }
+  }, [])
 
-  // Filtrar blocos e salas com base na pesquisa
+  // Quando o bloco selecionado muda, se ele possuir apenas um andar, auto-seleciona-o
+  const handleBlockSelection = (block: Block) => {
+    setSelectedBlock(block.id)
+    setSelectedRoom('')
+    if (block.floors && block.floors.length === 1) {
+      setSelectedFloor(block.floors[0].id)
+    } else {
+      setSelectedFloor('')
+    }
+  }
+
+  // Filtrar blocos, andares e salas com base na pesquisa
   const filteredBlocks = searchQuery
-    ? blocks.filter(
-        block =>
-          block.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-          block.rooms.some(room => room.name.toLowerCase().includes(searchQuery.toLowerCase())),
-      )
+    ? blocks.filter(block => {
+        const query = searchQuery.toLowerCase()
+        return (
+          block.name.toLowerCase().includes(query) ||
+          block.floors.some(
+            floor =>
+              floor.name.toLowerCase().includes(query) ||
+              floor.rooms.some(room => room.name.toLowerCase().includes(query)),
+          )
+        )
+      })
     : blocks
 
-  // Obter as salas do bloco selecionado
-  const roomsOfSelectedBlock = selectedBlock
-    ? blocks.find(block => block.id === selectedBlock)?.rooms || []
+  // Obter os andares do bloco selecionado
+  const floorsOfSelectedBlock = selectedBlock
+    ? blocks.find(block => block.id === selectedBlock)?.floors || []
     : []
 
-  // Resetar a seleção quando o modal é fechado
+  // Obter as salas do andar selecionado
+  const roomsOfSelectedFloor = selectedFloor
+    ? floorsOfSelectedBlock.find(floor => floor.id === selectedFloor)?.rooms || []
+    : []
+
+  // Reseta a seleção quando o modal é fechado
   useEffect(() => {
     if (!isOpen) {
       setSearchQuery('')
       setSelectedBlock('')
+      setSelectedFloor('')
       setSelectedRoom('')
     }
   }, [isOpen])
 
-  // Lidar com a navegação
+  // Lida com a navegação
   const handleNavigate = () => {
-    if (selectedBlock && selectedRoom) {
-      onNavigate(selectedBlock, selectedRoom)
+    if (selectedBlock && selectedFloor && selectedRoom) {
+      onNavigate(selectedBlock, selectedFloor, selectedRoom)
     }
   }
 
@@ -110,7 +126,7 @@ const NavigationModal: React.FC<NavigationModalProps> = ({ isOpen, onClose, onNa
             <Search className="absolute top-1/2 left-3 h-5 w-5 -translate-y-1/2 text-gray-400" />
             <input
               type="text"
-              placeholder="Pesquisar bloco ou sala..."
+              placeholder="Pesquisar bloco, andar ou sala..."
               value={searchQuery}
               onChange={e => setSearchQuery(e.target.value)}
               className="w-full rounded-full border border-gray-300 py-2 pr-4 pl-10 focus:border-blue-500 focus:ring-1 focus:ring-blue-500 focus:outline-none"
@@ -119,7 +135,7 @@ const NavigationModal: React.FC<NavigationModalProps> = ({ isOpen, onClose, onNa
         </div>
 
         {/* Conteúdo */}
-        <div className="max-h-[calc(90vh-180px)] overflow-y-auto p-4">
+        <div className="max-h-[calc(90vh-220px)] overflow-y-auto p-4">
           {/* Seleção de Bloco */}
           <div className="mb-4">
             <label className="mb-2 block font-medium text-gray-700">Selecione o Bloco:</label>
@@ -127,10 +143,7 @@ const NavigationModal: React.FC<NavigationModalProps> = ({ isOpen, onClose, onNa
               {filteredBlocks.map(block => (
                 <button
                   key={block.id}
-                  onClick={() => {
-                    setSelectedBlock(block.id)
-                    setSelectedRoom('')
-                  }}
+                  onClick={() => handleBlockSelection(block)}
                   className={`rounded-lg border p-2 text-center transition-colors ${
                     selectedBlock === block.id
                       ? 'border-blue-500 bg-blue-50 text-blue-700'
@@ -143,12 +156,37 @@ const NavigationModal: React.FC<NavigationModalProps> = ({ isOpen, onClose, onNa
             </div>
           </div>
 
-          {/* Seleção de Sala (apenas se um bloco estiver selecionado) */}
-          {selectedBlock && (
+          {/* Seleção de Andar (apenas se houver mais de um andar) */}
+          {selectedBlock && floorsOfSelectedBlock.length > 1 && (
+            <div className="mb-4">
+              <label className="mb-2 block font-medium text-gray-700">Selecione o Andar:</label>
+              <div className="grid grid-cols-2 gap-2 sm:grid-cols-3">
+                {floorsOfSelectedBlock.map(floor => (
+                  <button
+                    key={floor.id}
+                    onClick={() => {
+                      setSelectedFloor(floor.id)
+                      setSelectedRoom('')
+                    }}
+                    className={`rounded-lg border p-2 text-center transition-colors ${
+                      selectedFloor === floor.id
+                        ? 'border-blue-500 bg-blue-50 text-blue-700'
+                        : 'border-gray-300 hover:border-blue-300 hover:bg-blue-50'
+                    }`}
+                  >
+                    {floor.name}
+                  </button>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {/* Seleção de Sala */}
+          {selectedFloor && (
             <div className="mb-4">
               <label className="mb-2 block font-medium text-gray-700">Selecione a Sala:</label>
               <div className="grid grid-cols-1 gap-2 sm:grid-cols-2">
-                {roomsOfSelectedBlock.map(room => (
+                {roomsOfSelectedFloor.map(room => (
                   <button
                     key={room.id}
                     onClick={() => setSelectedRoom(room.id)}
@@ -177,7 +215,7 @@ const NavigationModal: React.FC<NavigationModalProps> = ({ isOpen, onClose, onNa
         <div className="border-t border-gray-200 p-4">
           <button
             onClick={handleNavigate}
-            disabled={!selectedBlock || !selectedRoom}
+            disabled={!selectedBlock || !selectedFloor || !selectedRoom}
             className="w-full rounded-lg bg-blue-500 py-2 font-medium text-white transition-colors hover:bg-blue-600 disabled:cursor-not-allowed disabled:bg-gray-300 disabled:opacity-70"
           >
             Navegar para o local selecionado
