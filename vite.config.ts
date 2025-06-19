@@ -7,6 +7,7 @@ import vercel from 'vite-plugin-vercel'
 // https://vite.dev/config/
 export default defineConfig({
   plugins: [vercel(), react(), tailwindcss()],
+  base: process.env.VITE_BASE_PATH || '/polimap-react',
   server: {
     port: process.env.PORT as unknown as number,
   },
