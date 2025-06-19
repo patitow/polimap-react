@@ -7,23 +7,12 @@ import {
   CarouselNext,
 } from '@/components/ui/carousel'
 import { Button } from '@/components/ui/button'
-import {
-  MapPin,
-  Navigation,
-  QrCode,
-  History,
-  School,
-  ArrowRight,
-  GitBranch,
-  Mail,
-} from 'lucide-react'
+import { MapPin, Navigation, History, ArrowRight, GitBranch, Mail, Compass } from 'lucide-react'
 import { Link, useNavigate } from 'react-router-dom'
-import { useClerk } from '@clerk/clerk-react'
 
 function Home() {
   const [currentImageIndex, setCurrentImageIndex] = useState(0)
   const navigate = useNavigate()
-  const { isSignedIn } = useClerk()
 
   const images = [
     'https://serdigital.com.br/educacaotransformadora/images/slider/poli1.jpg',
@@ -43,19 +32,14 @@ function Home() {
         'Visualize caminhos posicionados fielmente à representação real da universidade.',
     },
     {
-      icon: <QrCode className="h-8 w-8 text-slate-700 dark:text-slate-300" />,
-      title: 'Posicionamento por QR Code',
-      description: 'Leia um QR Code do PoliMap mais próximo e seja posicionado automaticamente.',
+      icon: <Compass className="h-8 w-8 text-slate-700 dark:text-slate-300" />,
+      title: 'Navegação Inteligente',
+      description: 'Obtenha o melhor caminho para o seu destino de forma facilitada.',
     },
     {
       icon: <History className="h-8 w-8 text-slate-700 dark:text-slate-300" />,
       title: 'História dos Blocos',
       description: 'Descubra a história de cada bloco da universidade e suas particularidades.',
-    },
-    {
-      icon: <School className="h-8 w-8 text-slate-700 dark:text-slate-300" />,
-      title: 'Conheça os Professores',
-      description: 'Saiba mais sobre os professores e suas áreas de pesquisa.',
     },
   ]
 
@@ -71,11 +55,7 @@ function Home() {
   }, [images.length])
 
   const handleStartExploring = () => {
-    if (isSignedIn) {
-      navigate('/play')
-    } else {
-      navigate('/sign-up')
-    }
+    navigate('/acessar')
   }
 
   return (
@@ -99,20 +79,12 @@ function Home() {
             O PoliMap é uma plataforma virtual interativa, responsável por facilitar a locomoção do
             estudante pela universidade.
           </p>
-          {isSignedIn ? (
-            <Link to="/play">
-              <Button className="rounded-full bg-blue-500 px-8 py-6 text-lg text-white transition-all hover:scale-105 hover:bg-blue-600">
-                Começar a Explorar <ArrowRight className="ml-2 h-5 w-5" />
-              </Button>
-            </Link>
-          ) : (
-            <Button
-              onClick={handleStartExploring}
-              className="rounded-full bg-blue-500 px-8 py-6 text-lg text-white transition-all hover:scale-105 hover:bg-blue-600"
-            >
-              Começar a Explorar <ArrowRight className="ml-2 h-5 w-5" />
-            </Button>
-          )}
+          <Button
+            onClick={handleStartExploring}
+            className="rounded-full bg-blue-500 px-8 py-6 text-lg text-white transition-all hover:scale-105 hover:bg-blue-600"
+          >
+            Começar a Explorar <ArrowRight className="ml-2 h-5 w-5" />
+          </Button>
         </div>
       </section>
 
@@ -129,8 +101,8 @@ function Home() {
               posicionados fielmente à representação real da universidade.
             </p>
             <p className="mb-8 text-lg leading-relaxed text-slate-600 dark:text-slate-300">
-              Não sabe onde exatamente você está no mapa? Sem problemas, leia um QR Code de PoliMap
-              mais próximo e seja posicionado automaticamente.
+              Não sabe onde exatamente você está no mapa? Sem problemas, procure um poster de
+              PoliMap e obtenha um código de local, para ser posicionado automaticamente.
             </p>
             <Link to="/sobre">
               <Button
@@ -215,14 +187,6 @@ function Home() {
             >
               Começar Agora
             </Button>
-            <Link to="/tutorial">
-              <Button
-                variant="outline"
-                className="rounded-full bg-red-500 px-8 py-6 text-lg text-white hover:bg-red-800 hover:text-white"
-              >
-                Ver Tutorial
-              </Button>
-            </Link>
           </div>
         </div>
       </section>
@@ -278,8 +242,8 @@ function Home() {
               </div>
             </div>
             <p className="text-slate-600 italic dark:text-slate-300">
-              "A função de QR Code é incrível! Sempre sei onde estou e para onde preciso ir.
-              Economizo muito tempo entre as aulas."
+              "O PoliMap me ajudou muito na minha locomoção! Sempre sei onde estou e para onde
+              preciso ir. Economizo muito tempo entre as aulas."
             </p>
           </div>
 
@@ -317,12 +281,14 @@ function Home() {
               </p>
             </div>
             <div className="flex items-center gap-4">
-              <Link
+              {/*
+                <Link
                 to="/tutorial"
                 className="text-slate-600 hover:text-slate-800 dark:text-slate-300 dark:hover:text-white"
               >
                 Tutorial
               </Link>
+              */}
               <Link
                 to="/sobre"
                 className="text-slate-600 hover:text-slate-800 dark:text-slate-300 dark:hover:text-white"

@@ -1,11 +1,11 @@
 import { Route, Routes } from 'react-router-dom'
 import './App.css'
-import PolimapGame from '@/pages/game/game'
 import Home from '@/pages/home/home'
 import { ThemeProvider } from './providers/themeProvider'
 import Navbar from './components/nav/navbar'
+import Acesso from './pages/acesso/acesso'
+import Sobre from './pages/sobre/sobre'
 import Tutorial from './pages/tutorial/tutorial'
-import MapEditor from './pages/tools/mapEditor'
 
 function App() {
   return (
@@ -14,8 +14,8 @@ function App() {
         <Navbar />
         <Routes>
           <Route path="/" element={<Home />} />
-          <Route path="/play" element={<PolimapGame />} />
-          <Route path="/tools/mapeditor" element={<MapEditor />} />
+          <Route path="/acessar" element={<Acesso />} />
+          <Route path="/sobre" element={<Sobre />} />
           <Route path="/tutorial" element={<Tutorial />} />
         </Routes>
       </ThemeProvider>

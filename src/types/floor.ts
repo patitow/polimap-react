@@ -1,4 +1,4 @@
-import { Room } from "./room"
+import { Room } from './room'
 
 export interface Floor {
   id: string
