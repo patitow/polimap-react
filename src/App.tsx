@@ -2,10 +2,10 @@ import { Route, Routes } from 'react-router-dom'
 import './App.css'
 import Home from '@/pages/home/home'
 import { ThemeProvider } from './providers/themeProvider'
-import Navbar from './components/nav/navbar'
-import Acesso from './pages/acesso/acesso'
-import Sobre from './pages/sobre/sobre'
-import Tutorial from './pages/tutorial/tutorial'
+import Navbar from '@/components/nav/navbar'
+import Acesso from '@/pages/acesso/acesso'
+import Sobre from '@/pages/sobre/sobre'
+import Tutorial from '@/pages/tutorial/tutorial'
 
 function App() {
   return (
