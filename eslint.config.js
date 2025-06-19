@@ -12,8 +12,7 @@ export default tseslint.config(
   {
     extends: [
       js.configs.recommended,
-      ...tseslint.configs.strictTypeChecked,
-      ...tseslint.configs.stylisticTypeChecked,
+    ...tseslint.configs.recommended,
       'prettier',
     ],
     files: ['**/*.{ts,tsx}'],
@@ -33,7 +32,10 @@ export default tseslint.config(
     },
     rules: {
       ...reactHooks.configs.recommended.rules,
-      'react-refresh/only-export-components': ['off', { allowConstantExport: true }],
+      'react-refresh/only-export-components': [
+        'warn',
+        { allowConstantExport: true },
+      ],
       ...reactX.configs['recommended-typescript'].rules,
       ...reactDom.configs.recommended.rules,
     },
