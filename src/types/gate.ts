@@ -1,4 +1,4 @@
-import { Coordinate } from "./coordinates"
+import { Coordinate } from './coordinates'
 
 export interface Gate {
   id: string

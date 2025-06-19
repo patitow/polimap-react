@@ -1,5 +1,5 @@
-import { Coordinate } from "./coordinates"
-import { Gate } from "./gate"
+import { Coordinate } from './coordinates'
+import { Gate } from './gate'
 
 export interface Room {
   id: string
