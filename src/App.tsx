@@ -5,13 +5,11 @@ import { ThemeProvider } from './providers/themeProvider'
 import Acesso from './pages/acesso/acesso'
 import Sobre from './pages/sobre/sobre'
 import Tutorial from './pages/tutorial/tutorial'
-import Navbar from './components/nav/navbar'
 
 function App() {
   return (
     <>
       <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
-        <Navbar />
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/acessar" element={<Acesso />} />
