@@ -3,9 +3,9 @@ import { Link } from 'react-router-dom'
 import { Menu } from 'lucide-react'
 import { ModeToggle } from '../theme-toggler/mode-toggle'
 import { Button } from '../ui/button'
-import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet'
+import { Sheet, SheetContent, SheetTrigger } from '../ui/sheet'
 
-const Navbar = () => {
+function Navbar() {
   const [isOpen, setIsOpen] = useState(false)
 
   return (
