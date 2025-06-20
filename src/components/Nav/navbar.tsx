@@ -5,7 +5,7 @@ import { ModeToggle } from '../theme-toggler/mode-toggle'
 import { Button } from '../ui/button'
 import { Sheet, SheetContent, SheetTrigger } from '../ui/sheet'
 
-function Navbar () {
+function Navbar() {
   const [isOpen, setIsOpen] = useState(false)
 
   return (
