@@ -1,5 +1,3 @@
-'use client'
-
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
@@ -14,6 +12,7 @@ import {
   BookOpen,
   ArrowRight,
   ExternalLink,
+  Github,
 } from 'lucide-react'
 
 function Sobre() {
@@ -250,17 +249,17 @@ function Sobre() {
                 </div>
               </div>
 
-              <Button
-                size="lg"
-                className="w-full bg-blue-600 text-white hover:bg-blue-700"
-                onClick={() => {
-                  // Placeholder para o link de download da monografia
-                  alert('Link para download da monografia será configurado em breve!')
-                }}
-              >
-                <Download className="mr-2 h-5 w-5" />
-                Baixar Monografia (PDF)
-                <ExternalLink className="ml-2 h-4 w-4" />
+              <Button asChild size="lg" className="w-full bg-blue-600 text-white hover:bg-blue-700">
+                <a
+                  href="https://drive.google.com/file/d/1kSh8eq2SGvpclyhiqme_581CpPTZCr7P/view?usp=sharing"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center justify-center"
+                >
+                  <Download className="mr-2 h-5 w-5" />
+                  Baixar Monografia (PDF)
+                  <ExternalLink className="ml-2 h-4 w-4" />
+                </a>
               </Button>
             </CardContent>
           </Card>
@@ -294,6 +293,56 @@ function Sobre() {
                 <span className="font-semibold text-slate-700 dark:text-slate-300">{tech}</span>
               </div>
             ))}
+          </div>
+
+          <div className="mt-12 flex flex-col items-center gap-4 sm:flex-row sm:justify-center">
+            {/* React (Front-end) */}
+            <Button
+              asChild
+              size="lg"
+              className="flex items-center gap-2 bg-slate-800 text-white hover:bg-slate-900 dark:bg-slate-700 dark:hover:bg-slate-600"
+            >
+              <a
+                href="https://github.com/patitow/polimap-react"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <Github className="h-5 w-5" />
+                Repositório React
+              </a>
+            </Button>
+
+            {/* Godot (Jogo 3D) */}
+            <Button
+              asChild
+              size="lg"
+              className="flex items-center gap-2 bg-slate-800 text-white hover:bg-slate-900 dark:bg-slate-700 dark:hover:bg-slate-600"
+            >
+              <a
+                href="https://github.com/patitow/polimap-godot"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <Github className="h-5 w-5" />
+                Repositório Godot
+              </a>
+            </Button>
+
+            {/* Build no Drive */}
+            <Button
+              asChild
+              size="lg"
+              className="flex items-center gap-2 bg-green-600 text-white hover:bg-green-700"
+            >
+              <a
+                href="https://drive.google.com/drive/folders/1FQtqfgjIJe6PsUChLlpXqWQRLFPh2vDR?usp=drive_link"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <Download className="h-5 w-5" />
+                Projeto Godot Completo
+              </a>
+            </Button>
           </div>
         </div>
       </section>

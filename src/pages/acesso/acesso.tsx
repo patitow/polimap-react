@@ -86,7 +86,7 @@ function Acesso() {
               >
                 <Button
                   size="lg"
-                  className="w-full bg-blue-600 text-white transition-all hover:scale-105 hover:bg-blue-700"
+                  className="w-full bg-blue-600 text-white transition-all hover:scale-105 hover:bg-blue-700 cursor-pointer"
                 >
                   Jogar Agora no Navegador
                   <ArrowRight className="ml-2 h-5 w-5" />
@@ -145,15 +145,19 @@ function Acesso() {
               </div>
 
               <Button
+                asChild
                 size="lg"
                 className="w-full bg-green-600 text-white transition-all hover:scale-105 hover:bg-green-700"
-                onClick={() => {
-                  // Placeholder para o link do drive que será ajustado depois
-                  alert('Link do Google Drive será configurado em breve!')
-                }}
               >
-                Baixar PoliMap
-                <Download className="ml-2 h-5 w-5" />
+                <a
+                  href="https://drive.google.com/drive/folders/12WekLUy89n_vVxszXsv0okOwqtr5Aysz?usp=sharing"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center justify-center"
+                >
+                  Baixar PoliMap
+                  <Download className="ml-2 h-5 w-5" />
+                </a>
               </Button>
             </CardContent>
           </Card>
