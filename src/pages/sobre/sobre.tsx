@@ -39,7 +39,6 @@ function Sobre() {
     'Mapas interativos em 3D',
     'Sistema de navegação inteligente',
     'Informações históricas dos blocos',
-    'Perfis dos professores e pesquisadores',
     'Interface intuitiva e responsiva',
     'Compatibilidade multiplataforma',
   ]
@@ -172,32 +171,23 @@ function Sobre() {
 
       {/* Features */}
       <section className="mx-auto max-w-7xl px-4 py-16 md:px-8">
-        <div className="grid grid-cols-1 items-center gap-12 lg:grid-cols-2">
-          <div>
-            <h2 className="mb-6 text-3xl font-bold text-slate-800 md:text-4xl dark:text-slate-100">
-              Funcionalidades Desenvolvidas
-            </h2>
-            <p className="mb-8 text-lg text-slate-600 dark:text-slate-300">
-              O PoliMap oferece um conjunto abrangente de funcionalidades pensadas para atender às
-              necessidades reais dos usuários.
-            </p>
-            <div className="grid grid-cols-1 gap-3 md:grid-cols-2">
-              {features.map((feature, index) => (
-                <div key={index} className="flex items-center space-x-3">
-                  <div className="flex h-6 w-6 items-center justify-center rounded-full bg-green-100 dark:bg-green-900/50">
-                    <div className="h-2 w-2 rounded-full bg-green-600 dark:bg-green-400"></div>
-                  </div>
-                  <span className="text-slate-700 dark:text-slate-300">{feature}</span>
+        <div>
+          <h2 className="mb-6 text-3xl font-bold text-slate-800 md:text-4xl dark:text-slate-100">
+            Funcionalidades Desenvolvidas
+          </h2>
+          <p className="mb-8 text-lg text-slate-600 dark:text-slate-300">
+            O PoliMap oferece um conjunto abrangente de funcionalidades pensadas para atender às
+            necessidades reais dos usuários.
+          </p>
+          <div className="grid grid-cols-1 gap-3 md:grid-cols-2">
+            {features.map((feature, index) => (
+              <div key={index} className="flex items-center space-x-3">
+                <div className="flex h-6 w-6 items-center justify-center rounded-full bg-green-100 dark:bg-green-900/50">
+                  <div className="h-2 w-2 rounded-full bg-green-600 dark:bg-green-400"></div>
                 </div>
-              ))}
-            </div>
-          </div>
-          <div className="flex justify-center">
-            <img
-              src="/placeholder.svg?height=400&width=500"
-              alt="PoliMap Interface"
-              className="rounded-xl shadow-2xl"
-            />
+                <span className="text-slate-700 dark:text-slate-300">{feature}</span>
+              </div>
+            ))}
           </div>
         </div>
       </section>
