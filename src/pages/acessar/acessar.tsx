@@ -191,7 +191,7 @@ function Acessar() {
                   'https://img.itch.zone/aW1hZ2UvMzcwMDQ0Ny8yMjAyMTM1NS5wbmc=/original/JqkIwZ.png',
                   'https://img.itch.zone/aW1hZ2UvMzcwMDQ0Ny8yMjAyMTM1Ny5wbmc=/original/Y6q61v.png',
                 ].map((imageUrl, index) => (
-                  <CarouselItem key={imageUrl} className="pl-0">
+                  <CarouselItem key={imageUrl} className={index === 0 ? 'pl-0 pr-2' : index === 4 ? 'pl-2 pr-0' : 'pl-2 pr-2'}>
                     <div className="aspect-video w-full overflow-hidden rounded-xl will-change-transform">
                       <img
                         src={imageUrl}
