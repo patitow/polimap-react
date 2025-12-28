@@ -182,8 +182,8 @@ function Acessar() {
           </div>
 
           <div className="mx-auto max-w-4xl">
-            <Carousel className="w-full">
-              <CarouselContent>
+            <Carousel className="w-full overflow-hidden rounded-xl relative">
+              <CarouselContent className="-ml-0">
                 {[
                   'https://img.itch.zone/aW1hZ2UvMzcwMDQ0Ny8yMjAyMTM1My5wbmc=/original/XoXG7S.png',
                   'https://img.itch.zone/aW1hZ2UvMzcwMDQ0Ny8yMjAyMTM1Ni5wbmc=/original/VQB%2Fgk.png',
@@ -191,22 +191,21 @@ function Acessar() {
                   'https://img.itch.zone/aW1hZ2UvMzcwMDQ0Ny8yMjAyMTM1NS5wbmc=/original/JqkIwZ.png',
                   'https://img.itch.zone/aW1hZ2UvMzcwMDQ0Ny8yMjAyMTM1Ny5wbmc=/original/Y6q61v.png',
                 ].map((imageUrl, index) => (
-                  <CarouselItem key={index}>
-                    <div className="overflow-hidden rounded-xl shadow-lg">
-                      <div className="aspect-video w-full">
-                        <img
-                          src={imageUrl}
-                          alt={`Screenshot do PoliMap ${index + 1}`}
-                          className="h-full w-full object-cover transition-transform duration-500 hover:scale-105"
-                          loading="lazy"
-                        />
-                      </div>
+                  <CarouselItem key={imageUrl} className="pl-0">
+                    <div className="aspect-video w-full overflow-hidden rounded-xl will-change-transform">
+                      <img
+                        src={imageUrl}
+                        alt={`Screenshot do PoliMap ${index + 1}`}
+                        className="h-full w-full object-cover transition-transform duration-500 hover:scale-105 will-change-transform"
+                        loading="lazy"
+                        decoding="async"
+                      />
                     </div>
                   </CarouselItem>
                 ))}
               </CarouselContent>
-              <CarouselPrevious className="left-2 bg-white/80 hover:bg-white dark:bg-slate-800/80 dark:hover:bg-slate-800" />
-              <CarouselNext className="right-2 bg-white/80 hover:bg-white dark:bg-slate-800/80 dark:hover:bg-slate-800" />
+              <CarouselPrevious className="left-4 bg-white/80 hover:bg-white dark:bg-slate-800/80 dark:hover:bg-slate-800" />
+              <CarouselNext className="right-4 bg-white/80 hover:bg-white dark:bg-slate-800/80 dark:hover:bg-slate-800" />
             </Carousel>
           </div>
         </div>
