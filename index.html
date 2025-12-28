@@ -1,14 +1,167 @@
 <!doctype html>
-<html lang="en">
+<html lang="pt-BR">
   <head>
     <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0" />
+    
+    <!-- Favicons - Múltiplos tamanhos para melhor compatibilidade -->
     <link rel="icon" type="image/svg+xml" href="/polimap_favicon.svg" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Polimap</title>
+    <link rel="icon" type="image/png" sizes="32x32" href="/polimap_favicon.svg" />
+    <link rel="icon" type="image/png" sizes="16x16" href="/polimap_favicon.svg" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/polimap_favicon.svg" />
+    <link rel="icon" type="image/png" sizes="192x192" href="/polimap_favicon.svg" />
+    <link rel="icon" type="image/png" sizes="512x512" href="/polimap_favicon.svg" />
+    <link rel="shortcut icon" href="/polimap_favicon.svg" />
+    
+    <!-- Manifest para PWA -->
+    <link rel="manifest" href="/manifest.json" />
+    
+    <!-- Primary Meta Tags -->
+    <title>PoliMap - Plataforma Virtual Interativa para Navegação no Campus Universitário da POLI/UPE</title>
+    <meta name="title" content="PoliMap - Plataforma Virtual Interativa para Navegação no Campus Universitário da POLI/UPE" />
+    <meta name="description" content="O PoliMap é uma plataforma virtual interativa que facilita a locomoção do estudante pela universidade. Encontre salas de aula, navegue por mapas 3D interativos e descubra a história dos blocos universitários." />
+    <meta name="keywords" content="PoliMap, mapa universitário, navegação campus, mapa interativo, universidade, localização salas, navegação 3D, campus virtual, mapa 3D universidade, guia universitário" />
+    <meta name="author" content="Matheus Souza de Oliveira" />
+    <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
+    <meta name="language" content="Portuguese" />
+    <meta name="revisit-after" content="7 days" />
+    <meta name="rating" content="general" />
+    <meta name="theme-color" content="#1e293b" />
+    <meta name="msapplication-TileColor" content="#1e293b" />
+    <meta name="msapplication-TileImage" content="/polimap_favicon.svg" />
+    <meta name="msapplication-config" content="/browserconfig.xml" />
+    
+    <!-- Canonical URL -->
+    <link rel="canonical" href="https://polimap.vercel.app/" />
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://polimap.vercel.app/" />
+    <meta property="og:title" content="PoliMap - Plataforma Virtual Interativa para Navegação no Campus Universitário" />
+    <meta property="og:description" content="O PoliMap é uma plataforma virtual interativa que facilita a locomoção do estudante pela universidade. Encontre salas de aula, navegue por mapas 3D interativos e descubra a história dos blocos universitários." />
+    <meta property="og:image" content="https://polimap.vercel.app/polimap_text.svg" />
+    <meta property="og:image:secure_url" content="https://polimap.vercel.app/polimap_text.svg" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="PoliMap - Logo da plataforma virtual interativa" />
+    <meta property="og:image:type" content="image/svg+xml" />
+    <meta property="og:site_name" content="PoliMap" />
+    <meta property="og:locale" content="pt_BR" />
+    
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:url" content="https://polimap.vercel.app/" />
+    <meta name="twitter:title" content="PoliMap - Plataforma Virtual Interativa para Navegação no Campus Universitário" />
+    <meta name="twitter:description" content="O PoliMap é uma plataforma virtual interativa que facilita a locomoção do estudante pela universidade. Encontre salas de aula, navegue por mapas 3D interativos e descubra a história dos blocos universitários." />
+    <meta name="twitter:image" content="https://polimap.vercel.app/polimap_text.svg" />
+    <meta name="twitter:image:alt" content="PoliMap - Logo da plataforma virtual interativa" />
+    <meta name="twitter:creator" content="@polimap" />
+    
+    <!-- Additional SEO Meta Tags -->
+    <meta name="geo.region" content="BR" />
+    <meta name="geo.placename" content="Brasil" />
+    <meta name="application-name" content="PoliMap" />
+    <meta name="apple-mobile-web-app-title" content="PoliMap" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    
+    <!-- Structured Data (JSON-LD) -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebApplication",
+      "name": "PoliMap",
+      "alternateName": "PoliMap - Mapa Virtual Universitário",
+      "description": "Plataforma virtual interativa que facilita a locomoção do estudante pela universidade através de mapas 3D interativos e sistema de navegação inteligente.",
+      "url": "https://polimap.vercel.app/",
+      "applicationCategory": "EducationalApplication",
+      "operatingSystem": "Web Browser",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "BRL"
+      },
+      "author": {
+        "@type": "Person",
+        "name": "Matheus Souza de Oliveira",
+        "url": "https://github.com/patitow"
+      },
+      "aggregateRating": {
+        "@type": "AggregateRating",
+        "ratingValue": "5",
+        "ratingCount": "1"
+      },
+      "featureList": [
+        "Localização fácil de salas de aula",
+        "Mapas interativos em 3D",
+        "Navegação inteligente",
+        "História dos blocos universitários",
+        "Sistema de localização por QR Code"
+      ]
+    }
+    </script>
+    
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "name": "PoliMap",
+      "url": "https://polimap.vercel.app/",
+      "logo": "https://polimap.vercel.app/polimap_text.svg",
+      "description": "Plataforma virtual interativa para navegação no campus universitário",
+      "sameAs": [
+        "https://github.com/patitow",
+        "http://patitow.itch.io/polimap"
+      ],
+      "contactPoint": {
+        "@type": "ContactPoint",
+        "email": "msdo@poli.com",
+        "contactType": "Suporte"
+      }
+    }
+    </script>
+    
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Home",
+          "item": "https://polimap.vercel.app/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "Acessar",
+          "item": "https://polimap.vercel.app/acessar"
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "name": "Sobre",
+          "item": "https://polimap.vercel.app/sobre"
+        },
+        {
+          "@type": "ListItem",
+          "position": 4,
+          "name": "Tutorial",
+          "item": "https://polimap.vercel.app/tutorial"
+        }
+      ]
+    }
+    </script>
 
-    <!-- Fonts -->
+    <!-- Preconnect for Performance -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="dns-prefetch" href="https://fonts.googleapis.com" />
+    <link rel="dns-prefetch" href="https://fonts.gstatic.com" />
+    
+    <!-- Fonts -->
     <link
       href="https://fonts.googleapis.com/css2?family=Jaro:opsz@6..72&display=swap"
       rel="stylesheet"

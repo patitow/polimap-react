@@ -79,12 +79,28 @@ function Home() {
             O PoliMap é uma plataforma virtual interativa, responsável por facilitar a locomoção do
             estudante pela universidade.
           </p>
-          <Button
-            onClick={handleStartExploring}
-            className="rounded-full bg-blue-500 px-8 py-6 text-lg text-white transition-all hover:scale-105 hover:bg-blue-600"
-          >
-            Começar a Explorar <ArrowRight className="ml-2 h-5 w-5" />
-          </Button>
+          <div className="flex flex-col items-center justify-center gap-4 sm:flex-row">
+            <Button
+              onClick={handleStartExploring}
+              className="rounded-full bg-blue-500 px-8 py-6 text-lg text-white transition-all hover:scale-105 hover:bg-blue-600"
+            >
+              Começar a Explorar <ArrowRight className="ml-2 h-5 w-5" />
+            </Button>
+            <Button
+              asChild
+              variant="outline"
+              className="rounded-full border-2 border-red-600 bg-red-600 px-8 py-6 text-lg text-white transition-all hover:scale-105 hover:bg-red-700 hover:border-red-700 hover:text-white"
+            >
+              <a
+                href="http://patitow.itch.io/polimap"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center justify-center"
+              >
+                Acesse o PoliMap <ArrowRight className="ml-2 h-5 w-5" />
+              </a>
+            </Button>
+          </div>
         </div>
       </section>
 
@@ -107,7 +123,7 @@ function Home() {
             <Link to="/sobre">
               <Button
                 variant="outline"
-                className="border-slate-100 text-slate-700 hover:bg-slate-200 hover:text-slate-900 dark:border-slate-700 dark:text-slate-300 dark:hover:bg-slate-700 dark:hover:text-white"
+                className="border-slate-100 text-slate-700 hover:bg-slate-200 dark:border-slate-700 dark:text-slate-300 dark:hover:bg-slate-700"
               >
                 Saiba mais
               </Button>
@@ -183,7 +199,7 @@ function Home() {
             <Button
               onClick={handleStartExploring}
               variant="outline"
-              className="rounded-full bg-blue-500 px-8 py-6 text-lg text-white hover:bg-blue-600"
+              className="rounded-full bg-blue-500 px-8 py-6 text-lg text-white hover:bg-blue-600 hover:text-white"
             >
               Começar Agora
             </Button>

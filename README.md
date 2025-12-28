@@ -18,27 +18,32 @@ O PoliMap nasceu da necessidade real observada no campus universitário: a dific
 ## ✨ Funcionalidades
 
 ### 🗺️ Navegação Inteligente
+
 - Localização fácil de salas de aula através de mapas interativos
 - Visualização de caminhos posicionados fielmente à representação real da universidade
 - Obtenção do melhor caminho para o destino de forma facilitada
 
 ### 📍 Sistema de Localização
+
 - Navegação automatizada por pontos de interesse;
 - Interface para inserção manual de localização e reposicionamento.
 
 ### 🏛️ Informações Históricas
+
 - História de cada bloco da universidade;
 - Descoberta das particularidades de cada espaço.
 
 ## 🚀 Como Acessar
 
 ### Opção 1: Navegador (Recomendado para primeira experiência)
+
 - **Acesso instantâneo** sem downloads
 - **Compatível** com qualquer dispositivo
 - **Experiência completa** online
 - [🎮 Jogar Agora no Navegador](http://patitow.itch.io/polimap)
 
 ### Opção 2: Download (Recomendado para uso frequente)
+
 - **Acesso offline** completo
 - **Melhor performance** e carregamento mais rápido
 - **Sem dependência** de internet
@@ -47,6 +52,7 @@ O PoliMap nasceu da necessidade real observada no campus universitário: a dific
 ## 🛠️ Tecnologias Utilizadas
 
 ### Frontend (Interface Web)
+
 - **React 19** - Biblioteca para interfaces de usuário
 - **TypeScript** - Superset tipado do JavaScript
 - **Tailwind CSS** - Framework CSS utilitário
@@ -55,11 +61,13 @@ O PoliMap nasceu da necessidade real observada no campus universitário: a dific
 - **Lucide React** - Ícones modernos
 
 ### Game Engine (Experiência 3D)
+
 - **Godot Engine** - Engine de jogos 2D/3D
 - **WebGL** - Renderização gráfica no navegador
 - **Blender** - Modelagem 3D dos ambientes
 
 ### Desenvolvimento
+
 - **Node.js** - Runtime JavaScript
 - **ESLint** - Linter para qualidade de código
 - **Prettier** - Formatador de código
@@ -70,6 +78,7 @@ O PoliMap nasceu da necessidade real observada no campus universitário: a dific
 Este projeto foi desenvolvido como **Trabalho de Conclusão de Curso** em Engenharia de Computação.
 
 ### Informações da Monografia
+
 - **Autor:** Matheus Souza de Oliveira
 - **Orientador:** Prof. Dr. Hemir Da Cunha Santiago
 - **Ano:** 2025
@@ -100,10 +109,12 @@ polimap-js-client/
 ## 🚀 Instalação e Desenvolvimento
 
 ### Pré-requisitos
+
 - Node.js (versão 18 ou superior)
 - Yarn (gerenciador de pacotes)
 
 ### Instalação
+
 ```bash
 # Clone o repositório
 git clone https://github.com/patitow/polimap-js-client.git
@@ -116,6 +127,7 @@ yarn install
 ```
 
 ### Scripts Disponíveis
+
 ```bash
 # Desenvolvimento
 yarn dev          # Inicia servidor de desenvolvimento

@@ -29,7 +29,7 @@ function Navbar() {
             to="/acessar"
             className="text-sm font-medium text-slate-600 transition-colors hover:text-slate-900 dark:text-slate-300 dark:hover:text-white"
           >
-            Acessar
+            Acesso
           </Link>
           <Link
             to="/sobre"
@@ -59,7 +59,7 @@ function Navbar() {
                 </Link>
                 <Link to="/acessar" onClick={() => setIsOpen(false)}>
                   <Button variant="ghost" className="w-full justify-start">
-                    Acessar
+                    Acesso
                   </Button>
                 </Link>
                 <Link to="/sobre" onClick={() => setIsOpen(false)}>
