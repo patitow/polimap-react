@@ -150,7 +150,7 @@ function Acessar() {
                 className="w-full bg-green-600 text-white hover:bg-green-700"
               >
                 <a
-                  href="http://patitow.itch.io/polimap"
+                  href="http://patitow.itch.io/polimap#download"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="flex items-center justify-center"
