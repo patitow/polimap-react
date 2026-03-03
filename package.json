@@ -4,11 +4,12 @@
   "version": "0.7.0",
   "type": "module",
   "scripts": {
-    "dev": "vite",
+    "dev": "vite --host && node tools/map-save-server.mjs",
     "build": "tsc -b && vite build",
     "lint": "eslint .",
     "preview": "vite preview",
-    "format": "prettier --write ."
+    "format": "prettier --write .",
+    "map-save-server": "node tools/map-save-server.mjs"
   },
   "dependencies": {
     "@radix-ui/react-aspect-ratio": "^1.1.2",

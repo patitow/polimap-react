@@ -29,9 +29,9 @@ export function InspectMenu({ poiName, poiData, onClose }: InspectMenuProps) {
 
   return (
     <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/60">
-      <div className="relative mx-4 max-h-[90vh] w-full max-w-lg overflow-hidden rounded-xl bg-white shadow-2xl dark:bg-slate-800">
-        <div className="flex items-center justify-between border-b border-slate-200 p-4 dark:border-slate-700">
-          <h2 className="text-xl font-bold text-slate-800 dark:text-slate-100">
+      <div className="relative mx-4 max-h-[92vh] w-full max-w-2xl md:max-w-3xl overflow-hidden rounded-2xl bg-white shadow-2xl dark:bg-slate-800">
+        <div className="flex items-center justify-between border-b border-slate-200 px-6 py-4 dark:border-slate-700">
+          <h2 className="text-2xl font-bold text-slate-800 dark:text-slate-100">
             {poiName}
           </h2>
           <button
@@ -42,9 +42,9 @@ export function InspectMenu({ poiName, poiData, onClose }: InspectMenuProps) {
             <X className="h-6 w-6" />
           </button>
         </div>
-        <div className="max-h-[calc(90vh-140px)] overflow-y-auto p-4">
+        <div className="max-h-[calc(92vh-150px)] overflow-y-auto px-6 py-4">
           {photos.length > 0 && photos[imgIdx] && (
-            <div className="relative mb-4 aspect-video overflow-hidden rounded-lg bg-slate-100 dark:bg-slate-700">
+            <div className="relative mb-6 aspect-video overflow-hidden rounded-xl bg-slate-100 dark:bg-slate-700">
               <img
                 src={photos[imgIdx]}
                 alt={`${poiName} - foto ${imgIdx + 1}`}
@@ -72,7 +72,7 @@ export function InspectMenu({ poiName, poiData, onClose }: InspectMenuProps) {
             </div>
           )}
           {poiData?.description && (
-            <p className="mb-3 text-slate-600 dark:text-slate-300">
+            <p className="mb-4 text-sm leading-relaxed text-slate-600 dark:text-slate-300">
               {poiData.description}
             </p>
           )}
@@ -92,7 +92,7 @@ export function InspectMenu({ poiName, poiData, onClose }: InspectMenuProps) {
             </p>
           )}
         </div>
-        <div className="border-t border-slate-200 p-4 dark:border-slate-700">
+        <div className="border-t border-slate-200 px-6 py-4 dark:border-slate-700">
           <Button onClick={handleClose} className="w-full">
             Fechar
           </Button>

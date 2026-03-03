@@ -216,6 +216,29 @@ const MapEditor: React.FC = () => {
     URL.revokeObjectURL(url)
   }
 
+  const handleSaveDirect = async () => {
+    try {
+      const res = await fetch('http://localhost:4175/save-map-points', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(blocks, null, 2),
+      })
+      if (!res.ok) {
+        // eslint-disable-next-line no-alert
+        alert('Falha ao salvar no map_points.json (veja console).')
+        return
+      }
+      // eslint-disable-next-line no-alert
+      alert('map_points.json salvo diretamente no projeto.')
+    } catch (err) {
+      console.error('Erro ao salvar no servidor local de mapas:', err)
+      // eslint-disable-next-line no-alert
+      alert(
+        'Não foi possível contatar o servidor de salvamento.\n\nCertifique-se de rodar: yarn map-save-server'
+      )
+    }
+  }
+
   return (
     <div className="map-editor flex h-screen pt-16">
       <div className="sidebar w-1/4 overflow-y-auto border-r border-slate-200 dark:border-slate-700 dark:bg-slate-900">
@@ -223,7 +246,8 @@ const MapEditor: React.FC = () => {
           <h1 className="mb-2 text-2xl font-bold dark:text-slate-100">Map Editor</h1>
           <div className="mb-3 text-[0.7rem] text-slate-400">
             Escolha um mapa, selecione um ponto de interesse, ajuste portais/posição e clique em
-            &quot;Exportar&quot; para salvar o JSON.
+            &quot;Exportar&quot; para baixar o JSON ou em &quot;Salvar direto&quot; para gravar no
+            arquivo do projeto (requer servidor local rodando).
           </div>
 
           <button
@@ -231,6 +255,13 @@ const MapEditor: React.FC = () => {
             className="w-full rounded border border-emerald-500 px-3 py-2 text-sm font-medium text-emerald-100 hover:bg-emerald-500/10"
           >
             Exportar map_points.json
+          </button>
+
+          <button
+            onClick={handleSaveDirect}
+            className="mt-2 w-full rounded border border-blue-500 px-3 py-2 text-sm font-medium text-blue-100 hover:bg-blue-500/10"
+          >
+            Salvar direto no map_points.json
           </button>
         </div>
 

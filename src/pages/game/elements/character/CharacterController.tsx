@@ -3,8 +3,7 @@ import { useFrame, useThree } from '@react-three/fiber'
 import { CapsuleCollider, RigidBody, type RapierRigidBody } from '@react-three/rapier'
 import { useEffect, useRef, useState } from 'react'
 import { Raycaster, Vector3 } from 'three'
-import type { Object3D } from 'three'
-import type { Group } from 'three'
+import type { Object3D, Group } from 'three'
 import { useInput } from '@/contexts/InputContext'
 import { DEFAULT_SPAWN } from '@/config/spawn'
 import { Character } from './Character'
@@ -26,13 +25,13 @@ const PITCH_MAX = 0.4
 
 const AUTOPILOT_ARRIVAL_DISTANCE = 0.15
 const AUTOPILOT_SPEED = 1.2
-const INTERACTION_DISTANCE = 2.5
-/** Lerp: 1-exp(-λ*dt) - Rory Driscoll. Maior = mais rápido. 15-20 evita travamentos. */
+const INTERACTION_DISTANCE = 3.5
+
+// Suavização da câmera (1-exp(-λ*dt)) – 18 equilibra bem responsividade/estabilidade.
 const CAMERA_SMOOTH_SPEED = 18
-/** Suaviza aceleração/desaceleração - lerp da velocidade atual em direção ao alvo */
 const VELOCITY_SMOOTHING = 12
-/** Suaviza rotação do personagem em torno de Y */
-const TURN_SMOOTH_SPEED = 18
+// Velocidade de giro do personagem – mantemos mais baixa para evitar snaps em low-FPS.
+const TURN_SMOOTH_SPEED = 14
 
 export const CharacterController = ({
   teleportPosition,
@@ -63,7 +62,6 @@ export const CharacterController = ({
   const camRot = useRef(0)
   const camPitch = useRef(0)
   const lastDir = useRef('down')
-  // facingAngle = alvo de rotação; visualFacingAngle = ângulo atual exibido
   const facingAngle = useRef(0)
   const visualFacingAngle = useRef(0)
   const prevWalkingRef = useRef(false)
@@ -72,7 +70,17 @@ export const CharacterController = ({
   const characterGroupRef = useRef<Group>(null)
   const bodyGroupRef = useRef<Group>(null)
   const nearestRoomRef = useRef<any>(null)
+  const [isReady, setIsReady] = useState(false)
 
+  // Persistent vectors to avoid GC pressure
+  const _v1 = useRef(new Vector3())
+  const _v2 = useRef(new Vector3())
+  const _v3 = useRef(new Vector3())
+  const _lookTarget = useRef(new Vector3())
+  const _desiredCamPos = useRef(new Vector3())
+  const _camDir = useRef(new Vector3())
+
+  // Coleta colisores do mapa
   useEffect(() => {
     const collect = () => {
       const mapObj = scene.getObjectByName('MapCollision')
@@ -81,7 +89,10 @@ export const CharacterController = ({
         mapObj.traverse((child) => {
           if ((child as { isMesh?: boolean }).isMesh) meshes.push(child)
         })
-        if (meshes.length > 0) cameraCollisionTargets.current = meshes
+        if (meshes.length > 0) {
+          cameraCollisionTargets.current = meshes
+          setIsReady(true)
+        }
       }
     }
     collect()
@@ -89,6 +100,7 @@ export const CharacterController = ({
     return () => clearTimeout(id)
   }, [scene])
 
+  // Mouse Move listener
   useEffect(() => {
     const onMouseMove = (e: MouseEvent) => {
       if (document.pointerLockElement !== null && canMove) {
@@ -103,45 +115,48 @@ export const CharacterController = ({
     return () => window.removeEventListener('mousemove', onMouseMove)
   }, [canMove])
 
+  // Teleporte e Spawn
   useEffect(() => {
     if (!teleportPosition || !rb.current) return
 
-    // Garante que o spawn/teleporte fique apoiado no chão do mapa (não dentro de prédios)
     let targetX = teleportPosition.x
     let targetZ = teleportPosition.z
     let targetY = teleportPosition.y
 
-    if (cameraCollisionTargets.current.length > 0) {
-      const origin = new Vector3(targetX, teleportPosition.y + 50, targetZ)
-      const dir = new Vector3(0, -1, 0)
-      raycaster.current.set(origin, dir)
+    if (isReady && cameraCollisionTargets.current.length > 0) {
+      _v1.current.set(targetX, teleportPosition.y + 50, targetZ)
+      _v2.current.set(0, -1, 0)
+      raycaster.current.set(_v1.current, _v2.current)
       raycaster.current.far = 100
       const hits = raycaster.current.intersectObjects(cameraCollisionTargets.current, true)
       if (hits.length > 0) {
         const hitY = hits[0].point.y
-        // base da cápsula no chão + pequeno offset
         targetY = hitY + CAPSULE_HALF_HEIGHT + CAPSULE_RADIUS + 0.05
       }
+    } else {
+      targetY += 5
     }
 
     rb.current.setTranslation({ x: targetX, y: targetY, z: targetZ }, true)
-  }, [teleportPosition?.x, teleportPosition?.y, teleportPosition?.z])
+    rb.current.setLinvel({ x: 0, y: 0, z: 0 }, true)
+  }, [teleportPosition?.x, teleportPosition?.y, teleportPosition?.z, isReady])
 
   useFrame((_state, delta) => {
     if (!rb.current) return
     const rigidBody = rb.current
 
-    // Report position for indicators
     const currentPos = rigidBody.translation()
-    const posVec = new Vector3(currentPos.x, currentPos.y, currentPos.z)
-    onPositionChange?.(posVec)
+    _v1.current.set(currentPos.x, currentPos.y, currentPos.z)
+    
+    if (onPositionChange) {
+      onPositionChange(_v1.current)
+    }
 
-    // Check nearest room for interaction
     let minHighlightDist = INTERACTION_DISTANCE
     let bestRoom = null
     for (const room of rooms) {
-      const roomPos = new Vector3(room.interest_point.x, room.interest_point.y, room.interest_point.z)
-      const d = posVec.distanceTo(roomPos)
+      _v2.current.set(room.interest_point.x, room.interest_point.y, room.interest_point.z)
+      const d = _v1.current.distanceTo(_v2.current)
       if (d < minHighlightDist) {
         minHighlightDist = d
         bestRoom = room
@@ -165,10 +180,17 @@ export const CharacterController = ({
       return
     }
 
+    // Clamp de delta para evitar "saltos" grandes em frames lentos
+    const safeDelta = Math.min(delta, 0.1)
+    const velAlpha = 1 - Math.exp(-VELOCITY_SMOOTHING * safeDelta)
+    const camAlpha = 1 - Math.exp(-CAMERA_SMOOTH_SPEED * safeDelta)
+    // Para rotação usamos um delta menor, para não virar rápido demais em FPS baixo
+    const turnSafeDelta = Math.min(delta, 1 / 60)
+    const turnAlpha = 1 - Math.exp(-TURN_SMOOTH_SPEED * turnSafeDelta)
+
     if (autopilotTarget) {
-      const pos = rigidBody.translation()
-      const dx = autopilotTarget.x - pos.x
-      const dz = autopilotTarget.z - pos.z
+      const dx = autopilotTarget.x - currentPos.x
+      const dz = autopilotTarget.z - currentPos.z
       const dist = Math.sqrt(dx * dx + dz * dz)
 
       if (dist < AUTOPILOT_ARRIVAL_DISTANCE) {
@@ -176,195 +198,153 @@ export const CharacterController = ({
         vel.x = 0
         vel.z = 0
         rigidBody.setLinvel(vel, true)
-        setAnimation(lastDir.current + '_idle')
+        const nextAnim = lastDir.current + '_idle'
+        if (animation !== nextAnim) setAnimation(nextAnim)
         if (prevWalkingRef.current) {
           prevWalkingRef.current = false
           onWalkingChange?.(false)
         }
         onAutopilotArrived?.()
-        return
-      }
+      } else {
+        const dirX = dx / dist
+        const dirZ = dz / dist
+        const currentVel = rigidBody.linvel()
+        const targetVelX = dirX * AUTOPILOT_SPEED
+        const targetVelZ = dirZ * AUTOPILOT_SPEED
+        
+        rigidBody.setLinvel({ 
+          x: currentVel.x + (targetVelX - currentVel.x) * velAlpha, 
+          y: currentVel.y, 
+          z: currentVel.z + (targetVelZ - currentVel.z) * velAlpha 
+        }, true)
 
-      const dirX = dx / dist
-      const dirZ = dz / dist
-      const vel = rigidBody.linvel()
-      vel.x = dirX * AUTOPILOT_SPEED
-      vel.z = dirZ * AUTOPILOT_SPEED
-      rigidBody.setLinvel(vel, true)
-
-      const deg = Math.atan2(dirX, dirZ) * (180 / Math.PI)
-      facingAngle.current = Math.atan2(dirX, dirZ)
-      let dir = 'down'
-      if (deg > -45 && deg < 45) dir = 'up'
-      else if (deg >= 45 && deg < 135) dir = 'right'
-      else if (deg <= -45 && deg > -135) dir = 'left'
-      lastDir.current = dir
-      setAnimation(dir + '_walk')
-      if (!prevWalkingRef.current) {
-        prevWalkingRef.current = true
-        onWalkingChange?.(true)
-      }
-
-      const playerPos = rigidBody.translation()
-      const lookTarget = new Vector3(playerPos.x, playerPos.y + LOOK_TARGET_HEIGHT, playerPos.z)
-      const camDist = CAMERA_DISTANCE * Math.cos(camPitch.current)
-      const offsetX = camDist * Math.sin(camRot.current)
-      const offsetZ = camDist * Math.cos(camRot.current)
-      const offsetY = CAMERA_HEIGHT + CAMERA_DISTANCE * Math.sin(camPitch.current)
-      let desiredCamPos = new Vector3(
-        playerPos.x + offsetX,
-        playerPos.y + offsetY,
-        playerPos.z + offsetZ
-      )
-      if (cameraCollisionTargets.current.length > 0) {
-        const dir = new Vector3().subVectors(desiredCamPos, lookTarget)
-        const maxDist = dir.length()
-        dir.normalize()
-        raycaster.current.set(lookTarget, dir)
-        raycaster.current.far = maxDist
-        const hits = raycaster.current.intersectObjects(cameraCollisionTargets.current, true)
-        if (hits.length > 0 && hits[0].distance < maxDist - CAMERA_COLLISION_OFFSET) {
-          const hitPoint = hits[0].point.clone()
-          desiredCamPos = hitPoint.add(dir.clone().multiplyScalar(-CAMERA_COLLISION_OFFSET))
+        facingAngle.current = Math.atan2(dirX, dirZ)
+        const deg = facingAngle.current * (180 / Math.PI)
+        let dir = 'down'
+        if (deg > -45 && deg < 45) dir = 'up'
+        else if (deg >= 45 && deg < 135) dir = 'right'
+        else if (deg <= -45 && deg > -135) dir = 'left'
+        lastDir.current = dir
+        const nextAnim = dir + '_walk'
+        if (animation !== nextAnim) setAnimation(nextAnim)
+        if (!prevWalkingRef.current) {
+          prevWalkingRef.current = true
+          onWalkingChange?.(true)
         }
       }
-      const safeDelta = Math.min(delta, 0.05)
-      const camAlpha = 1 - Math.exp(-CAMERA_SMOOTH_SPEED * safeDelta)
-      camera.position.lerp(desiredCamPos, camAlpha)
-      camera.lookAt(lookTarget)
-
-      // suaviza rotação mesmo em autopilot
-      if (characterGroupRef.current) {
-        const current = visualFacingAngle.current
-        let diff = facingAngle.current - current
-        // traz para o intervalo [-π, π] para pegar o menor caminho
-        diff = ((diff + Math.PI) % (Math.PI * 2)) - Math.PI
-        const turnAlpha = 1 - Math.exp(-TURN_SMOOTH_SPEED * safeDelta)
-        visualFacingAngle.current = current + diff * turnAlpha
-        characterGroupRef.current.rotation.y = visualFacingAngle.current
-      }
-      return
-    }
-
-    const horizontal =
-      (get().left ? -1 : 0) + (get().right ? 1 : 0) + joystickInput.x
-    const vertical =
-      (get().forward ? 1 : 0) + (get().backward ? -1 : 0) + joystickInput.z
-    const moveVec = new Vector3(horizontal, 0, vertical)
-
-    const currentVel = rigidBody.linvel()
-    let targetVelX: number
-    let targetVelZ: number
-
-    if (moveVec.lengthSq() === 0) {
-      setAnimation(lastDir.current + '_idle')
-      targetVelX = 0
-      targetVelZ = 0
-      if (prevWalkingRef.current) {
-        prevWalkingRef.current = false
-        onWalkingChange?.(false)
-      }
     } else {
-      moveVec.normalize()
-      const speed = get().run ? RUN_SPEED : WALK_SPEED
-      const playerPos = rigidBody.translation()
-      const lookTarget = new Vector3(playerPos.x, playerPos.y + LOOK_TARGET_HEIGHT, playerPos.z)
-      const camDist = CAMERA_DISTANCE * Math.cos(camPitch.current)
-      const camPos = new Vector3(
-        playerPos.x + camDist * Math.sin(camRot.current),
-        playerPos.y + CAMERA_HEIGHT + CAMERA_DISTANCE * Math.sin(camPitch.current),
-        playerPos.z + camDist * Math.cos(camRot.current)
-      )
-      const forwardDir = new Vector3().subVectors(lookTarget, camPos).setY(0).normalize()
-      const rightDir = new Vector3().crossVectors(forwardDir, new Vector3(0, 1, 0)).normalize()
-      const worldDir = forwardDir.multiplyScalar(moveVec.z).add(rightDir.multiplyScalar(moveVec.x)).normalize()
-      targetVelX = worldDir.x * speed
-      targetVelZ = worldDir.z * speed
+      const horizontal = (get().left ? -1 : 0) + (get().right ? 1 : 0) + joystickInput.x
+      const vertical = (get().forward ? 1 : 0) + (get().backward ? -1 : 0) + joystickInput.z
+      
+      const currentVel = rigidBody.linvel()
+      let targetVelX = 0
+      let targetVelZ = 0
 
-      const relativeVec = worldDir.clone()
-      const angle = Math.atan2(relativeVec.x, relativeVec.z)
-      facingAngle.current = angle
-      const deg = angle * (180 / Math.PI)
-      let dir = 'down'
-      if (deg > -45 && deg < 45) dir = 'up'
-      else if (deg >= 45 && deg < 135) dir = 'right'
-      else if (deg <= -45 && deg > -135) dir = 'left'
-      lastDir.current = dir
-      setAnimation(dir + '_walk')
-      const onGround = Math.abs(currentVel.y) < 0.01
-      if (onGround && !prevWalkingRef.current) {
-        prevWalkingRef.current = true
-        onWalkingChange?.(true)
-      } else if (!onGround && prevWalkingRef.current) {
-        prevWalkingRef.current = false
-        onWalkingChange?.(false)
+      if (horizontal !== 0 || vertical !== 0) {
+        const speed = get().run ? RUN_SPEED : WALK_SPEED
+        const camDist = CAMERA_DISTANCE * Math.cos(camPitch.current)
+        _v2.current.set(
+          currentPos.x + camDist * Math.sin(camRot.current),
+          currentPos.y + CAMERA_HEIGHT + CAMERA_DISTANCE * Math.sin(camPitch.current),
+          currentPos.z + camDist * Math.cos(camRot.current)
+        )
+        
+        _v3.current.set(currentPos.x, currentPos.y + LOOK_TARGET_HEIGHT, currentPos.z)
+        const forwardDir = _v1.current.subVectors(_v3.current, _v2.current).setY(0).normalize()
+        const rightDir = _v2.current.crossVectors(forwardDir, new Vector3(0, 1, 0)).normalize()
+        
+        const worldDir = forwardDir.multiplyScalar(vertical).add(rightDir.multiplyScalar(horizontal)).normalize()
+        targetVelX = worldDir.x * speed
+        targetVelZ = worldDir.z * speed
+
+        const angle = Math.atan2(worldDir.x, worldDir.z)
+        facingAngle.current = angle
+        const deg = angle * (180 / Math.PI)
+        let dir = 'down'
+        if (deg > -45 && deg < 45) dir = 'up'
+        else if (deg >= 45 && deg < 135) dir = 'right'
+        else if (deg <= -45 && deg > -135) dir = 'left'
+        lastDir.current = dir
+        
+        const nextAnim = dir + '_walk'
+        if (animation !== nextAnim) setAnimation(nextAnim)
+        
+        const onGround = Math.abs(currentVel.y) < 0.1
+        if (onGround && !prevWalkingRef.current) {
+          prevWalkingRef.current = true
+          onWalkingChange?.(true)
+        }
+      } else {
+        const nextAnim = lastDir.current + '_idle'
+        if (animation !== nextAnim) setAnimation(nextAnim)
+        if (prevWalkingRef.current) {
+          prevWalkingRef.current = false
+          onWalkingChange?.(false)
+        }
+      }
+
+      rigidBody.setLinvel({ 
+        x: currentVel.x + (targetVelX - currentVel.x) * velAlpha, 
+        y: currentVel.y, 
+        z: currentVel.z + (targetVelZ - currentVel.z) * velAlpha 
+      }, true)
+
+      if (get().jump && canJump.current) {
+        rigidBody.applyImpulse({ x: 0, y: JUMP_IMPULSE, z: 0 }, true)
+        canJump.current = false
+      }
+
+      const vel = rigidBody.linvel()
+      if (vel.y < -0.5) wasFalling.current = true
+      if (wasFalling.current && Math.abs(vel.y) < 0.1) {
+        canJump.current = true
+        wasFalling.current = false
       }
     }
 
-    const velAlpha = 1 - Math.exp(-VELOCITY_SMOOTHING * delta)
-    const newVelX = currentVel.x + (targetVelX - currentVel.x) * velAlpha
-    const newVelZ = currentVel.z + (targetVelZ - currentVel.z) * velAlpha
-    rigidBody.setLinvel({ x: newVelX, y: currentVel.y, z: newVelZ }, true)
-
-    if (get().jump && canJump.current) {
-      rigidBody.applyImpulse({ x: 0, y: JUMP_IMPULSE, z: 0 }, true)
-      canJump.current = false
-    }
-
-    const vel = rigidBody.linvel()
-    if (vel.y < -0.1) wasFalling.current = true
-    if (wasFalling.current && vel.y >= -0.05 && vel.y <= 0.15) {
-      canJump.current = true
-      wasFalling.current = false
-    }
-
-    const t = rigidBody.translation()
-    const playerWorld = bodyGroupRef.current
-      ? bodyGroupRef.current.getWorldPosition(new Vector3())
-      : new Vector3(t.x, t.y, t.z)
-    const lookTarget = new Vector3(
-      playerWorld.x,
-      playerWorld.y + LOOK_TARGET_HEIGHT,
-      playerWorld.z
-    )
-    const camDist = CAMERA_DISTANCE * Math.cos(camPitch.current)
-    const offsetX = camDist * Math.sin(camRot.current)
-    const offsetZ = camDist * Math.cos(camRot.current)
+    _lookTarget.current.set(currentPos.x, currentPos.y + LOOK_TARGET_HEIGHT, currentPos.z)
+    const camDistXZ = CAMERA_DISTANCE * Math.cos(camPitch.current)
+    const offsetX = camDistXZ * Math.sin(camRot.current)
+    const offsetZ = camDistXZ * Math.cos(camRot.current)
     const offsetY = CAMERA_HEIGHT + CAMERA_DISTANCE * Math.sin(camPitch.current)
-    let desiredCamPos = new Vector3(
-      playerWorld.x + offsetX,
-      playerWorld.y + offsetY,
-      playerWorld.z + offsetZ
-    )
+    
+    _desiredCamPos.current.set(currentPos.x + offsetX, currentPos.y + offsetY, currentPos.z + offsetZ)
+
     if (cameraCollisionTargets.current.length > 0) {
-      const dir = new Vector3().subVectors(desiredCamPos, lookTarget)
-      const maxDist = dir.length()
-      dir.normalize()
-      raycaster.current.set(lookTarget, dir)
+      _camDir.current.subVectors(_desiredCamPos.current, _lookTarget.current)
+      const maxDist = _camDir.current.length()
+      _camDir.current.normalize()
+
+      raycaster.current.set(_lookTarget.current, _camDir.current)
       raycaster.current.far = maxDist
-      raycaster.current.layers.set(0)
-      const hits = raycaster.current.intersectObjects(cameraCollisionTargets.current, true)
-      if (hits.length > 0 && hits[0].distance < maxDist - CAMERA_COLLISION_OFFSET) {
-        const hitPoint = hits[0].point.clone()
-        const pullBack = dir.clone().multiplyScalar(-CAMERA_COLLISION_OFFSET)
-        desiredCamPos = hitPoint.add(pullBack)
+
+      const hits = raycaster.current.intersectObjects(
+        cameraCollisionTargets.current,
+        true
+      )
+      if (hits.length > 0) {
+        const hitDist = hits[0].distance
+        // Pequena histerese (0.15) para evitar oscilar entre "colidido" e "livre"
+        if (hitDist < maxDist - CAMERA_COLLISION_OFFSET - 0.15) {
+          const hitPoint = hits[0].point
+          _desiredCamPos.current
+            .copy(hitPoint)
+            .add(_camDir.current.multiplyScalar(-CAMERA_COLLISION_OFFSET))
+        }
       }
     }
-    const safeDelta = Math.min(delta, 0.05)
-    const camAlpha = 1 - Math.exp(-CAMERA_SMOOTH_SPEED * safeDelta)
-    camera.position.lerp(desiredCamPos, camAlpha)
-    camera.lookAt(lookTarget)
 
-    // suaviza rotação do personagem em torno de Y
+    camera.position.lerp(_desiredCamPos.current, camAlpha)
+    camera.lookAt(_lookTarget.current)
+
     if (characterGroupRef.current) {
       const current = visualFacingAngle.current
       let diff = facingAngle.current - current
       diff = ((diff + Math.PI) % (Math.PI * 2)) - Math.PI
-      const turnAlpha = 1 - Math.exp(-TURN_SMOOTH_SPEED * safeDelta)
       visualFacingAngle.current = current + diff * turnAlpha
       characterGroupRef.current.rotation.y = visualFacingAngle.current
     }
-  }, -1)
+  })
 
   const pos = teleportPosition ?? DEFAULT_SPAWN
 
@@ -373,6 +353,7 @@ export const CharacterController = ({
       colliders={false}
       lockRotations
       ref={rb}
+      gravityScale={isReady ? 1 : 0}
       {...(teleportPosition !== null && {
         position: [pos.x, pos.y, pos.z] as [number, number, number],
       })}

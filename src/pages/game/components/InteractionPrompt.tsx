@@ -9,7 +9,7 @@ export function InteractionPrompt({ visible, onInteract }: InteractionPromptProp
   if (!visible) return null
 
   return (
-    <div className="absolute bottom-8 left-1/2 z-50 -translate-x-1/2">
+    <div className="absolute bottom-8 left-1/2 z-30 -translate-x-1/2">
       <Button
         onClick={onInteract}
         variant="secondary"

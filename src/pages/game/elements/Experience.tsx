@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useRef } from 'react'
 import { Environment, OrthographicCamera, useGLTF } from '@react-three/drei'
 import { Physics } from '@react-three/rapier'
 import { Vector3 } from 'three'
@@ -8,6 +8,7 @@ import { Map } from '@/components/map/Map'
 import { ModelErrorBoundary } from '@/components/map/ModelErrorBoundary'
 import { CharacterController } from './character/CharacterController'
 import { PoiIndicators } from './PoiIndicators'
+import { modelToWorld } from '@/config/mapScale'
 
 interface MapConfig {
   scale: number
@@ -43,7 +44,7 @@ export const Experience: React.FC<ExperienceProps> = ({
   onInteract,
 }) => {
   const [maps, setMaps] = useState<Record<string, MapConfig>>(defaultMaps)
-  const [playerPosition, setPlayerPosition] = useState(new Vector3())
+  const playerPositionRef = useRef(new Vector3())
 
   useEffect(() => {
     fetch('/config/maps.json')
@@ -59,6 +60,20 @@ export const Experience: React.FC<ExperienceProps> = ({
   const defaultConfig: MapConfig = { scale: 1, position: [0, 0, 0] }
   const mapConfig = maps[currentScene] || defaultConfig
   const modelPath = `/models/${currentScene}.glb`
+
+  // Transforma coordenadas brutas em coordenadas de mundo (React)
+  const transformedTeleport = teleportPosition 
+    ? modelToWorld(teleportPosition, mapConfig) 
+    : null
+  
+  const transformedAutopilot = autopilotTarget
+    ? modelToWorld(autopilotTarget, mapConfig)
+    : null
+
+  const transformedRooms = rooms.map(r => ({
+    ...r,
+    interest_point: modelToWorld(r.interest_point, mapConfig)
+  }))
 
   return (
     <>
@@ -79,7 +94,8 @@ export const Experience: React.FC<ExperienceProps> = ({
           attach="shadow-camera"
         />
       </directionalLight>
-      <Physics key={currentScene} interpolate>
+      {/* timeStep fixo + interpolate para evitar jitter entre física e câmera */}
+      <Physics key={currentScene} interpolate timeStep={1 / 60}>
         <ModelErrorBoundary>
           <Map
             scale={mapConfig.scale}
@@ -88,20 +104,19 @@ export const Experience: React.FC<ExperienceProps> = ({
           />
         </ModelErrorBoundary>
         <CharacterController
-          teleportPosition={teleportPosition}
+          teleportPosition={transformedTeleport}
           canMove={canMove}
-          autopilotTarget={autopilotTarget}
+          autopilotTarget={transformedAutopilot}
           onAutopilotArrived={onAutopilotArrived}
           onWalkingChange={onWalkingChange}
-          rooms={rooms}
+          rooms={transformedRooms}
           onInteract={onInteract}
-          onPositionChange={setPlayerPosition}
+          onPositionChange={(pos) => playerPositionRef.current.copy(pos)}
         />
       </Physics>
       <PoiIndicators 
-        rooms={rooms} 
-        playerPosition={playerPosition} 
-        onInteract={(r) => onInteract?.(r)}
+        rooms={transformedRooms} 
+        playerPositionRef={playerPositionRef} 
       />
     </>
   )

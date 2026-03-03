@@ -68,12 +68,19 @@ function PolimapGameInner() {
     setWalking()
   }, [setWalking])
 
-  const handleInteract = useCallback((room: Room) => {
-    if (room.poi) {
-      setInspectPoi({ name: room.name, data: room.poi })
-      setInDialog()
-    }
-  }, [setInDialog])
+  const handleInteract = useCallback(
+    (room: Room) => {
+      if (room.poi) {
+        setInspectPoi({ name: room.name, data: room.poi })
+        setInDialog()
+        // Libera o mouse do pointer lock para o usuário interagir com o modal (fotos, scroll, etc.)
+        if (document.exitPointerLock) {
+          document.exitPointerLock()
+        }
+      }
+    },
+    [setInDialog]
+  )
 
   const handleNavigate = useCallback(
     (
@@ -143,7 +150,7 @@ function PolimapGameInner() {
     if (!inspectPoi && !isPauseMenuOpen() && !isNavModalOpen) {
       canvasContainerRef.current?.requestPointerLock?.()
     }
-  }, [inspectPoi, isNavModalOpen])
+  }, [inspectPoi, isNavModalOpen, isPauseMenuOpen])
 
   return (
     <div className="game-wrapper relative h-dvh w-full">
@@ -176,7 +183,7 @@ function PolimapGameInner() {
         </div>
       </KeyboardControls>
 
-      <div className="absolute top-[4rem] left-0 z-40 flex h-20 w-full flex-row items-center justify-start gap-2 bg-gradient-to-b from-slate-900/50 to-transparent px-4">
+      <div className="absolute top-[4rem] left-0 z-30 flex h-20 w-full flex-row items-center justify-start gap-2 bg-gradient-to-b from-slate-900/50 to-transparent px-4">
         <button
           type='button'
           onClick={openNavModal}
@@ -202,6 +209,9 @@ function PolimapGameInner() {
           if (data) {
             setInspectPoi({ name, data })
             setInDialog()
+            if (document.exitPointerLock) {
+              document.exitPointerLock()
+            }
           }
         }}
       />
