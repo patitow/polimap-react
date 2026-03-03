@@ -1,11 +1,13 @@
 import { useEffect, useState } from 'react'
 import { Environment, OrthographicCamera, useGLTF } from '@react-three/drei'
 import { Physics } from '@react-three/rapier'
+import { Vector3 } from 'three'
 
 useGLTF.preload('/models/character_rogue.glb')
 import { Map } from '@/components/map/Map'
 import { ModelErrorBoundary } from '@/components/map/ModelErrorBoundary'
 import { CharacterController } from './character/CharacterController'
+import { PoiIndicators } from './PoiIndicators'
 
 interface MapConfig {
   scale: number
@@ -26,6 +28,8 @@ interface ExperienceProps {
   autopilotTarget?: { x: number; y: number; z: number } | null
   onAutopilotArrived?: () => void
   onWalkingChange?: (isWalking: boolean) => void
+  rooms?: any[]
+  onInteract?: (room: any) => void
 }
 
 export const Experience: React.FC<ExperienceProps> = ({
@@ -35,8 +39,11 @@ export const Experience: React.FC<ExperienceProps> = ({
   autopilotTarget,
   onAutopilotArrived,
   onWalkingChange,
+  rooms = [],
+  onInteract,
 }) => {
   const [maps, setMaps] = useState<Record<string, MapConfig>>(defaultMaps)
+  const [playerPosition, setPlayerPosition] = useState(new Vector3())
 
   useEffect(() => {
     fetch('/config/maps.json')
@@ -86,8 +93,16 @@ export const Experience: React.FC<ExperienceProps> = ({
           autopilotTarget={autopilotTarget}
           onAutopilotArrived={onAutopilotArrived}
           onWalkingChange={onWalkingChange}
+          rooms={rooms}
+          onInteract={onInteract}
+          onPositionChange={setPlayerPosition}
         />
       </Physics>
+      <PoiIndicators 
+        rooms={rooms} 
+        playerPosition={playerPosition} 
+        onInteract={(r) => onInteract?.(r)}
+      />
     </>
   )
 }

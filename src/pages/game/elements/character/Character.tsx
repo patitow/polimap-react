@@ -30,9 +30,10 @@ export function Character({ animation, scale = 0.4, ...props }: CharacterProps &
   const { actions } = useAnimations(animations, groupRef)
 
   const rogueAnim = getRogueAnimationName(animation)
+  const isWalk = animation.toLowerCase().includes('walk')
 
   useEffect(() => {
-    const candidates = rogueAnim === 'Walking' ? WALK_ALTS : IDLE_ALTS
+    const candidates = isWalk ? WALK_ALTS : IDLE_ALTS
     let action = actions[rogueAnim]
     if (!action) {
       for (const name of candidates) {
@@ -48,7 +49,7 @@ export function Character({ animation, scale = 0.4, ...props }: CharacterProps &
         action!.fadeOut(0.2)
       }
     }
-  }, [actions, rogueAnim])
+  }, [actions, rogueAnim, isWalk])
 
   useEffect(() => {
     scene.traverse((child) => {

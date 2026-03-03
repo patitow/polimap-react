@@ -1,19 +1,19 @@
 {
   "maps": {
     "model_poli_overworld": {
-      "scale": 1,
-      "position": [0, 0, 0]
+      "scale": 0.3,
+      "position": [-0.6, -0.8, 0]
     },
     "model_auditorio_a": {
-      "scale": 1,
+      "scale": 0.3,
       "position": [0, 0, 0]
     },
     "model_bloco_b": {
-      "scale": 1,
+      "scale": 0.3,
       "position": [0, 0, 0]
     },
     "model_bloco_c": {
-      "scale": 1,
+      "scale": 0.3,
       "position": [0, 0, 0]
     }
   }

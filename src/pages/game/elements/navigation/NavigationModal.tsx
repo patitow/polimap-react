@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 import { X, Search, MapPin, ChevronRight, Info } from 'lucide-react'
+import { useMapConfig } from '@/hooks/useMapConfig'
 
 interface Room {
   id: string
@@ -40,10 +41,8 @@ interface NavigationModalProps {
   onInspectPoi?: (name: string, data: RoomWithPoi['poi']) => void
 }
 
-let mapConfigCache: Block[] | null = null
-
 const NavigationModal: React.FC<NavigationModalProps> = ({ isOpen, onClose, onNavigate, onInspectPoi }) => {
-  const [blocks, setBlocks] = useState<Block[]>([])
+  const { blocks } = useMapConfig()
   const [searchQuery, setSearchQuery] = useState('')
   const [selectedBlock, setSelectedBlock] = useState('')
   const [selectedFloor, setSelectedFloor] = useState('')
@@ -55,20 +54,6 @@ const NavigationModal: React.FC<NavigationModalProps> = ({ isOpen, onClose, onNa
     const floor = block?.floors?.find((f) => f.id === selectedFloor)
     return (floor?.rooms?.find((r) => r.id === selectedRoom.id) as RoomWithPoi) || null
   }
-
-  useEffect(() => {
-    if (mapConfigCache) {
-      setBlocks(mapConfigCache)
-    } else {
-      fetch('/config/map_points.json')
-        .then((res) => res.json())
-        .then((data) => {
-          mapConfigCache = data
-          setBlocks(data)
-        })
-        .catch((err) => console.error('Erro ao carregar map_points.json:', err))
-    }
-  }, [])
 
   const handleBlockSelection = (block: Block) => {
     setSelectedBlock(block.id)
@@ -284,9 +269,14 @@ const NavigationModal: React.FC<NavigationModalProps> = ({ isOpen, onClose, onNa
                 </div>
               )}
               <div className="p-2">
-                <p className="truncate text-xs font-medium text-slate-300">
+                <p className="truncate text-xs font-bold text-slate-200">
                   {selectedRoom?.name ?? 'Selecione um local'}
                 </p>
+                {roomData?.poi?.description && (
+                  <p className="mt-1 line-clamp-3 text-[10px] leading-relaxed text-slate-400">
+                    {roomData.poi.description}
+                  </p>
+                )}
               </div>
             </div>
           </div>

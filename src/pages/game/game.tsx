@@ -10,9 +10,10 @@ import { VirtualJoystick } from './components/VirtualJoystick'
 import { FootstepSound } from './components/FootstepSound'
 import { PauseMenu } from './components/PauseMenu'
 import { InspectMenu } from './components/InspectMenu'
-import type { PoiInfo } from '@/types/room'
+import type { PoiInfo, Room } from '@/types/room'
 import type { NavigateMode } from './elements/navigation/NavigationModal'
 import { DEFAULT_SPAWN } from '@/config/spawn'
+import { useMapConfig } from '@/hooks/useMapConfig'
 
 const keyboardMap = [
   { name: 'forward', keys: ['ArrowUp', 'KeyW'] },
@@ -41,6 +42,9 @@ function PolimapGameInner() {
   } | null>(null)
   const [isWalking, setIsWalking] = useState(false)
 
+  const { getRoomsForScene } = useMapConfig()
+  const sceneRooms = getRoomsForScene(currentScene)
+
   const {
     setNavMenuOpen,
     setPauseMenuOpen,
@@ -49,6 +53,7 @@ function PolimapGameInner() {
     isPauseMenuOpen,
     canPlayerMove,
     footstepEnabled,
+    setInDialog,
   } = useGameState()
 
   const openNavModal = useCallback(() => {
@@ -62,6 +67,13 @@ function PolimapGameInner() {
     setIsNavModalOpen(false)
     setWalking()
   }, [setWalking])
+
+  const handleInteract = useCallback((room: Room) => {
+    if (room.poi) {
+      setInspectPoi({ name: room.name, data: room.poi })
+      setInDialog()
+    }
+  }, [setInDialog])
 
   const handleNavigate = useCallback(
     (
@@ -156,6 +168,8 @@ function PolimapGameInner() {
               autopilotTarget={autopilotTarget}
               onAutopilotArrived={handleAutopilotArrived}
               onWalkingChange={setIsWalking}
+              rooms={sceneRooms}
+              onInteract={handleInteract}
             />
           </Suspense>
         </Canvas>
@@ -164,6 +178,7 @@ function PolimapGameInner() {
 
       <div className="absolute top-[4rem] left-0 z-40 flex h-20 w-full flex-row items-center justify-start gap-2 bg-gradient-to-b from-slate-900/50 to-transparent px-4">
         <button
+          type='button'
           onClick={openNavModal}
           className="relative z-50 flex h-12 w-12 items-center justify-center rounded-full bg-primary-foreground text-primary shadow-lg transition-transform hover:scale-105 hover:bg-primary-foreground/90"
           aria-label="Abrir mapa (M ou B)"
@@ -183,7 +198,12 @@ function PolimapGameInner() {
         isOpen={isNavModalOpen}
         onClose={closeNavModal}
         onNavigate={handleNavigate}
-        onInspectPoi={(name, data) => data && setInspectPoi({ name, data })}
+        onInspectPoi={(name, data) => {
+          if (data) {
+            setInspectPoi({ name, data })
+            setInDialog()
+          }
+        }}
       />
 
       {isPauseOpen && (

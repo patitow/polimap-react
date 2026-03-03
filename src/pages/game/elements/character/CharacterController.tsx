@@ -11,11 +11,11 @@ import { Character } from './Character'
 
 const WALK_SPEED = 3
 const RUN_SPEED = 5
-const JUMP_IMPULSE = 2.5/300
+const JUMP_IMPULSE = 2 / 300
 const CHARACTER_SCALE = 0.24
 const CAPSULE_HALF_HEIGHT = 0.12
 const CAPSULE_RADIUS = 0.05
-const CAMERA_DISTANCE = 6
+const CAMERA_DISTANCE = 4.5
 const CAMERA_HEIGHT = 2.5
 const LOOK_TARGET_HEIGHT = 0.4
 const CAMERA_COLLISION_OFFSET = 0.3
@@ -26,6 +26,7 @@ const PITCH_MAX = 0.4
 
 const AUTOPILOT_ARRIVAL_DISTANCE = 0.15
 const AUTOPILOT_SPEED = 1.2
+const INTERACTION_DISTANCE = 2.5
 /** Lerp: 1-exp(-λ*dt) - Rory Driscoll. Maior = mais rápido. 15-20 evita travamentos. */
 const CAMERA_SMOOTH_SPEED = 18
 /** Suaviza aceleração/desaceleração - lerp da velocidade atual em direção ao alvo */
@@ -39,12 +40,18 @@ export const CharacterController = ({
   autopilotTarget,
   onAutopilotArrived,
   onWalkingChange,
+  rooms = [],
+  onInteract,
+  onPositionChange,
 }: {
   teleportPosition: { x: number; y: number; z: number } | null
   canMove?: boolean
   autopilotTarget?: { x: number; y: number; z: number } | null
   onAutopilotArrived?: () => void
   onWalkingChange?: (isWalking: boolean) => void
+  rooms?: any[]
+  onInteract?: (room: any) => void
+  onPositionChange?: (pos: Vector3) => void
 }) => {
   const rb = useRef<RapierRigidBody>(null)
   const [animation, setAnimation] = useState('down_idle')
@@ -64,6 +71,7 @@ export const CharacterController = ({
   const cameraCollisionTargets = useRef<Object3D[]>([])
   const characterGroupRef = useRef<Group>(null)
   const bodyGroupRef = useRef<Group>(null)
+  const nearestRoomRef = useRef<any>(null)
 
   useEffect(() => {
     const collect = () => {
@@ -122,6 +130,28 @@ export const CharacterController = ({
   useFrame((_state, delta) => {
     if (!rb.current) return
     const rigidBody = rb.current
+
+    // Report position for indicators
+    const currentPos = rigidBody.translation()
+    const posVec = new Vector3(currentPos.x, currentPos.y, currentPos.z)
+    onPositionChange?.(posVec)
+
+    // Check nearest room for interaction
+    let minHighlightDist = INTERACTION_DISTANCE
+    let bestRoom = null
+    for (const room of rooms) {
+      const roomPos = new Vector3(room.interest_point.x, room.interest_point.y, room.interest_point.z)
+      const d = posVec.distanceTo(roomPos)
+      if (d < minHighlightDist) {
+        minHighlightDist = d
+        bestRoom = room
+      }
+    }
+    nearestRoomRef.current = bestRoom
+
+    if (get().interact && nearestRoomRef.current && onInteract) {
+      onInteract(nearestRoomRef.current)
+    }
 
     if (!canMove) {
       const vel = rigidBody.linvel()
