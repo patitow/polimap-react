@@ -299,7 +299,7 @@ export const CharacterController = ({
     if (characterGroupRef.current) {
       characterGroupRef.current.rotation.y = facingAngle.current
     }
-  })
+  }, -1)
 
   const pos = teleportPosition ?? DEFAULT_SPAWN
 
