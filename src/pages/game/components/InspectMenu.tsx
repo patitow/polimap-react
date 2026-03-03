@@ -43,7 +43,7 @@ export function InspectMenu({ poiName, poiData, onClose }: InspectMenuProps) {
           </button>
         </div>
         <div className="max-h-[calc(90vh-140px)] overflow-y-auto p-4">
-          {photos.length > 0 && (
+          {photos.length > 0 && photos[imgIdx] && (
             <div className="relative mb-4 aspect-video overflow-hidden rounded-lg bg-slate-100 dark:bg-slate-700">
               <img
                 src={photos[imgIdx]}

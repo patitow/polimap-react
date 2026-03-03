@@ -88,7 +88,7 @@ function Acessar() {
                 size="lg"
                 className="w-full bg-blue-600 text-white hover:bg-blue-700"
               >
-                <Link to="/play" className="flex items-center justify-center">
+                <Link to="/play" role="button" className="flex items-center justify-center">
                   Jogar Agora
                   <ArrowRight className="ml-2 h-4 w-4" />
                 </Link>

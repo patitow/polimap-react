@@ -38,6 +38,11 @@ export function GameStateProvider({ children }: { children: React.ReactNode }) {
     try {
       return localStorage.getItem(FOOTSTEP_STORAGE_KEY) !== 'false'
     } catch {
+      // Em ambientes sem localStorage (SSR, navegação privada agressiva),
+      // mantemos o som de passos habilitado por padrão.
+      console.warn(
+        'localStorage is not available, footstep sound preference will default to enabled.'
+      )
       return true
     }
   })

@@ -29,5 +29,6 @@ export function InputProvider({ children }: { children: React.ReactNode }) {
 
 export function useInput() {
   const ctx = useContext(InputContext)
-  return ctx ?? { joystickInput: { x: 0, z: 0 }, setJoystickInput: () => {}, isTouchDevice: false }
+  if (!ctx) throw new Error('useInput must be used within InputProvider')
+  return ctx
 }

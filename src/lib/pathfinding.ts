@@ -1,5 +1,5 @@
 import { Pathfinding } from 'three-pathfinding'
-import type { BufferGeometry } from 'three'
+import { BufferGeometry } from 'three'
 import { Vector3 } from 'three'
 
 const ZONE_ID = 'level'
@@ -62,7 +62,8 @@ export function toMapLocal(
 export function hasNavmesh(): boolean {
   try {
     const pf = getPathfinding()
-    return (pf as { zones?: Record<string, unknown> }).zones?.[ZONE_ID] != null
+    // three-pathfinding's 'zones' é interna; acessamos via any para checar se já há navmesh carregada.
+    return (pf as any).zones?.[ZONE_ID] != null
   } catch {
     return false
   }

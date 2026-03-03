@@ -1,9 +1,8 @@
-import React, { Suspense, useState, useEffect } from 'react'
-import { Canvas } from '@react-three/fiber'
-import { OrbitControls, Environment, OrthographicCamera } from '@react-three/drei'
+import React, { Suspense, useEffect, useState } from 'react'
+import { Canvas, useThree } from '@react-three/fiber'
+import { Environment, OrbitControls, OrthographicCamera } from '@react-three/drei'
 import { Physics } from '@react-three/rapier'
 import type { Block } from '@/types/block'
-import type { Floor } from '@/types/floor'
 import type { Room } from '@/types/room'
 import type { Coordinate } from '@/types/coordinates'
 import { Map } from '@/components/map/Map'
@@ -12,62 +11,197 @@ import { GateComponent } from '@/components/map/Gate'
 import { GatesEditor } from '@/components/map/GatesEditor'
 import { PoiMarker } from '@/components/map/PoiMarker'
 
+// -----------------------------
+// Tipos de apoio e configuração
+// -----------------------------
+
+interface LogicalMapDef {
+  id: 'overworld' | 'bloco_b' | 'bloco_c'
+  name: string
+  modelPaths: string[]
+}
+
+type LogicalMapId = LogicalMapDef['id']
+
+const LOGICAL_MAPS: LogicalMapDef[] = [
+  {
+    id: 'overworld',
+    name: 'Mapa Externo',
+    modelPaths: ['model_poli_overworld', 'model_auditorio_a'],
+  },
+  {
+    id: 'bloco_b',
+    name: 'Mapa Bloco B (interno)',
+    modelPaths: ['model_bloco_b'],
+  },
+  {
+    id: 'bloco_c',
+    name: 'Mapa Bloco C (interno)',
+    modelPaths: ['model_bloco_c'],
+  },
+]
+
+interface LogicalRoomRef {
+  blockIndex: number
+  floorIndex: number
+  roomIndex: number
+  roomId: string
+  roomName: string
+  floorName: string
+  blockName: string
+  modelPath: string
+  interestPoint: Coordinate
+}
+
+interface LogicalMapUi extends LogicalMapDef {
+  rooms: LogicalRoomRef[]
+}
+
 const fetchMapConfig = async (): Promise<Block[]> => {
   const response = await fetch('/config/map_points.json')
   return response.json()
 }
 
+// Monta estrutura de mapas lógicos a partir de blocks + índices
+function buildMapsFromBlocks(blocks: Block[]): LogicalMapUi[] {
+  return LOGICAL_MAPS.map<LogicalMapUi>((def) => {
+    const rooms: LogicalRoomRef[] = []
+
+    blocks.forEach((block, blockIndex) => {
+      block.floors.forEach((floor, floorIndex) => {
+        floor.rooms.forEach((room, roomIndex) => {
+          if (def.modelPaths.includes(room.model_path)) {
+            rooms.push({
+              blockIndex,
+              floorIndex,
+              roomIndex,
+              roomId: room.id,
+              roomName: room.name,
+              floorName: floor.name,
+              blockName: block.name,
+              modelPath: room.model_path,
+              interestPoint: room.interest_point,
+            })
+          }
+        })
+      })
+    })
+
+    return { ...def, rooms }
+  }).filter((m) => m.rooms.length > 0)
+}
+
+interface CameraFocusProps {
+  target: Coordinate | null
+}
+
+const CameraFocus: React.FC<CameraFocusProps> = ({ target }) => {
+  const { camera, controls } = useThree()
+
+  useEffect(() => {
+    if (!target) return
+    const offset = 12
+    camera.position.set(target.x + offset, target.y + offset * 0.7, target.z + offset)
+    // @ts-expect-error controles vêm do OrbitControls com makeDefault
+    controls?.target.set(target.x, target.y, target.z)
+    // @ts-expect-error idem
+    controls?.update?.()
+  }, [camera, controls, target?.x, target?.y, target?.z])
+
+  return null
+}
+
 const MapEditor: React.FC = () => {
   const [blocks, setBlocks] = useState<Block[]>([])
-  const [selectedBlock, setSelectedBlock] = useState<Block | null>(null)
-  const [selectedFloor, setSelectedFloor] = useState<Floor | null>(null)
-  const [selectedRoom, setSelectedRoom] = useState<Room | null>(null)
+  const [selectedMapId, setSelectedMapId] = useState<LogicalMapId | null>(null)
+  const [selectedRoomRef, setSelectedRoomRef] = useState<{
+    blockIndex: number
+    floorIndex: number
+    roomIndex: number
+  } | null>(null)
+  const [editingAxis, setEditingAxis] = useState<'x' | 'y' | 'z' | null>(null)
 
+  // Carrega configuração inicial
   useEffect(() => {
     fetchMapConfig()
       .then((data) => {
         setBlocks(data)
-        if (data.length > 0) {
-          setSelectedBlock(data[0])
-          if (data[0].floors.length > 0) {
-            setSelectedFloor(data[0].floors[0])
-            if (data[0].floors[0].rooms.length > 0) {
-              setSelectedRoom(data[0].floors[0].rooms[0])
-            }
-          }
+        const maps = buildMapsFromBlocks(data)
+        if (maps.length > 0 && maps[0].rooms.length > 0) {
+          const firstMap = maps[0]
+          const firstRoom = firstMap.rooms[0]
+          setSelectedMapId(firstMap.id)
+          setSelectedRoomRef({
+            blockIndex: firstRoom.blockIndex,
+            floorIndex: firstRoom.floorIndex,
+            roomIndex: firstRoom.roomIndex,
+          })
         }
       })
       .catch((err) => console.error('Erro ao carregar map_points.json:', err))
   }, [])
 
-  const handleSelectBlock = (block: Block) => {
-    setSelectedBlock(block)
-    if (block.floors.length === 1) {
-      setSelectedFloor(block.floors[0])
-      setSelectedRoom(block.floors[0].rooms[0] ?? null)
-    } else {
-      setSelectedFloor(null)
-      setSelectedRoom(null)
+  const mapsForUi = buildMapsFromBlocks(blocks)
+  const selectedMap = mapsForUi.find((m) => m.id === selectedMapId) ?? null
+
+  // Room atual SEMPRE derivado de blocks + índices (fonte única de verdade)
+  let currentRoom: Room | null = null
+  if (selectedRoomRef) {
+    const block = blocks[selectedRoomRef.blockIndex]
+    if (block) {
+      const floor = block.floors[selectedRoomRef.floorIndex]
+      if (floor) {
+        currentRoom = floor.rooms[selectedRoomRef.roomIndex] ?? null
+      }
     }
   }
 
-  const handleSelectFloor = (floor: Floor) => {
-    setSelectedFloor(floor)
-    setSelectedRoom(floor.rooms[0] ?? null)
+  const handleSelectMap = (mapId: LogicalMapId) => {
+    setSelectedMapId(mapId)
+    const maps = buildMapsFromBlocks(blocks)
+    const map = maps.find((m) => m.id === mapId)
+    const firstRoom = map?.rooms[0]
+    if (firstRoom) {
+      setSelectedRoomRef({
+        blockIndex: firstRoom.blockIndex,
+        floorIndex: firstRoom.floorIndex,
+        roomIndex: firstRoom.roomIndex,
+      })
+    } else {
+      setSelectedRoomRef(null)
+    }
+    setEditingAxis(null)
+  }
+
+  const handleSelectRoom = (ref: LogicalRoomRef) => {
+    setSelectedRoomRef({
+      blockIndex: ref.blockIndex,
+      floorIndex: ref.floorIndex,
+      roomIndex: ref.roomIndex,
+    })
+    setEditingAxis(null)
   }
 
   const updateRoom = (updatedRoom: Room) => {
-    setSelectedRoom(updatedRoom)
-    if (selectedBlock && selectedFloor) {
-      const updatedFloors = selectedBlock.floors.map((floor) =>
-        floor.id === selectedFloor.id
-          ? { ...floor, rooms: floor.rooms.map((r) => (r.id === updatedRoom.id ? updatedRoom : r)) }
-          : floor
-      )
-      const updatedBlock: Block = { ...selectedBlock, floors: updatedFloors }
-      setSelectedBlock(updatedBlock)
-      setBlocks((prev) => prev.map((b) => (b.id === updatedBlock.id ? updatedBlock : b)))
-    }
+    if (!selectedRoomRef) return
+    const { blockIndex, floorIndex, roomIndex } = selectedRoomRef
+    setBlocks((prev) =>
+      prev.map((block, bi) => {
+        if (bi !== blockIndex) return block
+        return {
+          ...block,
+          floors: block.floors.map((floor, fi) => {
+            if (fi !== floorIndex) return floor
+            return {
+              ...floor,
+              rooms: floor.rooms.map((room, ri) =>
+                ri === roomIndex ? updatedRoom : room
+              ),
+            }
+          }),
+        }
+      })
+    )
   }
 
   const handleExportJson = () => {
@@ -84,98 +218,94 @@ const MapEditor: React.FC = () => {
 
   return (
     <div className="map-editor flex h-screen pt-16">
-      <div className="sidebar w-1/4 overflow-y-auto border-r border-slate-200 p-4 dark:border-slate-700 dark:bg-slate-900">
-        <h1 className="mb-4 text-2xl font-bold dark:text-slate-100">Map Editor</h1>
-        <button
-          onClick={handleExportJson}
-          className="mb-4 w-full rounded border border-emerald-500 px-3 py-2 text-sm font-medium text-emerald-100 hover:bg-emerald-500/10"
-        >
-          Exportar map_points.json
-        </button>
-        <div className="mb-6">
-          <h2 className="mb-2 text-xl dark:text-slate-200">Blocos</h2>
-          <ul className="space-y-1">
-            {blocks.map((block) => (
-              <li key={block.id}>
-                <button
-                  className={`w-full rounded border p-2 text-left ${
-                    selectedBlock?.id === block.id
-                      ? 'border-blue-500 bg-blue-100 dark:bg-blue-900/30 dark:border-blue-600'
-                      : 'border-slate-300 hover:bg-slate-50 dark:border-slate-600 dark:hover:bg-slate-800'
-                  }`}
-                  onClick={() => handleSelectBlock(block)}
-                >
-                  {block.name}
-                </button>
-              </li>
-            ))}
-          </ul>
-        </div>
-        {selectedBlock && selectedBlock.floors.length > 1 && (
-          <div className="mb-6">
-            <h2 className="mb-2 text-xl dark:text-slate-200">
-              Andares de {selectedBlock.name}
-            </h2>
-            <ul className="space-y-1">
-              {selectedBlock.floors.map((floor) => (
-                <li key={floor.id}>
-                  <button
-                    className={`w-full rounded border p-2 text-left ${
-                      selectedFloor?.id === floor.id
-                        ? 'border-blue-500 bg-blue-100 dark:bg-blue-900/30 dark:border-blue-600'
-                        : 'border-slate-300 hover:bg-slate-50 dark:border-slate-600 dark:hover:bg-slate-800'
-                    }`}
-                    onClick={() => handleSelectFloor(floor)}
-                  >
-                    {floor.name}
-                  </button>
-                </li>
-              ))}
-            </ul>
+      <div className="sidebar w-1/4 overflow-y-auto border-r border-slate-200 dark:border-slate-700 dark:bg-slate-900">
+        <div className="sticky top-0 z-10 border-b border-slate-800 bg-slate-900/95 p-4 backdrop-blur">
+          <h1 className="mb-2 text-2xl font-bold dark:text-slate-100">Map Editor</h1>
+          <div className="mb-3 text-[0.7rem] text-slate-400">
+            Escolha um mapa, selecione um ponto de interesse, ajuste portais/posição e clique em
+            &quot;Exportar&quot; para salvar o JSON.
           </div>
-        )}
-        {selectedFloor && (
-          <div className="mb-6">
-            <h2 className="mb-2 text-xl dark:text-slate-200">
-              Salas de {selectedFloor.name}
-            </h2>
-            <ul className="space-y-1">
-              {selectedFloor.rooms.map((room) => (
-                <li key={room.id}>
-                  <button
-                    className={`w-full rounded border p-2 text-left ${
-                      selectedRoom?.id === room.id
-                        ? 'border-blue-500 bg-blue-100 dark:bg-blue-900/30 dark:border-blue-600'
-                        : 'border-slate-300 hover:bg-slate-50 dark:border-slate-600 dark:hover:bg-slate-800'
-                    }`}
-                    onClick={() => setSelectedRoom(room)}
-                  >
-                    {room.name}
-                  </button>
-                </li>
-              ))}
-            </ul>
-          </div>
-        )}
-        {selectedRoom && <GatesEditor room={selectedRoom} onUpdateRoom={updateRoom} />}
 
-        {selectedRoom && (
-          <div className="mt-4 space-y-2 rounded border border-slate-700 p-3 text-xs text-slate-200">
-            <div className="font-semibold">Interest point (POI)</div>
-            <div>
-              x: {selectedRoom.interest_point.x.toFixed(2)} · y:{' '}
-              {selectedRoom.interest_point.y.toFixed(2)} · z:{' '}
-              {selectedRoom.interest_point.z.toFixed(2)}
-            </div>
-            <p className="text-[0.7rem] text-slate-400">
-              Arraste o marcador ciano na cena para ajustar a posição deste ponto de interesse.
-              Depois clique em &quot;Exportar map_points.json&quot; e substitua o arquivo no
-              repositório.
-            </p>
+          <button
+            onClick={handleExportJson}
+            className="w-full rounded border border-emerald-500 px-3 py-2 text-sm font-medium text-emerald-100 hover:bg-emerald-500/10"
+          >
+            Exportar map_points.json
+          </button>
+        </div>
+
+        <div className="grid grid-cols-2 gap-4 p-4">
+          {/* Coluna de mapas */}
+          <div>
+            <h2 className="mb-2 text-xl dark:text-slate-200">Mapas</h2>
+            <ul className="space-y-1">
+              {mapsForUi.map((map) => (
+                <li key={map.id}>
+                  <button
+                    className={`w-full rounded border p-2 text-left ${
+                      selectedMapId === map.id
+                        ? 'border-blue-500 bg-blue-100 dark:bg-blue-900/30 dark:border-blue-600'
+                        : 'border-slate-300 hover:bg-slate-50 dark:border-slate-600 dark:hover:bg-slate-800'
+                    }`}
+                    onClick={() => handleSelectMap(map.id)}
+                  >
+                    {map.name}
+                  </button>
+                </li>
+              ))}
+            </ul>
           </div>
-        )}
+
+          {/* Coluna de pontos de interesse + portais */}
+          <div>
+            {selectedMap && (
+              <div className="mb-4">
+                <h2 className="mb-2 text-xl dark:text-slate-200">
+                  Pontos de interesse
+                </h2>
+                <ul className="space-y-1">
+                  {selectedMap.rooms.map((ref) => {
+                    const isSelected =
+                      selectedRoomRef &&
+                      selectedRoomRef.blockIndex === ref.blockIndex &&
+                      selectedRoomRef.floorIndex === ref.floorIndex &&
+                      selectedRoomRef.roomIndex === ref.roomIndex
+                    return (
+                      <li key={ref.roomId}>
+                        <button
+                          className={`w-full rounded border p-2 text-left ${
+                            isSelected
+                              ? 'border-blue-500 bg-blue-100 dark:bg-blue-900/30 dark:border-blue-600'
+                              : 'border-slate-300 hover:bg-slate-50 dark:border-slate-600 dark:hover:bg-slate-800'
+                          }`}
+                          onClick={() => handleSelectRoom(ref)}
+                        >
+                          <div className="font-medium">{ref.roomName}</div>
+                          <div className="text-xs text-slate-500 dark:text-slate-400">
+                            {ref.blockName} · {ref.floorName}
+                          </div>
+                        </button>
+                      </li>
+                    )
+                  })}
+                </ul>
+              </div>
+            )}
+
+            {currentRoom && (
+              <div className="mb-4">
+                <h2 className="mb-2 text-xl dark:text-slate-200">
+                  Portais do ponto selecionado
+                </h2>
+                <GatesEditor room={currentRoom} onUpdateRoom={updateRoom} />
+              </div>
+            )}
+          </div>
+        </div>
       </div>
-      <div className="editor-canvas flex-1">
+
+      {/* Canvas 3D */}
+      <div className="editor-canvas relative flex-1">
         <Canvas camera={{ position: [0, 5, 10] }} shadows>
           <Environment preset="sunset" />
           <directionalLight
@@ -194,39 +324,209 @@ const MapEditor: React.FC = () => {
               attach="shadow-camera"
             />
           </directionalLight>
-          <OrbitControls />
+          <OrbitControls makeDefault />
+
+          <CameraFocus target={currentRoom?.interest_point ?? null} />
+
           <Physics>
             <Suspense fallback={null}>
-              {selectedRoom && (
+              {currentRoom && (
                 <ModelErrorBoundary>
                   <Map
-                    model={`/models/${selectedRoom.model_path}.glb`}
+                    model={`/models/${currentRoom.model_path}.glb`}
                     scale={1}
                     position={[0, 0, 0]}
                   />
                 </ModelErrorBoundary>
               )}
             </Suspense>
-            {selectedRoom?.gates.map((gate, index) => (
+
+            {/* Cubos para todos os POIs do mapa selecionado */}
+            {selectedMap &&
+              selectedMap.rooms.map((ref) => (
+                <mesh
+                  key={`poi-${ref.roomId}`}
+                  position={[
+                    ref.interestPoint.x,
+                    ref.interestPoint.y,
+                    ref.interestPoint.z,
+                  ]}
+                  onClick={(e) => {
+                    e.stopPropagation()
+                    handleSelectRoom(ref)
+                  }}
+                >
+                  <boxGeometry args={[0.6, 0.6, 0.6]} />
+                  <meshStandardMaterial
+                    color={
+                      selectedRoomRef &&
+                      selectedRoomRef.blockIndex === ref.blockIndex &&
+                      selectedRoomRef.floorIndex === ref.floorIndex &&
+                      selectedRoomRef.roomIndex === ref.roomIndex
+                        ? '#22d3ee'
+                        : '#64748b'
+                    }
+                    emissive={
+                      selectedRoomRef &&
+                      selectedRoomRef.blockIndex === ref.blockIndex &&
+                      selectedRoomRef.floorIndex === ref.floorIndex &&
+                      selectedRoomRef.roomIndex === ref.roomIndex
+                        ? '#22d3ee'
+                        : '#000000'
+                    }
+                    emissiveIntensity={
+                      selectedRoomRef &&
+                      selectedRoomRef.blockIndex === ref.blockIndex &&
+                      selectedRoomRef.floorIndex === ref.floorIndex &&
+                      selectedRoomRef.roomIndex === ref.roomIndex
+                        ? 0.7
+                        : 0
+                    }
+                  />
+                </mesh>
+              ))}
+
+            {/* Gizmo do ponto selecionado */}
+            {currentRoom && (
+              <PoiMarker
+                key={currentRoom.id}
+                position={currentRoom.interest_point as Coordinate}
+                color="#22d3ee"
+                onChange={(position) => {
+                  updateRoom({ ...currentRoom, interest_point: position })
+                }}
+              />
+            )}
+
+            {/* Gates visuais, se existirem */}
+            {currentRoom?.gates.map((gate, index) => (
               <GateComponent
-                key={gate.id}
+                // biome-ignore lint/suspicious/noArrayIndexKey: índice é estável dentro da sala
+                key={gate.id ?? index}
                 gate={gate}
                 onUpdate={(newGate) => {
-                  const updatedGates = [...selectedRoom.gates]
+                  if (!currentRoom) return
+                  const updatedGates = [...currentRoom.gates]
                   updatedGates[index] = newGate
-                  updateRoom({ ...selectedRoom, gates: updatedGates })
+                  updateRoom({ ...currentRoom, gates: updatedGates })
                 }}
               />
             ))}
-            {selectedRoom && (
-              <PoiMarker
-                position={selectedRoom.interest_point as Coordinate}
-                color="#22d3ee"
-                onChange={(p) => updateRoom({ ...selectedRoom, interest_point: p })}
-              />
-            )}
           </Physics>
         </Canvas>
+
+        {/* Painel de coordenadas do POI */}
+        {currentRoom && (
+          <div className="pointer-events-auto absolute right-4 top-4 w-64 space-y-2 rounded border border-slate-700 bg-slate-900/90 p-3 text-xs text-slate-200 shadow-lg">
+            <div className="font-semibold">Interest point (POI)</div>
+            <div className="space-y-1">
+              {/* X */}
+              <div className="flex items-center justify-between gap-2">
+                <span className="w-4">x</span>
+                {editingAxis === 'x' ? (
+                  <input
+                    type="number"
+                    autoFocus
+                    className="w-32 rounded border border-slate-700 bg-slate-800 px-2 py-0.5 text-right"
+                    step="0.01"
+                    defaultValue={currentRoom.interest_point.x}
+                    onBlur={(e) => {
+                      const next = Number.parseFloat(e.target.value)
+                      if (!Number.isNaN(next)) {
+                        const point = { ...currentRoom.interest_point, x: next }
+                        updateRoom({ ...currentRoom, interest_point: point })
+                      }
+                      setEditingAxis(null)
+                    }}
+                    onKeyDown={(e) => {
+                      if (e.key === 'Enter') {
+                        ;(e.target as HTMLInputElement).blur()
+                      }
+                    }}
+                  />
+                ) : (
+                  <span
+                    className="w-32 cursor-text rounded border border-transparent px-2 py-0.5 text-right hover:border-slate-700 hover:bg-slate-800/60"
+                    onDoubleClick={() => setEditingAxis('x')}
+                  >
+                    {currentRoom.interest_point.x.toFixed(2)}
+                  </span>
+                )}
+              </div>
+
+              {/* Y */}
+              <div className="flex items-center justify-between gap-2">
+                <span className="w-4">y</span>
+                {editingAxis === 'y' ? (
+                  <input
+                    type="number"
+                    autoFocus
+                    className="w-32 rounded border border-slate-700 bg-slate-800 px-2 py-0.5 text-right"
+                    step="0.01"
+                    defaultValue={currentRoom.interest_point.y}
+                    onBlur={(e) => {
+                      const next = Number.parseFloat(e.target.value)
+                      if (!Number.isNaN(next)) {
+                        const point = { ...currentRoom.interest_point, y: next }
+                        updateRoom({ ...currentRoom, interest_point: point })
+                      }
+                      setEditingAxis(null)
+                    }}
+                    onKeyDown={(e) => {
+                      if (e.key === 'Enter') {
+                        ;(e.target as HTMLInputElement).blur()
+                      }
+                    }}
+                  />
+                ) : (
+                  <span
+                    className="w-32 cursor-text rounded border border-transparent px-2 py-0.5 text-right hover:border-slate-700 hover:bg-slate-800/60"
+                    onDoubleClick={() => setEditingAxis('y')}
+                  >
+                    {currentRoom.interest_point.y.toFixed(2)}
+                  </span>
+                )}
+              </div>
+
+              {/* Z */}
+              <div className="flex items-center justify-between gap-2">
+                <span className="w-4">z</span>
+                {editingAxis === 'z' ? (
+                  <input
+                    type="number"
+                    autoFocus
+                    className="w-32 rounded border border-slate-700 bg-slate-800 px-2 py-0.5 text-right"
+                    step="0.01"
+                    defaultValue={currentRoom.interest_point.z}
+                    onBlur={(e) => {
+                      const next = Number.parseFloat(e.target.value)
+                      if (!Number.isNaN(next)) {
+                        const point = { ...currentRoom.interest_point, z: next }
+                        updateRoom({ ...currentRoom, interest_point: point })
+                      }
+                      setEditingAxis(null)
+                    }}
+                    onKeyDown={(e) => {
+                      if (e.key === 'Enter') {
+                        ;(e.target as HTMLInputElement).blur()
+                      }
+                    }}
+                  />
+                ) : (
+                  <span
+                    className="w-32 cursor-text rounded border border-transparent px-2 py-0.5 text-right hover:border-slate-700 hover:bg-slate-800/60"
+                    onDoubleClick={() => setEditingAxis('z')}
+                  >
+                    {currentRoom.interest_point.z.toFixed(2)}
+                  </span>
+                )}
+              </div>
+            </div>
+            <p className="text-[0.7rem] text-slate-400">
+              Dê duplo clique em um valor para editar ou arraste o marcador ciano na cena.
+            </p>
+          </div>
+        )}
       </div>
     </div>
   )

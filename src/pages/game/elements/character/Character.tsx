@@ -6,13 +6,18 @@ const CHARACTER_MODEL = '/models/character_rogue.glb'
 
 /** Mapeia animações do controller (down_idle, up_walk, etc.) para nomes do modelo Rogue/KayKit */
 function getRogueAnimationName(animation: string): string {
-  const isWalk = animation.includes('walk')
-  return isWalk ? 'Walking' : 'Idle'
+  const lower = animation.toLowerCase()
+  if (lower.includes('walk')) return 'Walking_A'
+  if (lower.includes('idle')) return 'Idle'
+  return 'Idle'
 }
 
 /** Nomes alternativos de animação (KayKit Rogue usa Walking_A, Running_B) */
-const WALK_ALTS = ['Walking', 'Walking_A', 'Walking_B', 'Walk', 'Run', 'Running', 'Running_B']
+const WALK_ALTS = ['Walking_A', 'Walking', 'Walking_B', 'Walk', 'Run', 'Running', 'Running_B']
 const IDLE_ALTS = ['Idle', 'idle']
+
+// Objetos de arma presentes no modelo Rogue que devem ficar invisíveis
+const WEAPON_OBJECT_NAMES = ['Knife_Offhand', '1H_Crossbow', '2H_Crossbow', 'Knife', 'Throwable']
 
 interface CharacterProps {
   animation: string
@@ -46,7 +51,6 @@ export function Character({ animation, scale = 0.4, ...props }: CharacterProps &
   }, [actions, rogueAnim])
 
   useEffect(() => {
-    const WEAPON_OBJECT_NAMES = ['Knife_Offhand', '1H_Crossbow', '2H_Crossbow', 'Knife', 'Throwable']
     scene.traverse((child) => {
       const obj = child as { isMesh?: boolean; name?: string; visible?: boolean }
       if (obj.isMesh) {
