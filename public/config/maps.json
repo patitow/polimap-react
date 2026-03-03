@@ -1,0 +1,124 @@
+{
+  "maps": {
+    "model_poli_overworld": {
+      "scale": 0.3,
+      "position": [-0.6, -0.8, 0]
+    },
+    "model_guarita": {
+      "scale": 0.3,
+      "position": [-0.6, -0.8, 0]
+    },
+    "model_bicicletario": {
+      "scale": 0.3,
+      "position": [-0.6, -0.8, 0]
+    },
+    "model_estacionamento": {
+      "scale": 0.3,
+      "position": [-0.6, -0.8, 0]
+    },
+    "model_quadra": {
+      "scale": 0.3,
+      "position": [-0.6, -0.8, 0]
+    },
+    "model_praca": {
+      "scale": 0.3,
+      "position": [-0.6, -0.8, 0]
+    },
+    "model_auditorio_a": {
+      "scale": 0.1,
+      "position": [0, 0, 0]
+    },
+    "model_bloco_b": {
+      "scale": 0.1,
+      "position": [0, 0, 0]
+    },
+    "model_bloco_c": {
+      "scale": 0.1,
+      "position": [0, 0, 0]
+    },
+    "model_reitoria": {
+      "scale": 0.3,
+      "position": [-0.6, -0.8, 0]
+    },
+    "model_protocolo": {
+      "scale": 0.3,
+      "position": [-0.6, -0.8, 0]
+    },
+    "model_xerox": {
+      "scale": 0.3,
+      "position": [-0.6, -0.8, 0]
+    },
+    "model_cantina": {
+      "scale": 0.3,
+      "position": [-0.6, -0.8, 0]
+    },
+    "model_recepcao": {
+      "scale": 0.3,
+      "position": [-0.6, -0.8, 0]
+    },
+    "model_coord_enfermaria": {
+      "scale": 0.3,
+      "position": [-0.6, -0.8, 0]
+    },
+    "model_secretaria": {
+      "scale": 0.3,
+      "position": [-0.6, -0.8, 0]
+    },
+    "model_teq4": {
+      "scale": 0.3,
+      "position": [-0.6, -0.8, 0]
+    },
+    "model_lab_e": {
+      "scale": 0.3,
+      "position": [-0.6, -0.8, 0]
+    },
+    "model_lab_f": {
+      "scale": 0.3,
+      "position": [-0.6, -0.8, 0]
+    },
+    "model_lp1": {
+      "scale": 0.3,
+      "position": [-0.6, -0.8, 0]
+    },
+    "model_lp2": {
+      "scale": 0.3,
+      "position": [-0.6, -0.8, 0]
+    },
+    "model_lp3": {
+      "scale": 0.3,
+      "position": [-0.6, -0.8, 0]
+    },
+    "model_lab_g": {
+      "scale": 0.3,
+      "position": [-0.6, -0.8, 0]
+    },
+    "model_biblioteca": {
+      "scale": 0.3,
+      "position": [-0.6, -0.8, 0]
+    },
+    "model_datp_mc": {
+      "scale": 0.3,
+      "position": [-0.6, -0.8, 0]
+    },
+    "model_csec": {
+      "scale": 0.3,
+      "position": [-0.6, -0.8, 0]
+    },
+    "model_napp": {
+      "scale": 0.3,
+      "position": [-0.6, -0.8, 0]
+    },
+    "model_coord_pos_grad": {
+      "scale": 0.3,
+      "position": [-0.6, -0.8, 0]
+    },
+    "model_lab_i": {
+      "scale": 0.3,
+      "position": [-0.6, -0.8, 0]
+    },
+    "model_auditorio_i2": {
+      "scale": 0.3,
+      "position": [-0.6, -0.8, 0]
+    }
+  }
+}

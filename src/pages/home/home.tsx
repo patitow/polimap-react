@@ -55,7 +55,7 @@ function Home() {
   }, [images.length])
 
   const handleStartExploring = () => {
-    navigate('/acessar')
+    navigate('/play')
   }
 
   return (
@@ -91,14 +91,9 @@ function Home() {
               variant="outline"
               className="rounded-full border-2 border-red-600 bg-red-600 px-8 py-6 text-lg text-white transition-all hover:scale-105 hover:bg-red-700 hover:border-red-700 hover:text-white"
             >
-              <a
-                href="http://patitow.itch.io/polimap"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex items-center justify-center"
-              >
+              <Link to="/play" className="flex items-center justify-center">
                 Acesse o PoliMap <ArrowRight className="ml-2 h-5 w-5" />
-              </a>
+              </Link>
             </Button>
           </div>
         </div>

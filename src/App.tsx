@@ -5,6 +5,8 @@ import { ThemeProvider } from './providers/themeProvider'
 import Acessar from './pages/acessar/acessar'
 import Sobre from './pages/sobre/sobre'
 import Tutorial from './pages/tutorial/tutorial'
+import PolimapGame from './pages/game/game'
+import MapEditor from './pages/tools/mapEditor'
 import Navbar from './components/navbar/navbar'
 
 function App() {
@@ -17,6 +19,8 @@ function App() {
           <Route path="/acessar" element={<Acessar />} />
           <Route path="/sobre" element={<Sobre />} />
           <Route path="/tutorial" element={<Tutorial />} />
+          <Route path="/play" element={<PolimapGame />} />
+          <Route path="/tools/mapeditor" element={<MapEditor />} />
         </Routes>
       </ThemeProvider>
     </>

@@ -88,15 +88,10 @@ function Acessar() {
                 size="lg"
                 className="w-full bg-blue-600 text-white hover:bg-blue-700"
               >
-                <a
-                  href="http://patitow.itch.io/polimap"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex items-center justify-center"
-                >
+                <Link to="/play" className="flex items-center justify-center">
                   Jogar Agora
                   <ArrowRight className="ml-2 h-4 w-4" />
-                </a>
+                </Link>
               </Button>
             </CardContent>
           </Card>

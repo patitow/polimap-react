@@ -1,9 +1,15 @@
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
-import { Menu } from 'lucide-react'
+import { Menu, ChevronDown } from 'lucide-react'
 import { ModeToggle } from '../theme-toggler/mode-toggle'
 import { Button } from '../ui/button'
 import { Sheet, SheetContent, SheetTrigger } from '../ui/sheet'
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from '../ui/dropdown-menu'
 
 function Navbar() {
   const [isOpen, setIsOpen] = useState(false)
@@ -19,11 +25,29 @@ function Navbar() {
 
         {/* Desktop Navigation */}
         <div className="hidden items-center space-x-6 md:flex">
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant="ghost" className="flex items-center gap-1">
+                Ferramentas <ChevronDown className="h-4 w-4" />
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="start">
+              <DropdownMenuItem asChild>
+                <Link to="/tools/mapeditor">Map Editor</Link>
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
           <Link
             to="/"
             className="text-sm font-medium text-slate-600 transition-colors hover:text-slate-900 dark:text-slate-300 dark:hover:text-white"
           >
             Início
+          </Link>
+          <Link
+            to="/play"
+            className="text-sm font-medium text-slate-600 transition-colors hover:text-slate-900 dark:text-slate-300 dark:hover:text-white"
+          >
+            Explorar
           </Link>
           <Link
             to="/acessar"
@@ -52,9 +76,19 @@ function Navbar() {
             </SheetTrigger>
             <SheetContent side="right" className="w-[250px] px-4 sm:w-[300px]">
               <div className="flex flex-col space-y-4 pt-6">
+                <Link to="/tools/mapeditor" onClick={() => setIsOpen(false)}>
+                  <Button variant="ghost" className="w-full justify-start">
+                    Map Editor
+                  </Button>
+                </Link>
                 <Link to="/" onClick={() => setIsOpen(false)}>
                   <Button variant="ghost" className="w-full justify-start">
                     Início
+                  </Button>
+                </Link>
+                <Link to="/play" onClick={() => setIsOpen(false)}>
+                  <Button variant="ghost" className="w-full justify-start">
+                    Explorar
                   </Button>
                 </Link>
                 <Link to="/acessar" onClick={() => setIsOpen(false)}>

@@ -1,0 +1,996 @@
+[
+  {
+    "id": "externo",
+    "name": "Áreas Externas",
+    "floors": [
+      {
+        "id": "ext",
+        "name": "Externo",
+        "rooms": [
+          {
+            "id": "entrada",
+            "name": "Entrada",
+            "model_path": "model_poli_overworld",
+            "interest_point": { "x": -8.43, "y": 0.42, "z": -16.75 },
+            "gates": [],
+            "poi": {
+              "description": "Seja bem-vindo a Escola Politécnica de Pernambuco, mais conhecida como POLI. Aqui, você viverá a melhor experiência acadêmica do estado.",
+              "photos": ["/photos/BlocoA-min.jpg", "/photos/BlocoB-min.jpg", "/photos/BlocoD-min.jpg", "/photos/BlocoE-min.jpg", "/photos/BlocoG-min.jpg", "/photos/BlocoH-min.jpg", "/photos/BlocoIK-min.jpg", "/photos/BlocoJ-min.jpg", "/photos/PraçaDomino-min.jpg", "/photos/Santa-min.jpg"],
+              "curiosity": "A Escola Politécnica de Pernambuco (Poli) iniciou suas atividades em prédios emprestados, como o Colégio Alemão e o Ginásio Pernambucano. Em 1914, mudou-se para sua primeira sede própria, um chalé francês na Avenida Manoel Borba, e formou seus dois primeiros engenheiros.",
+              "dates": "Fundada em 6 de março de 1912. Integrada à UPE em 1990. Uma das 10 escolas de engenharia mais antigas do Brasil.",
+              "sectors": "-"
+            }
+          },
+          {
+            "id": "guarita",
+            "name": "Guarita",
+            "model_path": "model_poli_overworld",
+            "interest_point": { "x": -10, "y": 0.4, "z": -18 },
+            "gates": []
+          },
+          {
+            "id": "bicicletario",
+            "name": "Bicicletário",
+            "model_path": "model_poli_overworld",
+            "interest_point": { "x": -12, "y": 0.4, "z": -20 },
+            "gates": []
+          },
+          {
+            "id": "estacionamento",
+            "name": "Estacionamento",
+            "model_path": "model_poli_overworld",
+            "interest_point": { "x": -55.57, "y": 1.45, "z": -37.14 },
+            "gates": [],
+            "poi": {
+              "description": "Estacionamento e Praça da Poli",
+              "photos": ["/photos/estacionamento.jpg", "/photos/praca_estacionamento.jpg", "/photos/praca_estacionamento (1).jpg", "/photos/praca_estacionamento (2).jpg"],
+              "curiosity": "Área de estacionamento e convivência no campus.",
+              "dates": "-",
+              "sectors": "-"
+            }
+          },
+          {
+            "id": "quadra",
+            "name": "Quadra",
+            "model_path": "model_poli_overworld",
+            "interest_point": { "x": -30, "y": 0.5, "z": -50 },
+            "gates": []
+          },
+          {
+            "id": "praca",
+            "name": "Praça do Dominó",
+            "model_path": "model_poli_overworld",
+            "interest_point": { "x": 140.12, "y": -0.03, "z": -61.36 },
+            "gates": [],
+            "poi": {
+              "description": "Praça central do campus, ponto de encontro e convivência dos estudantes.",
+              "photos": ["/photos/PraçaDomino-min.jpg", "/photos/pracaDomino (1).jpg", "/photos/pracaDomino (2).jpg", "/photos/praca_domino.jpg"],
+              "curiosity": "Espaço de lazer e integração da comunidade acadêmica.",
+              "dates": "-",
+              "sectors": "-"
+            }
+          },
+          {
+            "id": "cantina",
+            "name": "Cantina",
+            "model_path": "model_poli_overworld",
+            "interest_point": { "x": -83.09, "y": -0.29, "z": -99.79 },
+            "gates": [],
+            "poi": {
+              "description": "Espaço de convivência e alimentação para estudantes e servidores da POLI-UPE.",
+              "photos": ["/photos/cantina.jpg", "/photos/cantina (1).jpg", "/photos/cantina (2).jpg", "/photos/cantina (3).jpg", "/photos/cantina (4).jpg", "/photos/cantina (5).jpg", "/photos/cantina (6).jpg"],
+              "curiosity": "Cantina universitária com variedade de opções para o dia a dia.",
+              "dates": "-",
+              "sectors": "Bloco B"
+            }
+          },
+          {
+            "id": "bloco_a",
+            "name": "Bloco A",
+            "model_path": "model_poli_overworld",
+            "interest_point": { "x": -27.43, "y": 2.02, "z": -62.97 },
+            "gates": [],
+            "poi": {
+              "description": "Bloco histórico com pós-graduação, auditório, NAPSI e sala A9. Durante grande parte do último século, a Poli se fez presente neste bloco.",
+              "photos": ["/photos/blocoA.jpg", "/photos/blocoA (1).jpg", "/photos/blocoA (2).jpg", "/photos/blocoa (3).jpg", "/photos/blocoA (4).jpg", "/photos/blocoA (5).jpg", "/photos/blocoA (6).jpg", "/photos/blocoA (7).jpg"],
+              "curiosity": "Foi esse o bloco em que a poli esteve presente durante grande parte de sua história.",
+              "dates": "1937 foi o ano em que a poli se mudou para esse casarão.",
+              "sectors": "Bloco A"
+            }
+          },
+          {
+            "id": "bloco_b",
+            "name": "Bloco B",
+            "model_path": "model_poli_overworld",
+            "interest_point": { "x": 59.37, "y": 0.55, "z": -17.80 },
+            "gates": [],
+            "poi": {
+              "description": "O bloco principal da Poli, com a maioria das aulas do ciclo básico e setores da gerência. No primeiro andar ficam vários setores administrativos.",
+              "photos": ["/photos/BlocoB-min.jpg", "/photos/BlocoE-min.jpg", "/photos/blocoB_Interior (1).jpg", "/photos/blocoB_Interior (2).jpg", "/photos/blocoB_Interior (3).jpg"],
+              "curiosity": "Sede da maioria das disciplinas do ciclo básico, principalmente nos primeiros períodos.",
+              "dates": "-",
+              "sectors": "Escolaridade, Divisão de Estágio, Coordenação, Direção, etc."
+            }
+          },
+          {
+            "id": "bloco_c",
+            "name": "Bloco C",
+            "model_path": "model_poli_overworld",
+            "interest_point": { "x": 178.84, "y": 1.02, "z": -56.08 },
+            "gates": [],
+            "poi": {
+              "description": "Bloco com PPGEC, laboratórios de física, Corisco BAJA, Lab Ecomp e núcleos de pesquisa.",
+              "photos": ["/photos/blocoC.jpg", "/photos/blocoC (2).jpg", "/photos/blocoC (4).jpg"],
+              "curiosity": "Concentra pós-graduação em Engenharia da Computação e equipes de competição.",
+              "dates": "-",
+              "sectors": "Bloco C"
+            }
+          },
+          {
+            "id": "bloco_h",
+            "name": "Bloco H - Biblioteca",
+            "model_path": "model_poli_overworld",
+            "interest_point": { "x": 4.95, "y": 1.70, "z": -54.89 },
+            "gates": [],
+            "poi": {
+              "description": "Nesse bloco fica a Biblioteca, bem como o LIP 3.",
+              "photos": ["/photos/BlocoH-min.jpg", "/photos/biblioteca.jpg", "/photos/biblioteca (1).jpg", "/photos/biblioteca (2).jpg", "/photos/biblioteca (4).jpg", "/photos/biblioteca (5).jpg"],
+              "curiosity": "Biblioteca especializada em engenharia e áreas afins, inaugurada para apoiar a formação dos estudantes.",
+              "dates": "Disponível durante o horário de funcionamento da universidade.",
+              "sectors": "Bloco H"
+            }
+          },
+          {
+            "id": "bloco_i",
+            "name": "Bloco I",
+            "model_path": "model_poli_overworld",
+            "interest_point": { "x": 21.65, "y": 1.26, "z": -95.56 },
+            "gates": [],
+            "poi": {
+              "description": "Bloco com aulas do ciclo básico e profissional. Abriga DATP, PEC, Sala dos Professores e Coordenação de Pós-Graduação.",
+              "photos": ["/photos/blocoKFrente (1).jpg", "/photos/blocoKFrente (2).jpg", "/photos/blocoKFrente (3).jpg"],
+              "curiosity": "Um dos blocos principais para aulas do ciclo básico e profissional.",
+              "dates": "-",
+              "sectors": "DATP, PEC, Sala dos Professores, Coord. Pós-Graduação"
+            }
+          },
+          {
+            "id": "bloco_j",
+            "name": "Bloco J",
+            "model_path": "model_poli_overworld",
+            "interest_point": { "x": 154.88, "y": 0.89, "z": -48.15 },
+            "gates": [],
+            "poi": {
+              "description": "Bloco com salas de aula e laboratórios.",
+              "photos": ["/photos/blocoJ.jpg", "/photos/blocoJ (1).jpg", "/photos/blocoJ (2).jpg", "/photos/BlocoJ-min.jpg"],
+              "curiosity": "-",
+              "dates": "-",
+              "sectors": "-"
+            }
+          },
+          {
+            "id": "bloco_k",
+            "name": "Bloco K",
+            "model_path": "model_poli_overworld",
+            "interest_point": { "x": 88.23, "y": 0.87, "z": -84.58 },
+            "gates": [],
+            "poi": {
+              "description": "Bloco com salas de aula do ciclo básico e profissional.",
+              "photos": ["/photos/blocoKFrente (1).jpg", "/photos/blocoKFrente (2).jpg", "/photos/blocoKFrente (3).jpg", "/photos/blocoK (9).jpg", "/photos/blocoK (10).jpg", "/photos/blocoK (11).jpg"],
+              "curiosity": "-",
+              "dates": "-",
+              "sectors": "-"
+            }
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "bloco_a",
+    "name": "Bloco A",
+    "floors": [
+      {
+        "id": "1",
+        "name": "Andar Único",
+        "rooms": [
+          {
+            "id": "auditorio_a",
+            "name": "Auditório Joseph Mesel",
+            "model_path": "model_auditorio_a",
+            "interest_point": { "x": 4.33, "y": -0.01, "z": -1.21 },
+            "gates": [],
+            "poi": {
+              "description": "Auditório onde costuma ter a primeira aula inaugural e demais eventos de maior importância. Suba as escadas para chegar ao auditório.",
+              "photos": ["/photos/BlocoA-min.jpg"],
+              "curiosity": "Espaço de eventos e cerimônias da Poli.",
+              "dates": "-",
+              "sectors": "Bloco A"
+            }
+          },
+          {
+            "id": "napsi",
+            "name": "NAPSI",
+            "model_path": "model_poli_overworld",
+            "interest_point": { "x": -28.12, "y": 2.75, "z": -86.35 },
+            "gates": [],
+            "poi": {
+              "description": "Núcleo de Apoio Psicológico da Universidade. Aqui você poderá encontrar ajuda e apoio de profissionais treinados para auxiliar em momentos de dificuldade. Também há sala de convivência para livre acesso dos estudantes.",
+              "photos": ["/photos/BlocoA-min.jpg"],
+              "curiosity": "Serviço gratuito de apoio psicológico para a comunidade acadêmica.",
+              "dates": "-",
+              "sectors": "Poli"
+            }
+          },
+          {
+            "id": "sala_a9",
+            "name": "Sala A9",
+            "model_path": "model_poli_overworld",
+            "interest_point": { "x": -38.97, "y": 2.64, "z": -69.78 },
+            "gates": [],
+            "poi": {
+              "description": "Sala com aulas de Sinais e Sistemas para Engenharia da Computação, bem como a disciplina de Sistemas Operacionais.",
+              "photos": ["/photos/BlocoA-min.jpg"],
+              "curiosity": "Uma das salas mais utilizadas pelos estudantes de E-Comp.",
+              "dates": "-",
+              "sectors": "Bloco A"
+            }
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "bloco_b",
+    "name": "Bloco B",
+    "floors": [
+      {
+        "id": "T",
+        "name": "Térreo",
+        "rooms": [
+          {
+            "id": "sala_b1",
+            "name": "Sala B1",
+            "model_path": "model_bloco_b",
+            "interest_point": { "x": -72.80, "y": -0.01, "z": -1.01 },
+            "gates": [],
+            "poi": {
+              "description": "Sala de aula B1",
+              "photos": ["/photos/blocoB_B1.jpg"],
+              "curiosity": "-",
+              "dates": "-",
+              "sectors": "Bloco B"
+            }
+          },
+          {
+            "id": "sala_b2",
+            "name": "Sala B2",
+            "model_path": "model_bloco_b",
+            "interest_point": { "x": -53.09, "y": -0.01, "z": -3.40 },
+            "gates": [],
+            "poi": {
+              "description": "Sala de aula B2",
+              "photos": ["/photos/blocoB_B2.jpg"],
+              "curiosity": "-",
+              "dates": "-",
+              "sectors": "Bloco B"
+            }
+          },
+          {
+            "id": "sala_b3",
+            "name": "Sala B3",
+            "model_path": "model_bloco_b",
+            "interest_point": { "x": -25.40, "y": -0.01, "z": -3.40 },
+            "gates": [],
+            "poi": {
+              "description": "Sala de aula B3",
+              "photos": ["/photos/blocoB_B3.jpg"],
+              "curiosity": "-",
+              "dates": "-",
+              "sectors": "Bloco B"
+            }
+          },
+          {
+            "id": "sala_b4",
+            "name": "Sala B4",
+            "model_path": "model_bloco_b",
+            "interest_point": { "x": 53.11, "y": -0.01, "z": -3.40 },
+            "gates": [],
+            "poi": {
+              "description": "Sala de aula B4",
+              "photos": ["/photos/blocoB_b4.jpg"],
+              "curiosity": "-",
+              "dates": "-",
+              "sectors": "Bloco B"
+            }
+          }
+        ]
+      },
+      {
+        "id": "1",
+        "name": "1º Andar",
+        "rooms": [
+          {
+            "id": "diretoria",
+            "name": "Diretoria",
+            "model_path": "model_bloco_b",
+            "interest_point": { "x": -16.22, "y": 7.52, "z": -13.11 },
+            "gates": [],
+            "poi": {
+              "description": "Aqui ficam os diretores e reitores da POLI-UPE.",
+              "photos": ["/photos/blocoB_diretoria.jpg", "/photos/blocoB_diretoria (2).jpg"],
+              "curiosity": "-",
+              "dates": "-",
+              "sectors": "Diretoria"
+            }
+          },
+          {
+            "id": "ari",
+            "name": "Assessoria de Relações Internacionais - ARI-POLI",
+            "model_path": "model_bloco_b",
+            "interest_point": { "x": 16.13, "y": 7.59, "z": -12.89 },
+            "gates": [],
+            "poi": {
+              "description": "A ARI/POLI aconselha e auxilia alunos e professores, realiza programas de intercâmbio e ações acadêmicas com instituições no exterior, promovendo a internacionalização da universidade.",
+              "photos": ["/photos/blocoB_ARI.jpg"],
+              "curiosity": "Auxilia na organização de ações internacionais e convênios com instituições estrangeiras.",
+              "dates": "-",
+              "sectors": "ARI"
+            }
+          },
+          {
+            "id": "tesouraria",
+            "name": "Tesouraria",
+            "model_path": "model_bloco_b",
+            "interest_point": { "x": -18.10, "y": 7.82, "z": 0.65 },
+            "gates": [],
+            "poi": {
+              "description": "Tesouraria da Escola Politécnica de Pernambuco (Poli/UPE). Contato: 31847535 e 31847569.",
+              "photos": ["/photos/blocoB_tesouraria (1).jpg", "/photos/blocoB_tesouraria (2).jpg"],
+              "curiosity": "-",
+              "dates": "-",
+              "sectors": "Tesouraria"
+            }
+          },
+          {
+            "id": "painel_ladjane",
+            "name": "Painel de Ladjane Bandeira",
+            "model_path": "model_bloco_b",
+            "interest_point": { "x": 0.14, "y": 8.13, "z": -2.75 },
+            "gates": [],
+            "poi": {
+              "description": "Painel da artista Maria Ladjane Bandeira de Lira. Poetisa, crítica de arte, artista plástica, jornalista, teatróloga e escritora brasileira. Pioneira na crítica de arte em Pernambuco.",
+              "photos": ["/photos/blocoB_painel (1).jpg", "/photos/blocoB_painel (2).jpg", "/photos/blocoB_painel (3).jpg"],
+              "curiosity": "Escreveu para o Jornal do Commercio.",
+              "dates": "-",
+              "sectors": "-"
+            }
+          },
+          {
+            "id": "recursos_humanos",
+            "name": "Recursos Humanos",
+            "model_path": "model_bloco_b",
+            "interest_point": { "x": -25.11, "y": 7.59, "z": -2.73 },
+            "gates": [],
+            "poi": {
+              "description": "Setor de Recursos Humanos da POLI, voltado para servidores e contratados.",
+              "photos": ["/photos/blocoB_recursos_humanos.jpg"],
+              "curiosity": "-",
+              "dates": "-",
+              "sectors": "RH"
+            }
+          },
+          {
+            "id": "divisao_estagio",
+            "name": "Divisão de Estágio",
+            "model_path": "model_bloco_b",
+            "interest_point": { "x": 44.75, "y": 7.62, "z": -3.45 },
+            "gates": [],
+            "poi": {
+              "description": "Divisão de Estágio da POLI. Acesse: https://www.divisaodeestagio.poli.br",
+              "photos": ["/photos/blocoB_divisao_estagio.jpg"],
+              "curiosity": "-",
+              "dates": "-",
+              "sectors": "Divisão de Estágio"
+            }
+          },
+          {
+            "id": "escolaridade",
+            "name": "Escolaridade",
+            "model_path": "model_bloco_b",
+            "interest_point": { "x": 67.01, "y": 7.62, "z": -3.45 },
+            "gates": [],
+            "poi": {
+              "description": "Aqui são resolvidos 90% dos trâmites documentais necessários durante seu curso. Contato: protocolo_escolaridade@poli.br",
+              "photos": ["/photos/blocoB_escolaridade.jpg"],
+              "curiosity": "-",
+              "dates": "-",
+              "sectors": "Escolaridade"
+            }
+          },
+          {
+            "id": "sala_b7",
+            "name": "Sala B7",
+            "model_path": "model_bloco_b",
+            "interest_point": { "x": -72.80, "y": 7.60, "z": -1.01 },
+            "gates": [],
+            "poi": {
+              "description": "Sala de aula B7",
+              "photos": ["/photos/blocoB_B7.jpg"],
+              "curiosity": "-",
+              "dates": "-",
+              "sectors": "Bloco B"
+            }
+          },
+          {
+            "id": "sala_b8",
+            "name": "Sala B8",
+            "model_path": "model_bloco_b",
+            "interest_point": { "x": -54.39, "y": 7.60, "z": -3.45 },
+            "gates": [],
+            "poi": {
+              "description": "Sala de aula B8",
+              "photos": ["/photos/blocoB_B8.jpg"],
+              "curiosity": "-",
+              "dates": "-",
+              "sectors": "Bloco B"
+            }
+          },
+          {
+            "id": "sala_b9",
+            "name": "Sala B9",
+            "model_path": "model_bloco_b",
+            "interest_point": { "x": 85.44, "y": 7.60, "z": -3.45 },
+            "gates": [],
+            "poi": {
+              "description": "Sala B9 com ar-condicionado e aulas.",
+              "photos": ["/photos/blocoB_B9 (1).jpg", "/photos/blocoB_B9 (2).jpg", "/photos/blocoB_B9 (3).jpg", "/photos/blocoB_B9 (4).jpg"],
+              "curiosity": "-",
+              "dates": "-",
+              "sectors": "Bloco B"
+            }
+          },
+          {
+            "id": "materiais_patrimonios",
+            "name": "Materiais e Patrimônios",
+            "model_path": "model_bloco_b",
+            "interest_point": { "x": -42.46, "y": 7.60, "z": -3.45 },
+            "gates": [],
+            "poi": {
+              "description": "Sala de armazenamento de materiais e patrimônios.",
+              "photos": ["/photos/blocoB_Material.jpg"],
+              "curiosity": "-",
+              "dates": "-",
+              "sectors": "Bloco B"
+            }
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "bloco_c",
+    "name": "Bloco C",
+    "floors": [
+      {
+        "id": "T",
+        "name": "Térreo",
+        "rooms": [
+          {
+            "id": "lab_sistemas",
+            "name": "Laboratório de Sistemas",
+            "model_path": "model_bloco_c",
+            "interest_point": { "x": 4.30, "y": 4.24, "z": 17.20 },
+            "gates": [],
+            "poi": {
+              "description": "Laboratório de Sistemas do PPGES.",
+              "photos": ["/photos/blocoC_C6_lab_fis_exp.jpg", "/photos/lab_sistemas.jpg"],
+              "curiosity": "-",
+              "dates": "-",
+              "sectors": "Laboratório de Sistemas - PPGES"
+            }
+          },
+          {
+            "id": "lab_fis_exp_c6",
+            "name": "Laboratório de Física Experimental (C6)",
+            "model_path": "model_bloco_c",
+            "interest_point": { "x": 12.02, "y": 4.34, "z": 16.74 },
+            "gates": [],
+            "poi": {
+              "description": "Laboratório de Física Experimental - Sala C6",
+              "photos": ["/photos/blocoC_C6_lab_fis_exp.jpg"],
+              "curiosity": "-",
+              "dates": "-",
+              "sectors": "Bloco C"
+            }
+          },
+          {
+            "id": "fismat",
+            "name": "Física de Materiais - FisMat",
+            "model_path": "model_bloco_c",
+            "interest_point": { "x": 12.93, "y": 4.34, "z": 5.37 },
+            "gates": [],
+            "poi": {
+              "description": "Aqui fica o curso de Física de Materiais (FisMat).",
+              "photos": ["/photos/blocoC_fis_mat (1).jpg", "/photos/blocoC_fis_mat.jpg"],
+              "curiosity": "-",
+              "dates": "-",
+              "sectors": "FisMat"
+            }
+          },
+          {
+            "id": "lab_fis_exp_c4",
+            "name": "Laboratório de Física Experimental (C4)",
+            "model_path": "model_bloco_c",
+            "interest_point": { "x": 10.33, "y": 4.37, "z": -4.09 },
+            "gates": [],
+            "poi": {
+              "description": "Laboratório de Física Experimental - Sala C4",
+              "photos": ["/photos/blocoC_C4_lab_fis_exp.jpg"],
+              "curiosity": "-",
+              "dates": "-",
+              "sectors": "Bloco C"
+            }
+          }
+        ]
+      },
+      {
+        "id": "1",
+        "name": "1º Andar",
+        "rooms": [
+          {
+            "id": "auditorio_i2",
+            "name": "Auditório I-2",
+            "model_path": "model_poli_overworld",
+            "interest_point": { "x": 166.60, "y": 17.13, "z": -35.86 },
+            "gates": []
+          },
+          {
+            "id": "ppgec",
+            "name": "PPGEC - Pós-Graduação em Eng. da Computação",
+            "model_path": "model_bloco_c",
+            "interest_point": { "x": 13.99, "y": 11.00, "z": 6.37 },
+            "gates": [],
+            "poi": {
+              "description": "Programa de Pós-Graduação em Engenharia da Computação. Encontre professores, pesquisadores e profissionais em computação.",
+              "photos": ["/photos/blocoC_PPGEC (1).jpg", "/photos/blocoC_PPGEC (2).jpg", "/photos/blocoC_PPGEC (3).jpg", "/photos/blocoC_PPGEC (4).jpg", "/photos/blocoC_PPGEC (5).jpg", "/photos/blocoC_PPGEC (6).jpg", "/photos/blocoC_lab_ppgec.jpeg"],
+              "curiosity": "Foi durante sua criação que surgiu o guarda-chuva E-comp para o bacharelado de Engenharia da Computação.",
+              "dates": "As primeiras defesas de mestrado do PPGEC aconteceram em 2008.",
+              "sectors": "PPGEC, Lab. Ecomp"
+            }
+          }
+        ]
+      },
+      {
+        "id": "2",
+        "name": "2º Andar",
+        "rooms": [
+          {
+            "id": "nucleo_pesquisa_civil",
+            "name": "Núcleo de Pesquisa Civil",
+            "model_path": "model_bloco_c",
+            "interest_point": { "x": 13.18, "y": 18.07, "z": 10.08 },
+            "gates": [],
+            "poi": {
+              "description": "Núcleo de Pesquisa em Engenharia Civil.",
+              "photos": ["/photos/blocoC_nucleo_pesquisa_civil.jpg"],
+              "curiosity": "-",
+              "dates": "-",
+              "sectors": "Bloco C"
+            }
+          },
+          {
+            "id": "lab_fis_mat",
+            "name": "Laboratório de Física dos Materiais",
+            "model_path": "model_bloco_c",
+            "interest_point": { "x": 11.08, "y": 18.07, "z": 17.03 },
+            "gates": [],
+            "poi": {
+              "description": "Laboratório principal para os estudantes e pesquisadores de FisMat.",
+              "photos": ["/photos/blocoC_lab_fis_mat.jpg", "/photos/blocoC_fis_mat.jpg"],
+              "curiosity": "-",
+              "dates": "-",
+              "sectors": "FisMat"
+            }
+          },
+          {
+            "id": "corisco",
+            "name": "Equipe Corisco BAJA SAE",
+            "model_path": "model_bloco_c",
+            "interest_point": { "x": 13.18, "y": 18.07, "z": -2.36 },
+            "gates": [],
+            "poi": {
+              "description": "Sala da Equipe Corisco BAJA SAE, núcleo de desenvolvimento e pesquisa mecânica responsável pelo carro Baja, que compete pela UPE no desenvolvimento de um veículo off-road.",
+              "photos": ["/photos/blocoC_eqp_corisco.jpg", "/photos/garagem_corisco_baja (1).jpg", "/photos/garagem_corisco_baja (2).jpg"],
+              "curiosity": "A equipe foi fundada em 2002.",
+              "dates": "Fundada em 2002",
+              "sectors": "Equipe Corisco"
+            }
+          },
+          {
+            "id": "lab_ecomp",
+            "name": "Lab Ecomp",
+            "model_path": "model_bloco_c",
+            "interest_point": { "x": 11.33, "y": 18.07, "z": -8.48 },
+            "gates": [],
+            "poi": {
+              "description": "Laboratório de Engenharia da Computação, de uso exclusivo para estudantes de E-Comp. Com apoio do PPGEC, essa sala foi cedida aos estudantes como espaço de estudos dedicado.",
+              "photos": ["/photos/blocoC_lab_ecomp.png"],
+              "curiosity": "A sala está em reformas desde o fim do período letivo de 2024.2. Os estudantes são recomendados a fazer uso do Lab. 5 quando disponível.",
+              "dates": "-",
+              "sectors": "Lab. Ecomp"
+            }
+          },
+          {
+            "id": "lab_mestrandos_ppgec",
+            "name": "Laboratório Mestrandos PPGEC",
+            "model_path": "model_bloco_c",
+            "interest_point": { "x": 11.42, "y": 18.07, "z": -14.62 },
+            "gates": [],
+            "poi": {
+              "description": "Laboratório do PPGEC, de uso dedicado aos alunos de Mestrado e Doutorado.",
+              "photos": ["/photos/blocoC_lab_ppgec.jpeg"],
+              "curiosity": "Essa sala também está em reforma.",
+              "dates": "-",
+              "sectors": "PPGEC"
+            }
+          },
+          {
+            "id": "sala_caec",
+            "name": "Sala do CAEC",
+            "model_path": "model_bloco_c",
+            "interest_point": { "x": 0.09, "y": 21.09, "z": 10.84 },
+            "gates": [],
+            "poi": {
+              "description": "Sala do Centro Acadêmico de Engenharia da Computação (CAEC).",
+              "photos": [],
+              "curiosity": "O CAEC representa os estudantes e promove ações que favoreçam o pleito estudantil.",
+              "dates": "-",
+              "sectors": "CAEC"
+            }
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "bloco_d",
+    "name": "Bloco D",
+    "floors": [{ "id": "T", "name": "Térreo", "rooms": [] }]
+  },
+  {
+    "id": "bloco_e",
+    "name": "Bloco E",
+    "floors": [
+      {
+        "id": "T",
+        "name": "Térreo",
+        "rooms": [
+          {
+            "id": "lab_e",
+            "name": "LAB E",
+            "model_path": "model_poli_overworld",
+            "interest_point": { "x": 141.42, "y": 0.88, "z": -50.00 },
+            "gates": []
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "bloco_f",
+    "name": "Bloco F",
+    "floors": [
+      {
+        "id": "T",
+        "name": "Térreo",
+        "rooms": [
+          {
+            "id": "lab_f",
+            "name": "LAB F",
+            "model_path": "model_poli_overworld",
+            "interest_point": { "x": 111.40, "y": 9.92, "z": -80.24 },
+            "gates": []
+          },
+          {
+            "id": "lp1",
+            "name": "LP1",
+            "model_path": "model_poli_overworld",
+            "interest_point": { "x": 70.59, "y": 7.87, "z": -80.82 },
+            "gates": []
+          },
+          {
+            "id": "lp2",
+            "name": "LP2",
+            "model_path": "model_poli_overworld",
+            "interest_point": { "x": 75.41, "y": 1.75, "z": -101.46 },
+            "gates": []
+          },
+          {
+            "id": "lp3",
+            "name": "LP3",
+            "model_path": "model_poli_overworld",
+            "interest_point": { "x": 88.06, "y": 1.75, "z": -98.51 },
+            "gates": []
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "bloco_g",
+    "name": "Bloco G",
+    "floors": [
+      {
+        "id": "T",
+        "name": "Térreo",
+        "rooms": [
+          {
+            "id": "lab_g",
+            "name": "LAB G",
+            "model_path": "model_poli_overworld",
+            "interest_point": { "x": 101.34, "y": 1.75, "z": -95.40 },
+            "gates": []
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "bloco_h",
+    "name": "Bloco H",
+    "floors": [
+      {
+        "id": "T",
+        "name": "Térreo",
+        "rooms": [
+          {
+            "id": "biblioteca",
+            "name": "Biblioteca",
+            "model_path": "model_poli_overworld",
+            "interest_point": { "x": 37.39, "y": 3.12, "z": -58.51 },
+            "gates": [],
+            "poi": {
+              "description": "A Biblioteca da POLI-UPE oferece um acervo especializado em engenharia e áreas afins.",
+              "photos": ["/photos/BlocoH-min.jpg", "/photos/biblioteca.jpg", "/photos/biblioteca (1).jpg", "/photos/biblioteca (2).jpg", "/photos/biblioteca (4).jpg", "/photos/biblioteca (5).jpg"],
+              "curiosity": "Inaugurada para apoiar a formação dos estudantes de engenharia.",
+              "dates": "Disponível durante o horário de funcionamento da universidade.",
+              "sectors": "Bloco H"
+            }
+          },
+          {
+            "id": "lip3",
+            "name": "LIP 3",
+            "model_path": "model_poli_overworld",
+            "interest_point": { "x": 22.30, "y": 3.23, "z": -58.38 },
+            "gates": []
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "bloco_i",
+    "name": "Bloco I",
+    "floors": [
+      {
+        "id": "T",
+        "name": "Térreo",
+        "rooms": [
+          {
+            "id": "datp_mc",
+            "name": "DATP",
+            "model_path": "model_poli_overworld",
+            "interest_point": { "x": 50.15, "y": 0.74, "z": -105.57 },
+            "gates": []
+          },
+          {
+            "id": "pec",
+            "name": "PEC - Pós-Graduação em Eng. Civil",
+            "model_path": "model_poli_overworld",
+            "interest_point": { "x": 10.48, "y": 1.29, "z": -113.00 },
+            "gates": []
+          },
+          {
+            "id": "sala_professores",
+            "name": "Sala dos Professores",
+            "model_path": "model_poli_overworld",
+            "interest_point": { "x": 60.04, "y": 0.73, "z": -113.18 },
+            "gates": []
+          },
+          {
+            "id": "coord_pos_grad",
+            "name": "Coord. Pós-Graduação",
+            "model_path": "model_poli_overworld",
+            "interest_point": { "x": 56.08, "y": 0.93, "z": -87.72 },
+            "gates": []
+          },
+          {
+            "id": "lab_i",
+            "name": "LAB I",
+            "model_path": "model_poli_overworld",
+            "interest_point": { "x": 26.22, "y": 1.75, "z": -111.69 },
+            "gates": []
+          }
+        ]
+      },
+      {
+        "id": "1",
+        "name": "1º Andar",
+        "rooms": [
+          { "id": "i4", "name": "I4", "model_path": "model_poli_overworld", "interest_point": { "x": 5.75, "y": 10.51, "z": -113.24 }, "gates": [] },
+          { "id": "i5", "name": "I5", "model_path": "model_poli_overworld", "interest_point": { "x": 11.06, "y": 10.27, "z": -117.21 }, "gates": [] },
+          { "id": "i6", "name": "I6", "model_path": "model_poli_overworld", "interest_point": { "x": 26.57, "y": 10.27, "z": -112.71 }, "gates": [] },
+          { "id": "i7", "name": "I7", "model_path": "model_poli_overworld", "interest_point": { "x": 41.28, "y": 10.27, "z": -109.37 }, "gates": [] }
+        ]
+      },
+      {
+        "id": "2",
+        "name": "2º Andar",
+        "rooms": [
+          { "id": "i8", "name": "I8", "model_path": "model_poli_overworld", "interest_point": { "x": 6.53, "y": 20.45, "z": -113.21 }, "gates": [] },
+          { "id": "i9", "name": "I9", "model_path": "model_poli_overworld", "interest_point": { "x": 10.92, "y": 20.45, "z": -116.03 }, "gates": [] },
+          { "id": "i10", "name": "I10", "model_path": "model_poli_overworld", "interest_point": { "x": 26.15, "y": 20.45, "z": -112.57 }, "gates": [] },
+          { "id": "i11", "name": "I11", "model_path": "model_poli_overworld", "interest_point": { "x": 41.04, "y": 20.45, "z": -109.19 }, "gates": [] }
+        ]
+      },
+      {
+        "id": "3",
+        "name": "3º Andar",
+        "rooms": [
+          { "id": "i12", "name": "I12", "model_path": "model_poli_overworld", "interest_point": { "x": 6.86, "y": 29.26, "z": -112.97 }, "gates": [] },
+          { "id": "i13", "name": "I13", "model_path": "model_poli_overworld", "interest_point": { "x": 11.08, "y": 29.26, "z": -116.11 }, "gates": [] },
+          { "id": "i14", "name": "I14", "model_path": "model_poli_overworld", "interest_point": { "x": 26.08, "y": 29.26, "z": -111.98 }, "gates": [] },
+          { "id": "i15", "name": "I15", "model_path": "model_poli_overworld", "interest_point": { "x": 41.34, "y": 29.26, "z": -108.52 }, "gates": [] }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "bloco_j",
+    "name": "Bloco J",
+    "floors": [{ "id": "T", "name": "Térreo", "rooms": [] }]
+  },
+  {
+    "id": "bloco_k",
+    "name": "Bloco K",
+    "floors": [
+      {
+        "id": "T",
+        "name": "Térreo",
+        "rooms": [
+          { "id": "k1", "name": "K1", "model_path": "model_poli_overworld", "interest_point": { "x": 75.41, "y": 1.75, "z": -101.46 }, "gates": [] },
+          { "id": "k2", "name": "K2", "model_path": "model_poli_overworld", "interest_point": { "x": 88.06, "y": 1.75, "z": -98.51 }, "gates": [] },
+          { "id": "k3", "name": "K3", "model_path": "model_poli_overworld", "interest_point": { "x": 101.34, "y": 1.75, "z": -95.40 }, "gates": [] },
+          { "id": "k4", "name": "K4", "model_path": "model_poli_overworld", "interest_point": { "x": 115.59, "y": 1.75, "z": -92.07 }, "gates": [] }
+        ]
+      },
+      {
+        "id": "1",
+        "name": "1º Andar",
+        "rooms": [
+          { "id": "k5", "name": "K5", "model_path": "model_poli_overworld", "interest_point": { "x": 75.41, "y": 10.49, "z": -101.46 }, "gates": [] },
+          { "id": "k6", "name": "K6", "model_path": "model_poli_overworld", "interest_point": { "x": 87.94, "y": 10.49, "z": -98.53 }, "gates": [] },
+          { "id": "k7", "name": "K7", "model_path": "model_poli_overworld", "interest_point": { "x": 101.28, "y": 10.49, "z": -95.41 }, "gates": [] },
+          { "id": "k8", "name": "K8", "model_path": "model_poli_overworld", "interest_point": { "x": 115.51, "y": 10.49, "z": -92.09 }, "gates": [] }
+        ]
+      },
+      {
+        "id": "2",
+        "name": "2º Andar",
+        "rooms": [
+          { "id": "k9", "name": "K9", "model_path": "model_poli_overworld", "interest_point": { "x": 75.41, "y": 20.10, "z": -101.46 }, "gates": [] },
+          { "id": "k10", "name": "K10", "model_path": "model_poli_overworld", "interest_point": { "x": 88.07, "y": 20.10, "z": -98.50 }, "gates": [] },
+          { "id": "k11", "name": "K11", "model_path": "model_poli_overworld", "interest_point": { "x": 101.25, "y": 20.10, "z": -95.42 }, "gates": [] },
+          { "id": "k12", "name": "K12", "model_path": "model_poli_overworld", "interest_point": { "x": 115.56, "y": 20.10, "z": -92.07 }, "gates": [] }
+        ]
+      },
+      {
+        "id": "3",
+        "name": "3º Andar",
+        "rooms": [
+          { "id": "k13", "name": "K13", "model_path": "model_poli_overworld", "interest_point": { "x": 75.41, "y": 28.66, "z": -101.46 }, "gates": [] },
+          { "id": "k14", "name": "K14", "model_path": "model_poli_overworld", "interest_point": { "x": 88.09, "y": 28.66, "z": -98.50 }, "gates": [] },
+          { "id": "k15", "name": "K15", "model_path": "model_poli_overworld", "interest_point": { "x": 101.34, "y": 28.66, "z": -95.40 }, "gates": [] },
+          { "id": "k16", "name": "K16", "model_path": "model_poli_overworld", "interest_point": { "x": 115.55, "y": 28.66, "z": -92.08 }, "gates": [] }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "outros_poli",
+    "name": "Outros Locais - Campus",
+    "floors": [
+      {
+        "id": "ext",
+        "name": "Campus",
+        "rooms": [
+          {
+            "id": "poli_junior",
+            "name": "Poli Júnior",
+            "model_path": "model_poli_overworld",
+            "interest_point": { "x": 63.12, "y": 3.26, "z": -58.71 },
+            "gates": []
+          },
+          {
+            "id": "lab_mec_solos",
+            "name": "Laboratório Mecânica dos Solos",
+            "model_path": "model_poli_overworld",
+            "interest_point": { "x": 81.83, "y": 1.02, "z": -57.25 },
+            "gates": []
+          },
+          {
+            "id": "lab_mat_construcao",
+            "name": "Laboratório Materiais de Construção",
+            "model_path": "model_poli_overworld",
+            "interest_point": { "x": 118.87, "y": 2.43, "z": -58.38 },
+            "gates": []
+          },
+          {
+            "id": "diretorio_academico",
+            "name": "Diretório Acadêmico",
+            "model_path": "model_poli_overworld",
+            "interest_point": { "x": 123.62, "y": 1.18, "z": -49.69 },
+            "gates": []
+          },
+          {
+            "id": "lab_quimica",
+            "name": "Laboratório de Química",
+            "model_path": "model_poli_overworld",
+            "interest_point": { "x": 141.42, "y": 0.88, "z": -50.00 },
+            "gates": []
+          },
+          {
+            "id": "coworking",
+            "name": "Coworking",
+            "model_path": "model_poli_overworld",
+            "interest_point": { "x": 189.24, "y": 2.66, "z": -71.32 },
+            "gates": []
+          },
+          {
+            "id": "tenpest",
+            "name": "Tenpest Aerodesign",
+            "model_path": "model_poli_overworld",
+            "interest_point": { "x": 199.89, "y": 1.56, "z": -82.74 },
+            "gates": []
+          },
+          {
+            "id": "space_maker",
+            "name": "Space Maker (Sala C01)",
+            "model_path": "model_poli_overworld",
+            "interest_point": { "x": 200.44, "y": 0.43, "z": -61.65 },
+            "gates": []
+          },
+          {
+            "id": "lab_hidrologia",
+            "name": "Laboratório de Hidrologia",
+            "model_path": "model_poli_overworld",
+            "interest_point": { "x": 156.12, "y": 0.62, "z": -10.50 },
+            "gates": []
+          },
+          {
+            "id": "lip5",
+            "name": "LIP 5",
+            "model_path": "model_poli_overworld",
+            "interest_point": { "x": 166.60, "y": 17.13, "z": -35.86 },
+            "gates": []
+          },
+          {
+            "id": "dti_lip1_lip2",
+            "name": "DTI-LIP1-LIP2",
+            "model_path": "model_poli_overworld",
+            "interest_point": { "x": 111.40, "y": 9.92, "z": -80.24 },
+            "gates": []
+          },
+          {
+            "id": "lip7",
+            "name": "LIP 7",
+            "model_path": "model_poli_overworld",
+            "interest_point": { "x": 70.59, "y": 7.87, "z": -80.82 },
+            "gates": []
+          }
+        ]
+      }
+    ]
+  }
+]
