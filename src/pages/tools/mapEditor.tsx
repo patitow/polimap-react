@@ -340,7 +340,10 @@ const MapEditor: React.FC = () => {
                 </ModelErrorBoundary>
               )}
             </Suspense>
+          </Physics>
 
+          {/* Elementos do Editor (fora da simulação física) */}
+          <group name="EditorHelpers">
             {/* Cubos para todos os POIs do mapa selecionado */}
             {selectedMap &&
               selectedMap.rooms.map((ref) => (
@@ -412,7 +415,7 @@ const MapEditor: React.FC = () => {
                 }}
               />
             ))}
-          </Physics>
+          </group>
         </Canvas>
 
         {/* Painel de coordenadas do POI */}
