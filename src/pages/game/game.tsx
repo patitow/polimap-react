@@ -13,7 +13,6 @@ import { InspectMenu } from './components/InspectMenu'
 import type { PoiInfo } from '@/types/room'
 import type { NavigateMode } from './elements/navigation/NavigationModal'
 import { DEFAULT_SPAWN } from '@/config/spawn'
-import { getMapsConfig, modelToWorld } from '@/config/mapScale'
 
 const keyboardMap = [
   { name: 'forward', keys: ['ArrowUp', 'KeyW'] },
@@ -41,7 +40,6 @@ function PolimapGameInner() {
     z: number
   } | null>(null)
   const [isWalking, setIsWalking] = useState(false)
-  const [mapsConfig, setMapsConfig] = useState<Record<string, { scale: number; position: [number, number, number] }>>({})
 
   const {
     setNavMenuOpen,
@@ -52,10 +50,6 @@ function PolimapGameInner() {
     canPlayerMove,
     footstepEnabled,
   } = useGameState()
-
-  useEffect(() => {
-    getMapsConfig().then(setMapsConfig)
-  }, [])
 
   const openNavModal = useCallback(() => {
     if (!isInDialog()) {
@@ -78,8 +72,8 @@ function PolimapGameInner() {
       interestPoint: { x: number; y: number; z: number },
       mode: NavigateMode
     ) => {
-      const config = mapsConfig[modelPath] ?? { scale: 0.3, position: [-0.6, -0.8, 0] as [number, number, number] }
-      const point = modelToWorld(interestPoint, config)
+      // interest_point já está em coordenadas de mundo (mesmo sistema da cena Godot)
+      const point = interestPoint
       const sameScene = currentScene === modelPath
 
       if (mode === 'teleport') {
@@ -98,7 +92,7 @@ function PolimapGameInner() {
       }
       closeNavModal()
     },
-    [closeNavModal, currentScene, mapsConfig]
+    [closeNavModal, currentScene]
   )
 
   const handleAutopilotArrived = useCallback(() => {

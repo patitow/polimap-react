@@ -9,15 +9,15 @@ import { useInput } from '@/contexts/InputContext'
 import { DEFAULT_SPAWN } from '@/config/spawn'
 import { Character } from './Character'
 
-const WALK_SPEED = 2.2
-const RUN_SPEED = 2.8
-const JUMP_IMPULSE = 5.5
+const WALK_SPEED = 3
+const RUN_SPEED = 5
+const JUMP_IMPULSE = 2.5/300
 const CHARACTER_SCALE = 0.24
 const CAPSULE_HALF_HEIGHT = 0.12
 const CAPSULE_RADIUS = 0.05
-const CAMERA_DISTANCE = 12
-const CAMERA_HEIGHT = 3
-const LOOK_TARGET_HEIGHT = 0.2
+const CAMERA_DISTANCE = 6
+const CAMERA_HEIGHT = 2.5
+const LOOK_TARGET_HEIGHT = 0.4
 const CAMERA_COLLISION_OFFSET = 0.3
 const MOUSE_SENSITIVITY = 0.002
 const PITCH_SENSITIVITY = 0.002
@@ -30,6 +30,8 @@ const AUTOPILOT_SPEED = 1.2
 const CAMERA_SMOOTH_SPEED = 18
 /** Suaviza aceleração/desaceleração - lerp da velocidade atual em direção ao alvo */
 const VELOCITY_SMOOTHING = 12
+/** Suaviza rotação do personagem em torno de Y */
+const TURN_SMOOTH_SPEED = 18
 
 export const CharacterController = ({
   teleportPosition,
@@ -54,7 +56,9 @@ export const CharacterController = ({
   const camRot = useRef(0)
   const camPitch = useRef(0)
   const lastDir = useRef('down')
+  // facingAngle = alvo de rotação; visualFacingAngle = ângulo atual exibido
   const facingAngle = useRef(0)
+  const visualFacingAngle = useRef(0)
   const prevWalkingRef = useRef(false)
   const raycaster = useRef(new Raycaster())
   const cameraCollisionTargets = useRef<Object3D[]>([])
@@ -92,12 +96,27 @@ export const CharacterController = ({
   }, [canMove])
 
   useEffect(() => {
-    if (teleportPosition && rb.current) {
-      rb.current.setTranslation(
-        { x: teleportPosition.x, y: teleportPosition.y, z: teleportPosition.z },
-        true
-      )
+    if (!teleportPosition || !rb.current) return
+
+    // Garante que o spawn/teleporte fique apoiado no chão do mapa (não dentro de prédios)
+    let targetX = teleportPosition.x
+    let targetZ = teleportPosition.z
+    let targetY = teleportPosition.y
+
+    if (cameraCollisionTargets.current.length > 0) {
+      const origin = new Vector3(targetX, teleportPosition.y + 50, targetZ)
+      const dir = new Vector3(0, -1, 0)
+      raycaster.current.set(origin, dir)
+      raycaster.current.far = 100
+      const hits = raycaster.current.intersectObjects(cameraCollisionTargets.current, true)
+      if (hits.length > 0) {
+        const hitY = hits[0].point.y
+        // base da cápsula no chão + pequeno offset
+        targetY = hitY + CAPSULE_HALF_HEIGHT + CAPSULE_RADIUS + 0.05
+      }
     }
+
+    rb.current.setTranslation({ x: targetX, y: targetY, z: targetZ }, true)
   }, [teleportPosition?.x, teleportPosition?.y, teleportPosition?.z])
 
   useFrame((_state, delta) => {
@@ -183,7 +202,17 @@ export const CharacterController = ({
       const camAlpha = 1 - Math.exp(-CAMERA_SMOOTH_SPEED * safeDelta)
       camera.position.lerp(desiredCamPos, camAlpha)
       camera.lookAt(lookTarget)
-      if (characterGroupRef.current) characterGroupRef.current.rotation.y = facingAngle.current
+
+      // suaviza rotação mesmo em autopilot
+      if (characterGroupRef.current) {
+        const current = visualFacingAngle.current
+        let diff = facingAngle.current - current
+        // traz para o intervalo [-π, π] para pegar o menor caminho
+        diff = ((diff + Math.PI) % (Math.PI * 2)) - Math.PI
+        const turnAlpha = 1 - Math.exp(-TURN_SMOOTH_SPEED * safeDelta)
+        visualFacingAngle.current = current + diff * turnAlpha
+        characterGroupRef.current.rotation.y = visualFacingAngle.current
+      }
       return
     }
 
@@ -296,8 +325,14 @@ export const CharacterController = ({
     camera.position.lerp(desiredCamPos, camAlpha)
     camera.lookAt(lookTarget)
 
+    // suaviza rotação do personagem em torno de Y
     if (characterGroupRef.current) {
-      characterGroupRef.current.rotation.y = facingAngle.current
+      const current = visualFacingAngle.current
+      let diff = facingAngle.current - current
+      diff = ((diff + Math.PI) % (Math.PI * 2)) - Math.PI
+      const turnAlpha = 1 - Math.exp(-TURN_SMOOTH_SPEED * safeDelta)
+      visualFacingAngle.current = current + diff * turnAlpha
+      characterGroupRef.current.rotation.y = visualFacingAngle.current
     }
   }, -1)
 

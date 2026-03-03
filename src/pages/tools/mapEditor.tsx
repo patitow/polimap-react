@@ -5,10 +5,12 @@ import { Physics } from '@react-three/rapier'
 import type { Block } from '@/types/block'
 import type { Floor } from '@/types/floor'
 import type { Room } from '@/types/room'
+import type { Coordinate } from '@/types/coordinates'
 import { Map } from '@/components/map/Map'
 import { ModelErrorBoundary } from '@/components/map/ModelErrorBoundary'
 import { GateComponent } from '@/components/map/Gate'
 import { GatesEditor } from '@/components/map/GatesEditor'
+import { PoiMarker } from '@/components/map/PoiMarker'
 
 const fetchMapConfig = async (): Promise<Block[]> => {
   const response = await fetch('/config/map_points.json')
@@ -62,14 +64,34 @@ const MapEditor: React.FC = () => {
           ? { ...floor, rooms: floor.rooms.map((r) => (r.id === updatedRoom.id ? updatedRoom : r)) }
           : floor
       )
-      setSelectedBlock({ ...selectedBlock, floors: updatedFloors })
+      const updatedBlock: Block = { ...selectedBlock, floors: updatedFloors }
+      setSelectedBlock(updatedBlock)
+      setBlocks((prev) => prev.map((b) => (b.id === updatedBlock.id ? updatedBlock : b)))
     }
+  }
+
+  const handleExportJson = () => {
+    const blob = new Blob([JSON.stringify(blocks, null, 2)], {
+      type: 'application/json',
+    })
+    const url = URL.createObjectURL(blob)
+    const a = document.createElement('a')
+    a.href = url
+    a.download = 'map_points.edited.json'
+    a.click()
+    URL.revokeObjectURL(url)
   }
 
   return (
     <div className="map-editor flex h-screen pt-16">
       <div className="sidebar w-1/4 overflow-y-auto border-r border-slate-200 p-4 dark:border-slate-700 dark:bg-slate-900">
         <h1 className="mb-4 text-2xl font-bold dark:text-slate-100">Map Editor</h1>
+        <button
+          onClick={handleExportJson}
+          className="mb-4 w-full rounded border border-emerald-500 px-3 py-2 text-sm font-medium text-emerald-100 hover:bg-emerald-500/10"
+        >
+          Exportar map_points.json
+        </button>
         <div className="mb-6">
           <h2 className="mb-2 text-xl dark:text-slate-200">Blocos</h2>
           <ul className="space-y-1">
@@ -136,6 +158,22 @@ const MapEditor: React.FC = () => {
           </div>
         )}
         {selectedRoom && <GatesEditor room={selectedRoom} onUpdateRoom={updateRoom} />}
+
+        {selectedRoom && (
+          <div className="mt-4 space-y-2 rounded border border-slate-700 p-3 text-xs text-slate-200">
+            <div className="font-semibold">Interest point (POI)</div>
+            <div>
+              x: {selectedRoom.interest_point.x.toFixed(2)} · y:{' '}
+              {selectedRoom.interest_point.y.toFixed(2)} · z:{' '}
+              {selectedRoom.interest_point.z.toFixed(2)}
+            </div>
+            <p className="text-[0.7rem] text-slate-400">
+              Arraste o marcador ciano na cena para ajustar a posição deste ponto de interesse.
+              Depois clique em &quot;Exportar map_points.json&quot; e substitua o arquivo no
+              repositório.
+            </p>
+          </div>
+        )}
       </div>
       <div className="editor-canvas flex-1">
         <Canvas camera={{ position: [0, 5, 10] }} shadows>
@@ -180,6 +218,13 @@ const MapEditor: React.FC = () => {
                 }}
               />
             ))}
+            {selectedRoom && (
+              <PoiMarker
+                position={selectedRoom.interest_point as Coordinate}
+                color="#22d3ee"
+                onChange={(p) => updateRoom({ ...selectedRoom, interest_point: p })}
+              />
+            )}
           </Physics>
         </Canvas>
       </div>
