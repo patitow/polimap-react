@@ -25,146 +25,135 @@ O PoliMap nasceu da necessidade real observada no campus universitário: a dific
 
 ### 📍 Sistema de Localização
 
-- Navegação automatizada por pontos de interesse;
-- Interface para inserção manual de localização e reposicionamento.
+- Navegação automatizada por pontos de interesse
+- Interface para inserção manual de localização e reposicionamento
 
 ### 🏛️ Informações Históricas
 
-- História de cada bloco da universidade;
-- Descoberta das particularidades de cada espaço.
+- História de cada bloco da universidade
+- Descoberta das particularidades de cada espaço
 
 ## 🚀 Como Acessar
 
-### Opção 1: Navegador (Recomendado para primeira experiência)
+### Opção 1: Navegador (recomendado para primeira experiência)
 
 - **Acesso instantâneo** sem downloads
 - **Compatível** com qualquer dispositivo
 - **Experiência completa** online
-- [🎮 Jogar Agora no Navegador](http://patitow.itch.io/polimap)
+- [🎮 Jogar no navegador (itch.io)](https://patitow.itch.io/polimap)
 
-### Opção 2: Download (Recomendado para uso frequente)
+**Deploy institucional (produção):** [polimap.vercel.app](https://polimap.vercel.app/)
 
-- **Acesso offline** completo
+### Opção 2: Download (recomendado para uso frequente)
+
+- **Acesso offline** completo (quando disponível na build)
 - **Melhor performance** e carregamento mais rápido
-- **Sem dependência** de internet
-- [📥 Baixar PoliMap](https://drive.google.com/drive/folders/12WekLUy89n_vVxszXsv0okOwqtr5Aysz?usp=sharing)
+- [📥 Baixar PoliMap (Google Drive)](https://drive.google.com/drive/folders/12WekLUy89n_vVxszXsv0okOwqtr5Aysz?usp=sharing)
 
 ## 🛠️ Tecnologias Utilizadas
 
-### Frontend (Interface Web)
+### Frontend (interface web)
 
-- **React 19** - Biblioteca para interfaces de usuário
-- **TypeScript** - Superset tipado do JavaScript
-- **Tailwind CSS** - Framework CSS utilitário
-- **Vite** - Build tool moderna e rápida
-- **Radix UI** - Componentes acessíveis
-- **Lucide React** - Ícones modernos
+- **React** — interfaces de utilizador
+- **TypeScript** — JavaScript tipado
+- **Tailwind CSS** — estilos utilitários
+- **Vite** — build rápida
+- **Radix UI** — componentes acessíveis
+- **Lucide React** — ícones
 
-### Game Engine (Experiência 3D)
+### Motor 3D / conteúdo
 
-- **Godot Engine** - Engine de jogos 2D/3D
-- **WebGL** - Renderização gráfica no navegador
-- **Blender** - Modelagem 3D dos ambientes
+- **Godot Engine** — runtime e exportação WebGL
+- **WebGL** — renderização no navegador
+- **Blender** — modelagem 3D dos ambientes
 
 ### Desenvolvimento
 
-- **Node.js** - Runtime JavaScript
-- **ESLint** - Linter para qualidade de código
-- **Prettier** - Formatador de código
-- **Responsive Design** - Design adaptável
+- **Node.js** — runtime JavaScript
+- **ESLint** — lint
+- **Prettier** — formatação
+- **Design responsivo**
 
-## 📚 Documentação Acadêmica
+## 📚 Documentação académica
 
-Este projeto foi desenvolvido como **Trabalho de Conclusão de Curso** em Engenharia de Computação.
+Este trabalho foi desenvolvido no âmbito de **Trabalho de Conclusão de Curso** em Engenharia de Computação.
 
-### Informações da Monografia
+### Informações da monografia
 
 - **Autor:** Matheus Souza de Oliveira
-- **Orientador:** Prof. Dr. Hemir Da Cunha Santiago
+- **Orientador:** Prof. Dr. Hemir da Cunha Santiago
 - **Ano:** 2025
 - **Formato:** PDF
 
-[📖 Baixar Monografia Completa](https://drive.google.com/file/d/1kSh8eq2SGvpclyhiqme_581CpPTZCr7P/view?usp=sharing)
+[📖 Baixar monografia (PDF)](https://drive.google.com/file/d/1kSh8eq2SGvpclyhiqme_581CpPTZCr7P/view?usp=sharing)
 
-## 🏗️ Estrutura do Projeto
+## 🏗️ Estrutura do projeto
 
 ```
-polimap-js-client/
+polimap-react/
 ├── src/
 │   ├── components/          # Componentes reutilizáveis
-│   │   ├── navbar/         # Barra de navegação
-│   │   ├── theme-toggler/  # Alternador de tema
-│   │   └── ui/            # Componentes de interface
-│   ├── pages/             # Páginas da aplicação
-│   │   ├── home/          # Página inicial
-│   │   ├── acesso/        # Página de acesso
-│   │   ├── sobre/         # Página sobre o projeto
-│   │   └── tutorial/      # Página de tutorial
-│   ├── providers/         # Provedores de contexto
-│   └── lib/              # Utilitários
-├── public/               # Arquivos estáticos
-└── dist/                # Build de produção
+│   │   ├── navbar/          # Barra de navegação
+│   │   ├── theme-toggler/   # Alternador de tema
+│   │   └── ui/              # Componentes de interface
+│   ├── pages/               # Páginas da aplicação
+│   │   ├── home/
+│   │   ├── acesso/
+│   │   ├── sobre/
+│   │   └── tutorial/
+│   ├── providers/
+│   └── lib/
+├── public/                  # Ficheiros estáticos
+└── dist/                    # Build de produção (gerado)
 ```
 
-## 🚀 Instalação e Desenvolvimento
+## 🚀 Instalação e desenvolvimento
 
 ### Pré-requisitos
 
-- Node.js (versão 18 ou superior)
-- Yarn (gerenciador de pacotes)
+- Node.js 18 ou superior
+- Yarn
 
 ### Instalação
 
 ```bash
-# Clone o repositório
-git clone https://github.com/patitow/polimap-js-client.git
-
-# Entre no diretório
-cd polimap-js-client
-
-# Instale as dependências
+git clone https://github.com/patitow/polimap-react.git
+cd polimap-react
 yarn install
 ```
 
-### Scripts Disponíveis
+### Scripts
 
 ```bash
-# Desenvolvimento
-yarn dev          # Inicia servidor de desenvolvimento
-
-# Build
-yarn build        # Gera build de produção
-
-# Linting
-yarn lint         # Executa ESLint
-
-# Formatação
-yarn format       # Formata código com Prettier
-
-# Preview
-yarn preview      # Visualiza build de produção
+yarn dev       # Servidor de desenvolvimento
+yarn build     # Build de produção
+yarn lint      # ESLint
+yarn format    # Prettier
+yarn preview   # Pré-visualizar o build
 ```
 
-## 📁 Repositórios Relacionados
+## 📁 Repositórios relacionados
 
-- **Frontend (React):** [polimap-js-client](https://github.com/patitow/polimap-js-client)
-- **Game Engine (Godot):** [polimap-godot](https://github.com/patitow/polimap-godot)
-- **Projeto Godot Completo:** [Drive](https://drive.google.com/drive/folders/1FQtqfgjIJe6PsUChLlpXqWQRLFPh2vDR?usp=drive_link)
+- **Frontend (React):** [patitow/polimap-react](https://github.com/patitow/polimap-react)
+- **Motor Godot:** [patitow/polimap-godot](https://github.com/patitow/polimap-godot)
+- **Projeto Godot completo (backup / assets):** [Google Drive](https://drive.google.com/drive/folders/1FQtqfgjIJe6PsUChLlpXqWQRLFPh2vDR?usp=drive_link)
 
 ## 🤝 Contribuição
 
-Este é um projeto acadêmico desenvolvido como monografia. Para sugestões ou melhorias, entre em contato através dos canais disponíveis.
+Sugestões e melhorias são bem-vindas via *issues* ou *pull requests*. Mantém a licença MIT e respeita a atribuição dos autores em trabalhos derivados.
 
 ## 📞 Contato
 
 - **LinkedIn:** [linkedin.com/in/patitow](https://www.linkedin.com/in/patitow/)
 - **GitHub:** [@patitow](https://github.com/patitow)
-- **Itch.io:** [PoliMap Game](http://patitow.itch.io/polimap)
+- **Itch.io:** [PoliMap](https://patitow.itch.io/polimap)
 
 ## 📄 Licença
 
-Este projeto foi desenvolvido como trabalho acadêmico. Todos os direitos reservados.
+Este repositório é distribuído sob a **licença MIT**. Consulte o ficheiro [`LICENSE`](LICENSE) para o texto integral. O código pode ser reutilizado conforme os termos da licença; **marcas, logotipos institucionais ou materiais de terceiros** incluídos no projeto podem ter restrições próprias — verifica a origem de cada asset antes de republicar.
+
+A licença MIT aplica-se ao **código-fonte** disponibilizado aqui. A **monografia** e outros documentos académicos seguem as regras da instituição e dos autores quanto à citação e reprodução.
 
 ---
 
-**PoliMap** - Conheça a universidade como a palma da sua mão! 🎓✨
+**PoliMap** — Conheça a universidade como a palma da sua mão.
